@@ -16,24 +16,27 @@ class GetToutiao():
         self.url = "http://toutiao.com/api/article/recent/?count="+count+"&category="+(category)+"&max_behot_time="+str(time)
 
     def getNews(self):
-        news = requests.get(self.url)
-        newsJson = json.loads(news.text)
-        allNewsData = []
-        if newsJson["data"]:
-            for eachData in newsJson["data"]:
-                newsData = {}
-                newsData["title"] = eachData["title"]
-                newsData["display_url"] = eachData["display_url"]
-                newsData["display_time"] = eachData["display_time"]
-                newsData["source"] = eachData["source"]
-                newsData["keywords"] = eachData["keywords"]
-                newsData["abstract"] = eachData["abstract"]
-                if "middle_image" in eachData.keys():
-                    newsData["images"] = eachData["middle_image"]
-                else:
-                    newsData["images"] = "null"
-                newsData["tag"] = eachData["tag"]
-                allNewsData.append(newsData)
-        else:
-            exit("no data!")
-        return allNewsData
+        try:
+            news = requests.get(self.url)
+            newsJson = json.loads(news.text)
+            allNewsData = []
+            if newsJson["data"]:
+                for eachData in newsJson["data"]:
+                    newsData = {}
+                    newsData["title"] = eachData["title"]
+                    newsData["display_url"] = eachData["display_url"]
+                    newsData["display_time"] = eachData["display_time"]
+                    newsData["source"] = eachData["source"]
+                    newsData["keywords"] = eachData["keywords"]
+                    newsData["abstract"] = eachData["abstract"]
+                    if "middle_image" in eachData.keys():
+                        newsData["images"] = eachData["middle_image"]
+                    else:
+                        newsData["images"] = "null"
+                    newsData["tag"] = eachData["tag"]
+                    allNewsData.append(newsData)
+            else:
+                exit("no data!")
+            return allNewsData
+        except ConnectionError:
+            exit("ConnectionError")

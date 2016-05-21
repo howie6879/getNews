@@ -44,7 +44,7 @@ def mkExcel(cate, data):
     :return:     返回生成的excel表
     """
     # 设置excel表名称
-    excelName = os.path.abspath('.') + "/source/" + cate + "/" + str(
+    excelName = os.path.abspath('.') + "/touTiaoSource/" + cate + "/" + str(
         time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())) + "&" + cate + "&" + str(len(data)) + ".xlsx"
     # 设置excel表名称
     jr_work = Workbook(excelName)
