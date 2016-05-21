@@ -32,7 +32,7 @@ class DataController(newsController.NewsController):
         return True
 
 
-DataController = DataController()
+#DataController = DataController()
 #DataController.rmRepeate(['toutiao','toutiaoNews'])        #删除去重文件夹里面的表
 #print(DataController.touTiaoFiles("get"))                  #得到文件列表
 #DataController.touTiaoFiles("rm")                          #删除原始新闻数据
