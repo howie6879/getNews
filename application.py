@@ -1,10 +1,14 @@
 #-*- coding: utf-8 -*
 __author__ = 'Howie'
-
-from url import url
-
 import tornado.web
 import os
+from handlers.index import IndexHandler
+from handlers.admin import AdminHandler
+
+url = [
+    (r'/', IndexHandler),
+    (r'/admin',AdminHandler)
+]
 
 setting = dict(
     template_path = os.path.join(os.path.dirname(__file__), "templates"),
