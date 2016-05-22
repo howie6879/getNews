@@ -15,7 +15,6 @@ class DataController(newsController.NewsController):
         :param *dirs:文件夹list,dirs[0]里面含有文件夹名称,默认为2个
         :return:     成功返回True,否则返回"No Data"
         """
-        print(self.initData)
         if self.initData:
             for eachFile in self.initData:
                 newsData = pd.read_excel(eachFile)

@@ -15,10 +15,12 @@ class GetToutiao():
 
     def getNews(self):
         try:
-            news = requests.get(self.url).text
+            header = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36'}
+            root = requests.get("http://toutiao.com/",headers=header)
+            news = requests.get(self.url,headers=header,cookies=root.cookies)
             allNewsData = []
             try:
-                news = str(news).strip("'<>() ").replace('\'', '\"')
+                news = str(news.text).strip("'<>() ").replace('\'', '\"')
                 newsJson = json.loads(news)
                 if newsJson["data"]:
                     for eachData in newsJson["data"]:
@@ -43,3 +45,6 @@ class GetToutiao():
             return allNewsData
         except ConnectionError:
             exit("ConnectionError")
+
+# get = GetToutiao("1","__all__")
+# print(get.getNews())
