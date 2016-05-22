@@ -1,9 +1,7 @@
 #-*-coding:utf-8-*-
 __author__ = 'howie'
 
-import requests
-import time
-import json
+import time,sys,json,requests
 
 class GetToutiao():
     """
@@ -17,26 +15,31 @@ class GetToutiao():
 
     def getNews(self):
         try:
-            news = requests.get(self.url)
-            newsJson = json.loads(news.text)
+            news = requests.get(self.url).text
             allNewsData = []
-            if newsJson["data"]:
-                for eachData in newsJson["data"]:
-                    newsData = {}
-                    newsData["title"] = eachData["title"]
-                    newsData["display_url"] = eachData["display_url"]
-                    newsData["display_time"] = eachData["display_time"]
-                    newsData["source"] = eachData["source"]
-                    newsData["keywords"] = eachData["keywords"]
-                    newsData["abstract"] = eachData["abstract"]
-                    if "middle_image" in eachData.keys():
-                        newsData["images"] = eachData["middle_image"]
-                    else:
-                        newsData["images"] = "null"
-                    newsData["tag"] = eachData["tag"]
-                    allNewsData.append(newsData)
-            else:
-                exit("no data!")
+            try:
+                news = str(news).strip("'<>() ").replace('\'', '\"')
+                newsJson = json.loads(news)
+                if newsJson["data"]:
+                    for eachData in newsJson["data"]:
+                        newsData = {}
+                        newsData["title"] = eachData["title"]
+                        newsData["display_url"] = eachData["display_url"]
+                        newsData["display_time"] = eachData["display_time"]
+                        newsData["source"] = eachData["source"]
+                        newsData["keywords"] = eachData["keywords"]
+                        newsData["abstract"] = eachData["abstract"]
+                        if "middle_image" in eachData.keys():
+                            newsData["images"] = eachData["middle_image"]
+                        else:
+                            newsData["images"] = "null"
+                        newsData["tag"] = eachData["tag"]
+                        allNewsData.append(newsData)
+                else:
+                    exit("no data!")
+            except:
+                print (repr(news))
+                print (sys.exc_info())
             return allNewsData
         except ConnectionError:
             exit("ConnectionError")
