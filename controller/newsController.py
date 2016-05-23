@@ -11,16 +11,17 @@ class NewsController():
     def __init__(self):
         pass
 
-    def touTiaoFiles(self, operator):
+    def newsFiles(self, operator, sourceName):
         """
-        :func   获取spider/source/目录下爬取的各个新闻excel表
+        :func   获取spider/sourceName/目录下爬取的各个新闻excel表
         :param  operator: 根据get或rm进行获取文件以及删除文件操作
+                sourceName:新闻网站文件夹
         :return:获取文件操作返回文件名列表,删除文件,删除成功返回allFiles=False,表示目录下没有文件
         """
         # 获取主路径
         mainPath = os.path.dirname(os.path.abspath('.'))
         # 获取新闻目录
-        path = os.path.join(os.path.join(mainPath, 'spider'), 'touTiaoSource')
+        path = os.path.join(os.path.join(mainPath, 'spider'), sourceName)
         allFiles = []
         for dir in os.listdir(path):
             dirPath = os.path.join(path, dir)
