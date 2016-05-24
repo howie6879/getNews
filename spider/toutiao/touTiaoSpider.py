@@ -17,7 +17,7 @@ def getTimestamp(startTime):
     return timeStamp
 
 
-def getToutiaoNews(category, page=20, num=20, time=time.time()):
+def getToutiaoNews(category, page, num, time):
     """
     Des:    返回今日头条新闻
     param:
@@ -50,8 +50,8 @@ def mkExcel(cate, data):
     jr_work = Workbook(excelName)
     jr_sheet = jr_work.add_worksheet("toutiao")
     bold = jr_work.add_format({'bold': True})  # 设置一个加粗的格式对象
-    jr_sheet.set_column('A:H',40)
-    jr_sheet.set_column('C:D',15)
+    jr_sheet.set_column('A:H', 40)
+    jr_sheet.set_column('C:D', 15)
     jr_sheet.write(0, 0, '标题', bold)
     jr_sheet.write(0, 1, '发表地址', bold)
     jr_sheet.write(0, 2, '发表时间', bold)

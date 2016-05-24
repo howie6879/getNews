@@ -7,7 +7,7 @@ import newsController
 
 class DataController(newsController.NewsController):
     def __init__(self,sourceName):
-        self.initData = self.touTiaoFiles("get",sourceName)
+        self.initData = self.newsFiles("get",sourceName)
 
     def repeatedData(self,*dirs):
         """
@@ -34,9 +34,10 @@ class DataController(newsController.NewsController):
         else:
             return "No Data!"
 
-#DataController = DataController('touTiaoSource')
+newSource = ["touTiaoSource","sinaSource"]
+DataController = DataController(newSource[1])
 #print(DataController.initData)
-#DataController.rmRepeate(['toutiao','toutiaoNews'])        #删除去重文件夹里面的表
-#print(DataController.touTiaoFiles("get",'touTiaoSource'))                  #得到文件列表
-#DataController.touTiaoFiles("rm")                          #删除原始新闻数据
-#print(DataController.repeatedData(['toutiao','toutiaoNews']))
+#print(DataController.initData)
+DataController.rmRepeate(['allSource','allNews'])        #删除去重文件夹里面的表
+#DataController.newsFiles("rm",newSource[1])                          #删除原始新闻数据
+#print(DataController.repeatedData(['allSource','allNews']))

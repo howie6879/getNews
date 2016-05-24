@@ -7,7 +7,7 @@ class GetToutiao():
     """
     通过今日头条API获取新闻信息,保存至本地excel
     """
-    def __init__(self,count,category,time=time.time()):
+    def __init__(self,count,category,time):
         self.count = count
         self.category = category
         self.time = time
@@ -46,5 +46,5 @@ class GetToutiao():
         except ConnectionError:
             exit("ConnectionError")
 
-# get = GetToutiao("1","__all__")
+# get = GetToutiao("1","news_hot")
 # print(get.getNews())
