@@ -29,15 +29,15 @@ class DataController(newsController.NewsController):
                 print(log)
                 with open("../spider/log.txt", 'a') as fp:
                     fp.write(log + "\n")
-                newsData.to_excel(excel_writer=filePath, sheet_name=dirs[0][0])
+                newsData.to_excel(excel_writer=filePath, sheet_name="allNews")
             return True
         else:
             return "No Data!"
 
-newSource = ["touTiaoSource","sinaSource"]
-DataController = DataController(newSource[1])
+newSource = ["touTiaoSource","sinaSource","allSource"]
+DataController = DataController(newSource[2])
 #print(DataController.initData)
 #print(DataController.initData)
-DataController.rmRepeate(['allSource','allNews'])        #删除去重文件夹里面的表
-#DataController.newsFiles("rm",newSource[1])                          #删除原始新闻数据
-#print(DataController.repeatedData(['allSource','allNews']))
+#DataController.rmRepeate(['wordAna','allNews'])        #删除去重文件夹里面的表
+#DataController.newsFiles("rm",newSource[2])                          #删除原始新闻数据
+#print(DataController.repeatedData(['wordAna','allNews']))

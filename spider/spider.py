@@ -21,5 +21,5 @@ def sina(num=5000, page=1, type=ss.cate):
     ss.getSinaNews(num, page, type)
 
 
-touTiao(category=ts.category, page=10, num=20, time=time.time())
+#touTiao(category=ts.category, page=5, num=20, time=time.time())
 sina()

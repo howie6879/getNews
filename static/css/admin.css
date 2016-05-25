@@ -58,22 +58,36 @@ section{
     overflow: hidden;
     color: #80969c;
 }
-.nav>li{
+.nav-list>li{
     width: 100%;
     height: 40px;
     font-size: 15px;
     color: #80969c;
 }
-.nav>li>a{
+.nav-list>li>a{
     padding-left: 20px;
+    color:#80969c;
 }
-.nav>li>a>i{
+.nav-list>li>a:hover{
+    background-color: #1b6d85;
+    color: #ffffff;
+}
+.nav-list>li>a>i{
     margin-left: 10px;
+    font-size: 13px;
+    width: 25px;
+    top:0;
 }
-.nav li.active > a {
+
+.nav-list>li>a>span{
+    font-size: 16px;
+    padding-top: 5px;
+}
+.nav-list>li>a:focus,.nav-list li.active > a {
     text-decoration: none;
     background-color: #1A2022;
     border-left: 3px solid #23bab5;
+    font-size: 14px;
     color: #ffffff;
     -webkit-transition: all 0.1s ease;
     -moz-transition: all 0.1s ease;

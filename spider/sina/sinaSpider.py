@@ -71,13 +71,14 @@ def mkExel(cate, data):
     jr_work = Workbook (excelName)
     jr_sheet = jr_work.add_worksheet ("sina")
     bold = jr_work.add_format ({'bold': True})  # 设置一个加粗的格式对象
-    jr_sheet.set_column ('A:H', 40)
-    jr_sheet.set_column ('C:D', 15)
     jr_sheet.write (0, 0, '标题', bold)
     jr_sheet.write (0, 1, '发表地址', bold)
     jr_sheet.write (0, 2, '发表时间', bold)
     jr_sheet.write (0, 3, '来源', bold)
-    jr_sheet.write (0, 4, '标签', bold)
+    jr_sheet.write (0, 4, '关键词', bold)
+    jr_sheet.write (0, 5, '摘要', bold)
+    jr_sheet.write (0, 6, '图片地址', bold)
+    jr_sheet.write (0, 7, '标签', bold)
     line = 0
     for eachData in data:
         line += 1
@@ -85,7 +86,10 @@ def mkExel(cate, data):
         jr_sheet.write (line, 1, eachData ["display_url"])
         jr_sheet.write (line, 2, eachData ["display_time"])
         jr_sheet.write (line, 3, eachData ["source"])
-        jr_sheet.write (line, 4, eachData ["tag"])
+        jr_sheet.write (line, 4, '')
+        jr_sheet.write (line, 5, '')
+        jr_sheet.write (line, 6, '')
+        jr_sheet.write (line, 7, eachData ["tag"])
     jr_work.close ()
     log = "%s新闻表抓取完成,抓取数据%d条" % (excelName, line)
     with open ("log.txt", 'a') as fp:

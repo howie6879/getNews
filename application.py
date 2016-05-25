@@ -4,10 +4,15 @@ import tornado.web
 import os
 from handlers.index import IndexHandler
 from handlers.admin import AdminHandler
+from handlers.newsManage import NewsManage
+from handlers.userManage import UserManage
 
 url = [
     (r'/', IndexHandler),
-    (r'/admin',AdminHandler)
+    (r'/admin',AdminHandler),
+    (r'/newsManage',NewsManage),
+    (r'/userManage',UserManage)
+
 ]
 
 setting = dict(
