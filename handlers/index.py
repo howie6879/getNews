@@ -9,6 +9,7 @@ from handlers.base import BaseHandler
 
 class IndexHandler(BaseHandler):
     def get(self):
+        self.clear_cookie("user")
         self.render("index.html") if admin["WEBSITE"] else self.write("<h3>网站正在维护...</h3>")
 
     def post(self):
