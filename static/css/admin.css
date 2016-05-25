@@ -1,0 +1,86 @@
+body{
+    font-family: 'Droid Sans', sans-serif;
+    background-image: url("../images/bg.png");
+}
+.top-nav>li>a{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    line-height: 20px;
+    color: #999;
+    margin-right: 20px;
+    background-color: #222 !important;
+}
+.top-nav>li>a:hover,.top-nav>li>a:focus{
+    background-color: rgba(5, 7, 12, 0.95) !important;
+    color: white;
+}
+.dropdown-menu>li>a>.glyphicon{
+    top:2px;
+}
+section{
+    width: 100%;
+    margin-top: 50px;
+}
+.left-sidebar{
+    width: 17%;
+    background-color: #232b2d;
+    float: left;
+}
+.left-sidebar>.user-menu{
+    width: 100%;
+    height: 90px;
+    padding-top: 15px;
+    padding-left: 30px;
+    border-bottom: 1px solid #2e393b;
+}
+.user-menu>img{
+    width: 60px;
+    height: 60px;
+    border: 2px solid #23bab5;
+    float: left;
+}
+.user-menu>.user-info{
+    padding-top: 10px;
+    padding-left: 30px;
+    float: left;
+}
+.user-menu>.user-info>.welcome{
+    font-style: italic;
+    font-weight: 100;
+    font-size: 12px;
+    line-height: 12px;
+    color: #80969c;
+}
+.user-menu>.user-info>.username{
+    padding-top: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    overflow: hidden;
+    color: #80969c;
+}
+.nav>li{
+    width: 100%;
+    height: 40px;
+    font-size: 15px;
+    color: #80969c;
+}
+.nav>li>a{
+    padding-left: 20px;
+}
+.nav>li>a>i{
+    margin-left: 10px;
+}
+.nav li.active > a {
+    text-decoration: none;
+    background-color: #1A2022;
+    border-left: 3px solid #23bab5;
+    color: #ffffff;
+    -webkit-transition: all 0.1s ease;
+    -moz-transition: all 0.1s ease;
+    -o-transition: all 0.1s ease;
+    transition: all 0.1s ease;
+}
+.right-sidebar{
+    width: 83%;
+    float: left;
+}

@@ -1,7 +1,7 @@
 #-*- coding: utf-8 -*
 __author__ = 'Howie'
 import pymysql
-conn = pymysql.connect(host='qdm114574586.my3w.com',user='qdm114574586',passwd='hy1995912',db='qdm114574586_db',port=3306,charset='utf8')
+conn = pymysql.connect(host='localhost',user='root',passwd='',db='howie',port=3306,charset='utf8')
 cur = conn.cursor()
 
 def select_table(table, column, condition, value ):
