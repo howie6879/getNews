@@ -4,6 +4,27 @@
     <title>{{ header }}</title>
 {% end %}
 
+{% block left-nav %}
+<li>
+    <a href="/admin?user=admin">
+        <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
+        <span>Home</span>
+    </a>
+</li>
+<li class="active">
+    <a href="/newsManage">
+        <i class="glyphicon glyphicon-file" aria-hidden="true"></i>
+        <span class="">新闻管理</span>
+    </a>
+</li>
+<li>
+    <a href="/userManage">
+        <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
+        <span class="">用户管理</span>
+    </a>
+</li>
+{% end %}
+
 {% block right %}
     <div class="">
         <p>hello</p>

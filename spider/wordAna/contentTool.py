@@ -16,32 +16,96 @@ class ContentOperator():
 
 
     """
-    :param url为待爬取的网页链接
+    :param url为待爬取的头条网页链接
     """
-    def getContent(self,url):
+    def getToutiaoContent(self,url):
         try:
-            print (url)
             newstr = requests.get(url).content.decode("utf-8")      #获取对应网页html正文
-            # new =  etree.HTML(newstr)
-            # header = new.xpath(u"//div[@id='pagelet-article']/div[@class='article-header']")[0]
-            # content = new.xpath(u"//div[@id='pagelet-article']/div[@class='article-content']")[0]
 
             soup = BeautifulSoup(newstr,"lxml")
             header = soup.find('div',class_="article-header")
             content = soup.find('div',class_="article-content")
+
+            if content == None or header == None:
+                return None,None,None
+
             htmlContent = str(header) + str(content)
             textContent = self.parseHtml(htmlContent)
-            # print(textContent)
-            return textContent,htmlContent
+
+            img_list = BeautifulSoup(htmlContent, "lxml").find_all("img")
+
+            img_url_list = []
+            if img_list:
+                 for img in img_list:
+                     img_url_list.append(img.get("src"))
+
+            return textContent,htmlContent,img_url_list
 
         except ConnectionError:
             exit("ConnecttionError")
-
+        except Exception:
+            return None, None, None
 
     """
-    :param htmlContent为要解析为纯文本的html正文
-    """
+     :param url为待爬取的新浪网页链接
+     """
+    def getSinaContent(self, url):
+        try:
+            newstr = requests.get(url).content.decode("utf-8")  # 获取对应网页html正文
+
+            soup = BeautifulSoup(newstr, "lxml")
+            header = soup.find('h1', id="artibodyTitle")
+            content = soup.find('div', id="artibody")
+            keywordTag = soup.find('div',class_ ="article-keywords")
+            quotation = soup.find ('div', class_="quotation")
+
+            if header==None:
+                header = soup.find('h1',id="main_title")
+                keywordTag = soup.find('p',class_ = "art_keywords")
+
+            if content==None or header==None:
+                return
+
+            htmlContent = str(header) + str(content)
+            textContent = self.parseHtml(htmlContent)
+            #设置摘要
+            if quotation:
+                patten = re.compile ('<p.*?>(.*?)</p>', re.S)
+                item = re.findall (patten, str (quotation))
+                abstract = item [0]
+                #print(abstract)
+            else:
+                abstract = str (textContent).split ('。') [0]
+
+            if content:
+                 img_list = BeautifulSoup(htmlContent,"lxml").find_all("img")
+            if keywordTag:
+                keyword = keywordTag.find_all("a")
+            img_url_list = []
+            if img_list:
+                for img in img_list:
+                    img_url_list.append(img.get("src"))
+
+            keyword_list = []
+            if keyword:
+                for word in keyword:
+                    keyword_list.append(word.get_text())
+
+            return textContent, htmlContent,img_url_list,keyword_list,abstract
+
+        except ConnectionError:
+            exit("ConnecttionError")
+        except Exception as e:
+            print(e)
+            return None,None,None,None
+
+
     def parseHtml(self,htmlContent):
+        """
+        :param htmlContent为要解析为纯文本的html正文
+        """
         pt = re.compile(r'<[^>]+>',re.S)
-        return pt.sub('',htmlContent)
+        return pt.sub(' ',htmlContent)
 
+#c = ContentOperator()
+#c.getSinaContent("http://ent.sina.com.cn/tv/zy/2016-05-26/doc-ifxsqxxs7700323.shtml")

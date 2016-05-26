@@ -29,13 +29,44 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i>
                     Admin <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#"><i class="glyphicon glyphicon-cog"></i> 设置</a></li>
+                    <li class data-toggle="modal" data-target="#setting"><a href="#"><i
+                            class="glyphicon glyphicon-cog"></i> 修改密码</a></li>
                     <li class="divider"></li>
                     <li><a href="/admin?user=logout"><i class="glyphicon glyphicon-off"></i> 注销</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
+     <!-- 模态框（Modal） -->
+            <div class="modal fade" id="setting" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close"
+                                    data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                修改密码
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <span>修改密码: <input type="password" name="pass"></span>
+                            <span style="margin-left: 15%">密码确认: <input type="password" name="confirm"></span>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default"
+                                    data-dismiss="modal">关闭
+                            </button>
+                            <button id="changePass" type="button" class="btn btn-primary">
+                                提交更改
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
 </header>
 
 <section>
@@ -48,25 +79,7 @@
             </div>
         </div>
         <ul class="nav nav-list">
-            <li>
-                <a href="/admin?user=admin">
-                    <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
-                    <span>Home</span>
-                </a>
-            </li>
-            <li>
-                <a href="/newsManage">
-                     <i class="glyphicon glyphicon-file" aria-hidden="true"></i>
-                    <span class="">新闻管理</span>
-                </a>
-            </li>
-            <li>
-                <a href="/userManage">
-                     <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
-                    <span class="">用户管理</span>
-                </a>
-            </li>
-
+            {% block left-nav %}{%end%}
         </ul>
     </div>
     <div class="right-sidebar">

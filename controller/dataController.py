@@ -6,8 +6,8 @@ import newsController
 
 
 class DataController(newsController.NewsController):
-    def __init__(self,sourceName):
-        self.initData = self.newsFiles("get",sourceName)
+    def __init__(self):
+        self.initData = self.newsFiles("get","allSource")
 
     def repeatedData(self,*dirs):
         """
@@ -34,10 +34,18 @@ class DataController(newsController.NewsController):
         else:
             return "No Data!"
 
+    def rmAllNews(self,newSource):
+        for i in newSource:
+            self.newsFiles("rm",i)
+        return self.rmRepeate(['wordAna','allNews'])
+
+
+
 newSource = ["touTiaoSource","sinaSource","allSource"]
-DataController = DataController(newSource[2])
+DataController = DataController()
+#print(DataController.rmAllNews(newSource))                     #删除所有原始数据
 #print(DataController.initData)
 #print(DataController.initData)
-#DataController.rmRepeate(['wordAna','allNews'])        #删除去重文件夹里面的表
-#DataController.newsFiles("rm",newSource[2])                          #删除原始新闻数据
-#print(DataController.repeatedData(['wordAna','allNews']))
+#DataController.rmRepeate(['wordAna','allNews'])            #删除去重文件夹里面的表
+#DataController.rmRepeate(['wordAna','wordAnaNews'])            #删除分词文件夹里面的表
+#print(DataController.repeatedData(['wordAna','allNews']))      #进行去重操作

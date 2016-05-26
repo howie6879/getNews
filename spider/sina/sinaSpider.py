@@ -33,24 +33,34 @@ def choice(data, type):
     for eachdata in data:
         for number in range (0, len (eachdata)):
             if eachdata [number] ['tag'] == "国内":
+                eachdata [number]["tag"]="news_world"
                 allNews ['news_world'].append (eachdata [number])
             if eachdata [number] ['tag'] == "体育":
+                eachdata [number] ["tag"] = "news_sports"
                 allNews ['news_sports'].append (eachdata [number])
             if eachdata [number] ['tag'] == "财经":
+                eachdata [number] ["tag"] = "news_finance"
                 allNews ['news_finance'].append (eachdata [number])
             if eachdata [number] ['tag'] == "社会":
-                 allNews ['news_society'].append (eachdata [number])
+                eachdata [number] ["tag"] = "news_society"
+                allNews ['news_society'].append (eachdata [number])
             if eachdata [number] ['tag'] == "国际":
+                eachdata [number] ["tag"] = "news_world"
                 allNews ['news_world'].append (eachdata [number])
             if eachdata [number] ['tag'] == "娱乐":
+                eachdata [number] ["tag"] = "news_entertainment"
                 allNews ['news_entertainment'].append (eachdata [number])
             if eachdata [number] ['tag'] == "军事":
+                eachdata [number] ["tag"] = "news_military"
                 allNews ['news_military'].append (eachdata [number])
             if eachdata [number] ['tag'] == "美股":
+                eachdata [number] ["tag"] = "news_finance"
                 allNews ['news_finance'].append (eachdata [number])
             if eachdata [number] ['tag'] == "股市":
+                eachdata [number] ["tag"] = "news_finance"
                 allNews ['news_finance'].append (eachdata [number])
             if eachdata [number] ['tag'] == "科技":
+                eachdata [number] ["tag"] = "news_tech"
                 allNews ['news_tech'].append (eachdata [number])
     for ty in type:
         mkExel (ty, allNews[ty])
