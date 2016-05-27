@@ -1,6 +1,7 @@
 body{
     font-family: 'Droid Sans', sans-serif;
-    background-image: url("../images/bg.png");
+    /*background-image: url("../images/bg.jpg");*/
+    background-color: #e7e7e7;
 }
 .top-nav>li>a{
     padding-top: 15px;

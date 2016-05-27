@@ -32,6 +32,6 @@ def merge():
 
 #touTiao(category=ts.category, page=5, num=20, time=time.time())
 #sina()
-merge()
+#merge()
 
 #cs.getNewsContent()
