@@ -1,6 +1,7 @@
 window.onload = function () {
     var name = document.getElementById('username');
     var pass = document.getElementById('password');
+    var login = document.getElementById('login');
     login.onclick = function () {
         if (name.value == "" || pass.value == "") {
             alert('不能有内容为空');

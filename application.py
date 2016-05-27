@@ -6,12 +6,14 @@ from handlers.index import IndexHandler
 from handlers.admin import AdminHandler
 from handlers.newsManage import NewsManage
 from handlers.userManage import UserManage
+from handlers.changePass import ChangePass
 
 url = [
     (r'/', IndexHandler),
     (r'/admin',AdminHandler),
     (r'/newsManage',NewsManage),
-    (r'/userManage',UserManage)
+    (r'/userManage',UserManage),
+    (r'/changePass',ChangePass)
 
 ]
 

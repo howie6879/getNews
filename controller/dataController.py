@@ -43,7 +43,7 @@ class DataController(newsController.NewsController):
 
 newSource = ["touTiaoSource","sinaSource","allSource"]
 DataController = DataController()
-#print(DataController.rmAllNews(newSource))                     #删除所有原始数据
+print(DataController.rmAllNews(newSource))                     #删除所有原始数据
 #print(DataController.initData)
 #print(DataController.initData)
 #DataController.rmRepeate(['wordAna','allNews'])            #删除去重文件夹里面的表

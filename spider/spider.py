@@ -30,8 +30,8 @@ def merge():
     mergeExel = me.mergeExcel()
     mergeExel.merge(mainPath,secondPath)
 
-#touTiao(category=ts.category, page=5, num=20, time=time.time())
+#touTiao(category=ts.category, page=2, num=20, time=time.time())
 #sina()
 #merge()
 
-#cs.getNewsContent()
+cs.getNewsContent()

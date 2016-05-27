@@ -10,5 +10,7 @@ def select_table(table, column, condition, value ):
     lines = cur.fetchall()
     return lines
 
+
+
 #result = select_table("user","name","name","howie")
 #print(result[0][0])

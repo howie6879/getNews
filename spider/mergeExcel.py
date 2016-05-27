@@ -9,7 +9,8 @@ import time
 
 class mergeExcel:
     def __init__(self):
-        self.mergeSuccess = False
+        #self.mergeSuccess = False
+        self.exelExist = False
         # 定义一个字典分类储存合并后的新闻
         self.allNews = {}
         self.allNews['__all__'] = []
@@ -55,11 +56,17 @@ class mergeExcel:
                         for file in files:
                             # conserve,提取exel表数据，并合并
                             # 传数据,新闻类型:file.split('&')[1],该类型对应的exel名:file，该类型对应的地址:os.path.join (dirPath,file)
-                            self.conserve(file.split('&')[1], file, os.path.join(dirPath, file))
+                            if file:
+                                self.exelExist = True
+                                self.conserve(file.split('&')[1], file, os.path.join(dirPath, file))
 
         # 调用mkexel写将数据循环写入exel
-        for cate in self.category:
-            self.mkExel(cate, self.allNews[cate],secondPath)
+        if self.exelExist:
+            for cate in self.category:
+                self.mkExel(cate, self.allNews[cate],secondPath)
+        else:
+            print("没有原始新闻数据，合并失败！请先获取数据！")
+            return False
 
     # conserve,提取exel表数据，并合并
     def conserve(self, cate, excelData, dir):
@@ -119,7 +126,7 @@ class mergeExcel:
         with open("log.txt", 'a') as fp:
             fp.write(log + "\n")
         print(log)
-        self.mergeSuccess = True
+        #self.mergeSuccess = True
 
 
 #mergeExcel = mergeExcel()
