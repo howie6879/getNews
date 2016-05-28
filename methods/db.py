@@ -1,7 +1,9 @@
 #-*- coding: utf-8 -*
 __author__ = 'Howie'
-import pymysql
-conn = pymysql.connect(host='localhost',user='root',passwd='',db='howie',port=3306,charset='utf8')
+
+from config.n_conf import database
+
+conn = database["localConn"]
 cur = conn.cursor()
 
 def select_table(table, column, condition, value ):

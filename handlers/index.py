@@ -3,7 +3,7 @@ __author__ = 'Howie'
 
 import tornado.escape
 import hashlib
-import methods.db as m_sql
+import methods.db as mSql
 from config.n_conf import admin
 from handlers.base import BaseHandler
 
@@ -15,7 +15,7 @@ class IndexHandler(BaseHandler):
     def post(self):
         username = self.get_argument("username")
         password = self.get_argument("password")
-        result = m_sql.select_table("n_admin", "*", "name", username)
+        result = mSql.select_table("n_admin", "*", "name", username)
         if result:
             db_pwd = result[0][2]
             password = hashlib.md5((admin["TOKEN"]+password).encode("utf-8")).hexdigest()
