@@ -8,6 +8,7 @@ from handlers.newsManage import NewsManage
 from handlers.userManage import UserManage
 from handlers.changePass import ChangePass
 from handlers.dataOperator import DataOperator
+import handlers.api.newsApi as api
 
 url = [
     (r'/', IndexHandler),
@@ -16,6 +17,7 @@ url = [
     (r'/userManage',UserManage),
     (r'/changePass',ChangePass),
     (r'/dataOperator',DataOperator),
+    (r'/api/register',api.Register)
 ]
 
 setting = dict(

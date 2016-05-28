@@ -1,6 +1,8 @@
-## 各大新闻网站API分析
+## 互联网推荐系统API分析
 
-### 1.今日头条
+### 一、目标新闻网站api分析
+
+#### 1-1.今日头条
 
 ​	今日头条目录可分为如下部分：
 
@@ -60,3 +62,25 @@
 |     news_game      | 游戏新闻 |
 |    news_history    | 历史新闻 |
 |     news_food      | 美食新闻 |
+
+### 二、互联网推荐系统api
+
+**说明：调用api时，首选进行tooken验证，验证通过返回结果**
+
+#### 2-1.注册api
+
+链接：`/api/register?name=huyu&passwd=123456&phone=X&time=X&tooken=X`
+
+链接功能：新用户进行注册
+
+|   参数   |   说明    |
+| :----: | :-----: |
+|  name  | 注册用户昵称  |
+| passwd |   密码    |
+| phone  |   电话    |
+|  time  |  注册时间戳  |
+| token  | 身份验证字符串 |
+
+成功结果：`{"message": "success", "data": {"flag": 1, "user_id": "000001"}}`
+
+失败结果：`{"message": "failed", "flag": 0, "data": {}}`
