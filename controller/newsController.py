@@ -19,7 +19,7 @@ class NewsController():
         :return:获取文件操作返回文件名列表,删除文件,删除成功返回allFiles=False,表示目录下没有文件
         """
         # 获取主路径
-        mainPath = os.path.dirname(os.path.abspath('.'))
+        mainPath = os.path.abspath('.')
         # 获取新闻目录
         path = os.path.join(os.path.join(mainPath, 'spider'), sourceName)
         allFiles = []
@@ -37,7 +37,7 @@ class NewsController():
                         os.remove(os.path.join(dirPath, file))
                         log = os.path.join(dirPath, file) + "文件删除成功"
                         print(log)
-                        with open("../spider/log.txt", 'a') as fp:
+                        with open("./log.txt", 'a') as fp:
                             fp.write(log + "\n")
         if not allFiles:
             return False
@@ -50,7 +50,7 @@ class NewsController():
         :param *dirs:文件夹list,dirs[0]里面含有文件夹名称,默认为2个
         :return:    删除成功返回True
         """
-        path = os.path.join(os.path.dirname(os.path.abspath('.')),'spider')
+        path = os.path.join(os.path.abspath('.'),'spider')
         #生成去重的数据目录
         for dir in dirs[0]:
             path = os.path.join(path,str(dir))
@@ -60,6 +60,6 @@ class NewsController():
             os.remove(os.path.join(path, file))
             log = os.path.join(path, file) + "文件删除成功"
             print(log)
-            with open("../spider/log.txt", 'a') as fp:
+            with open("./log.txt", 'a') as fp:
                 fp.write(log + "\n")
         return True

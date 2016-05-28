@@ -4,7 +4,7 @@ __author__ = 'Jeezy'
 from xlsxwriter import *
 import os
 import time
-from sina.sina import GetSina
+from spider.sina.sina import GetSina
 
 
 def getSinaNews(num, page, type):
@@ -75,7 +75,7 @@ def mkExel(cate, data):
 		:return:     返回生成的excel表
 	"""
     # 设置excel表名称
-    excelName = os.path.abspath ('.') + "/sinaSource/" + cate + "/" + str (
+    excelName = os.path.abspath ('.') + "/spider/sinaSource/" + cate + "/" + str (
         time.strftime ('%Y-%m-%d-%H-%M-%S', time.localtime ())) + "&" + cate + "&" + str (len (data)) + ".xlsx"
     # 设置excel表名称
     jr_work = Workbook (excelName)

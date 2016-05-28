@@ -1,7 +1,7 @@
 #-*-coding:utf-8-*-
 __author__ = 'howie'
 
-import time,sys,json,requests
+import sys,json,requests
 
 class GetToutiao():
     """

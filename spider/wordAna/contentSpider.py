@@ -2,8 +2,8 @@ import jieba
 import jieba.analyse
 import os
 import re
-from wordAna.contentTool import ContentOperator
-from wordAna.excelTool import ExcelOperator
+from spider.wordAna.contentTool import ContentOperator
+from spider.wordAna.excelTool import ExcelOperator
 
 
 def getNewsContent():
@@ -11,9 +11,9 @@ def getNewsContent():
     :return:
     """
     # 获取总目录绝对路径
-    orgDir = os.getcwd() + "/wordAna/allNews"
+    orgDir = os.getcwd() + "/spider/wordAna/allNews"
     # 获取最终存放目录绝对路径
-    finalDir = os.getcwd() + "/wordAna/wordAnaNews/"
+    finalDir = os.getcwd() + "/spider/wordAna/wordAnaNews/"
     print(orgDir)
     print(finalDir)
 

@@ -3,18 +3,7 @@ __author__ = 'howie'
 from xlsxwriter import *
 import time
 import os
-from toutiao.touTiao import GetToutiao
-
-
-def getTimestamp(startTime):
-    """
-    Des:    将时间转化为时间戳
-    param:  startTime="2016-05-17 12:00:00"(格式)
-    return: timeStamp
-    """
-    timeArray = time.strptime(startTime, "%Y-%m-%d %H:%M:%S")
-    timeStamp = int(time.mktime(timeArray))
-    return timeStamp
+from spider.toutiao.touTiao import GetToutiao
 
 
 def getToutiaoNews(category, page, num, time):
@@ -44,7 +33,7 @@ def mkExcel(cate, data):
     :return:     返回生成的excel表
     """
     # 设置excel表名称
-    excelName = os.path.abspath('.') + "/touTiaoSource/" + cate + "/" + str(
+    excelName = os.path.abspath('.') + "/spider/touTiaoSource/" + cate + "/" + str(
         time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())) + "&" + cate + "&" + str(len(data)) + ".xlsx"
     # 设置excel表名称
     jr_work = Workbook(excelName)

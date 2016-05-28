@@ -2,7 +2,7 @@
 __author__ = 'howie'
 import pandas as pd
 import os
-import newsController
+import controller.newsController as newsController
 
 
 class DataController(newsController.NewsController):
@@ -20,14 +20,14 @@ class DataController(newsController.NewsController):
                 newsData = pd.read_excel(eachFile)
                 newsData = newsData.drop_duplicates()  # 去重
                 # 获取主路径
-                path = os.path.join(os.path.dirname(os.path.abspath('.')), 'spider')
+                path = os.path.join(os.path.abspath('.'), 'spider')
                 # 获取处理后文件路径
                 for dir in dirs[0]:
                     path = os.path.join(path,dir)
                 filePath = os.path.join(path, os.path.split(eachFile)[1])
                 log = filePath + "文件去重成功"
                 print(log)
-                with open("../spider/log.txt", 'a') as fp:
+                with open("./log.txt", 'a') as fp:
                     fp.write(log + "\n")
                 newsData.to_excel(excel_writer=filePath, sheet_name="allNews")
             return True
@@ -43,7 +43,7 @@ class DataController(newsController.NewsController):
 
 newSource = ["touTiaoSource","sinaSource","allSource"]
 DataController = DataController()
-print(DataController.rmAllNews(newSource))                     #删除所有原始数据
+#print(DataController.rmAllNews(newSource))                     #删除所有原始数据
 #print(DataController.initData)
 #print(DataController.initData)
 #DataController.rmRepeate(['wordAna','allNews'])            #删除去重文件夹里面的表
