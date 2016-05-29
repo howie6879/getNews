@@ -34,7 +34,7 @@ class Register(Confirm):
         getTooken = self.get_argument('tooken')
         time = self.get_argument('time')
         tooken = self.tooken(time=time)
-        if getTooken == tooken and len(all)==5:
+        if getTooken == tooken and len(all) == 5:
             passwd = hashlib.md5((admin["TOKEN"] + passwd).encode("utf-8")).hexdigest()
             numSql = " select count(*) from user"
             try:
@@ -45,7 +45,8 @@ class Register(Confirm):
                 insertSql = mSql.insert_table(table="user", field="(user_id,phone,name,passwd,time)",
                                               values="('" + str(
                                                   user_id) + "','" + phone + "','" + name + "','" + passwd + "',now())")
-                if insertSql:
+                user_messSql = mSql.insert_table(table="user_mess", field="(user_id)",values="('" + str(user_id) + "')")
+                if insertSql and user_messSql:
                     data = {"flag": 1}
                     result = {"message": "success", "data": data}
                     result = json.dumps(result)
@@ -55,3 +56,7 @@ class Register(Confirm):
                 mSql.conn.rollback()
         else:
             self.errorRequest()
+
+class Login(Confirm):
+    def get(self, *args, **kwargs):
+        pass

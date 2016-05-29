@@ -16,6 +16,7 @@ def select_table(table, column, condition, value):
 
 def insert_table(table, field, values):
     sql = "insert into " + table + field + " values " + values
+    print(sql)
     try:
         cur.execute(sql)
         conn.commit()
