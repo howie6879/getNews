@@ -2,6 +2,7 @@
 __author__ = 'Howie'
 import tornado.web
 import os
+from handlers.errorHandler import ErrorHandler
 from handlers.index import IndexHandler
 from handlers.admin import AdminHandler
 from handlers.newsManage import NewsManage
@@ -17,7 +18,9 @@ url = [
     (r'/userManage',UserManage),
     (r'/changePass',ChangePass),
     (r'/dataOperator',DataOperator),
-    (r'/api/register',api.Register)
+    (r'/api/register',api.Register),
+    #这个页面处理语句必须放在最后
+    (r".*", ErrorHandler)
 ]
 
 setting = dict(

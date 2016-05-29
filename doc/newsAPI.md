@@ -81,6 +81,6 @@
 |  time  |  注册时间戳  |
 | token  | 身份验证字符串 |
 
-成功结果：`{"message": "success", "data": {"flag": 1, "user_id": "000001"}}`
+成功结果：`{"data": {"flag": 1}, "message": "success"}`
 
-失败结果：`{"message": "failed", "flag": 0, "data": {}}`
+失败结果：`{"message": "failed", "data": {"flag": 0}}`

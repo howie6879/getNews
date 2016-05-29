@@ -3,9 +3,8 @@ __author__ = 'Howie'
 
 import tornado.web
 
-class BaseHandler(tornado.web.RequestHandler):
-    def get_current_user(self):
-        return self.get_secure_cookie("user")
+class ErrorHandler(tornado.web.RequestHandler):
+
     def write_error(self, status_code, **kwargs):
         self.write("错误状态码{0}.\n".format(
             status_code))
