@@ -34,8 +34,6 @@
 |    category    |   新闻种类   |
 | max_behot_time | 热点新闻最大时间 |
 
-​	
-
 ​		category：
 
 |      category      | name |
@@ -62,6 +60,29 @@
 |     news_game      | 游戏新闻 |
 |    news_history    | 历史新闻 |
 |     news_food      | 美食新闻 |
+
+#### 1-2.新浪新闻
+
+​	新浪新闻目录可分为如下部分：
+
+​	domain : `http://roll.news.sina.com.cn`
+
+​	directory:
+
+​		链接功能：进入新浪新闻滚动业，页面返回的是新浪当前最新新闻
+
+​		-2.1： *num=20&asc=&page=1* : 	`http://roll.news.sina.com.cn/interface/rollnews_ch_out_interface.php?col=89&spec=&type=&k=&num=20&asc=&page=1&r=0.41627189057293945`
+
+​		链接功能：返回滚动新闻
+​		参数：num每页新闻条数,page页数
+
+
+​		
+
+|  参数  |  参数值   |
+| :--: | :----: |
+| num  | 每页新闻条数 |
+| page |   页数   |
 
 ### 二、互联网推荐系统api
 

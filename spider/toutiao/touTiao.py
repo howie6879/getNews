@@ -1,7 +1,7 @@
 #-*-coding:utf-8-*-
 __author__ = 'howie'
 
-import sys,json,requests
+import sys,time,json,requests
 
 class GetToutiao():
     """
@@ -14,6 +14,7 @@ class GetToutiao():
         self.url = "http://toutiao.com/api/article/recent/?count="+count+"&category="+(category)+"&max_behot_time="+str(time)
 
     def getNews(self):
+        print(self.url)
         try:
             header = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36'}
             root = requests.get("http://toutiao.com/",headers=header)
@@ -46,5 +47,5 @@ class GetToutiao():
         except ConnectionError:
             exit("ConnectionError")
 
-# get = GetToutiao("1","news_hot")
-# print(get.getNews())
+#get = GetToutiao("1","news_hot",time.time())
+#print(get.getNews())
