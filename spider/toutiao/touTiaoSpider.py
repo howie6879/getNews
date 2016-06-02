@@ -68,7 +68,7 @@ def mkExcel(cate, data):
 
 
 # 新闻种类
-category = ["__all__", "news_hot", "video", "gallery_detail", "news_society", "news_entertainment",
+category = ["news_society", "news_entertainment",
             "news_tech", "news_car", "news_sports", "news_finance", "news_military", "news_world",
             "news_fashion", "news_travel", "news_discovery", "news_baby", "news_regimen", "news_story",
             "news_essay", "news_game", "news_history", "news_food", ]

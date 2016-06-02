@@ -25,9 +25,6 @@ def getNewsContent():
     for dirpath, dirnames, filenames in os.walk(orgDir):
         break
 
-    global textContent
-    global htmlContent
-    global img_url_list
     # 开始遍历各大新闻类别的excel文件
     for filename in filenames:
 
@@ -46,13 +43,13 @@ def getNewsContent():
 
             try:
                 # 这里需要去除sina的滚动图片类新闻及多媒体新闻
-                if urlstr.find("sina.com") != -1 and urlstr.find("slide") == -1 and urlstr.find("video") == -1:
-                    print(urlstr)
-                    textContent, htmlContent, img_url_list, keyword_list, abstract = ct.getSinaContent(urlstr)
-                    new_info["keywords"] = ' '.join(keyword_list)
-                    new_info["abstract"] = ' '.join(abstract)
+                # if urlstr.find("sina.com") != -1 and urlstr.find("slide") == -1 and urlstr.find("video") == -1:
+                #     print(urlstr)
+                #     textContent, htmlContent, img_url_list, keyword_list, abstract = ct.getSinaContent(urlstr)
+                #     new_info["keywords"] = ' '.join(keyword_list)
+                #     new_info["abstract"] = ' '.join(abstract)
 
-                elif urlstr.find("toutiao.com") != -1:
+                if urlstr.find("toutiao.com") != -1:
                     print(urlstr)
                     textContent, htmlContent, img_url_list = ct.getToutiaoContent(urlstr)
                 else:

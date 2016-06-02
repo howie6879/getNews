@@ -12,12 +12,15 @@ class DataOperator(BaseHandler):
 
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
-        #allSpider.touTiao(category=allSpider.ts.category, page=2, num=20, time=time.time())
-        #allSpider.sina()
+        category = ["news_society"]
+        #allSpider.touTiao(category=category, page=30, num=20, time=time.time())
+        #allSpider.sina(num=1000, page=20)
         #allSpider.merge()
-        #allSpider.wordAna()
         #print(DataController.repeatedData(['wordAna','allNews']))      #进行去重操作
+        #allSpider.wordAna()
+
         DataController.rmAllNews(newSource)
+        # DataController.rmRepeate(['wordAna','allNews'])            #删除去重文件夹里面的表
         #DataController.rmRepeate(['wordAna','wordAnaNews'])            #删除分词文件夹里面的表
 
 

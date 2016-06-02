@@ -68,7 +68,7 @@ class ExcelOperator():
         jr_sheet.write(0, 9, '特征词', bold)
         jr_sheet.write(0, 10, '文本正文',bold)
         jr_sheet.write(0, 11, 'Html正文',bold)
-        #jr_sheet.write(0, 12, '图片链接', bold)
+        jr_sheet.write(0, 12, '图片链接', bold)
         line = 0
         for eachData in data:
             line += 1
@@ -87,7 +87,7 @@ class ExcelOperator():
             jr_sheet.write(line, 9, ' '.join(eachData["feature"]),bold)
             jr_sheet.write(line, 10, eachData["textContent"])
             jr_sheet.write(line, 11, eachData["htmlContent"])
-            #jr_sheet.write(line, 12, ' '.join(eachData["img"]))
+            jr_sheet.write(line, 12, ','.join(eachData["img"]))
         jr_work.close()
         log = "%sExcel文件保存完成" % (excelName)
         with open("log.txt", 'a') as fp:
