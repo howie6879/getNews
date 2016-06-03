@@ -100,7 +100,7 @@ section{
     width: 83%;
     float: left;
 }
-/*style for admin.html*/
+/*style for dataAna.html*/
 .container{
     width: 100%;
 }
@@ -147,4 +147,15 @@ section{
 }
 .showlog>.show-nav>.show-nav-right-down:hover,.showlog>.show-nav>.show-nav-right-up:hover{
     color: #37a697;
+}
+.anaData-modal{
+    width: 150%;
+    height: 175px;
+    margin-top: 20%;
+}
+.getNews>span{
+    margin-left:5%;
+}
+.getNews>span>select{
+    width: 90px;
 }

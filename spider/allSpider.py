@@ -7,6 +7,7 @@ import spider.sina.sinaSpider as ss
 import spider.mergeExcel as me
 import spider.wordAna.contentSpider as cs
 
+
 ss.cate = ["news_world", "news_sports", "news_finance", "news_society", "news_entertainment", "news_military",
            "news_tech"]
 
@@ -31,6 +32,8 @@ def merge():
 def wordAna():
     cs.getNewsContent()
 
+def insertNews():
+    pass
 #touTiao(category=ts.category, page=2, num=20, time=time.time())
 #sina()
 #merge()

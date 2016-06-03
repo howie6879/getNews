@@ -1,0 +1,142 @@
+{% extends "main.html" %}
+
+{% block header %}
+<title>{{ header }}</title>
+{% end %}
+
+{% block left-nav %}
+<li>
+    <a href="/admin?user=admin">
+        <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
+        <span>Home</span>
+    </a>
+</li>
+<li class="active">
+    <a href="/dataAna">
+        <i class="glyphicon glyphicon-education" aria-hidden="true"></i>
+        <span class="">数据分析</span>
+    </a>
+</li>
+<li>
+    <a href="/newsManage">
+        <i class="glyphicon glyphicon-file" aria-hidden="true"></i>
+        <span class="">新闻管理</span>
+    </a>
+</li>
+<li>
+    <a href="/userManage">
+        <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
+        <span class="">用户管理</span>
+    </a>
+</li>
+{% end %}
+
+{% block right %}
+
+
+<div class="container">
+    <div class="row">
+        <div data-toggle="modal" data-target="#getNews" class="col-sm-3">
+            <div class="col-operator">
+                <span>新闻获取</span>
+            </div>
+        </div>
+        <div id="repeatedData" class="col-sm-3">
+            <div class="col-operator">
+                <span>新闻去重</span>
+            </div>
+        </div>
+        <div id="anaData" class="col-sm-3">
+            <div class="col-operator">
+                <span>内容分析</span>
+            </div>
+        </div>
+        <div id="rmAllNews" class="col-sm-3">
+            <div class="col-operator">
+                <span>数据清洗</span>
+            </div>
+        </div>
+    </div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="getNews" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content anaData-modal">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        新闻获取
+                    </h4>
+                </div>
+                <div class="modal-body getNews">
+                    <span>
+                        新闻种类:
+                        <select name="ttSelect" id="ttSelect">
+                            <option value="all">默认</option>
+                            <option value="news_society">社会新闻</option>
+                            <option value="news_entertainment">娱乐新闻</option>
+                            <option value="news_tech">科技新闻</option>
+                            <option value="news_car">汽车新闻</option>
+                            <option value="news_sports">体育新闻</option>
+                            <option value="news_finance">财经新闻</option>
+                            <option value="news_military">军事新闻</option>
+                            <option value="news_world">国际新闻</option>
+                            <option value="news_fashion">时尚新闻</option>
+                            <option value="news_travel">旅游新闻</option>
+                            <option value="news_discovery">探索新闻</option>
+                            <option value="news_baby">育儿新闻</option>
+                            <option value="news_regimen">养生新闻</option>
+                            <option value="news_story">故事新闻</option>
+                            <option value="news_essay">美文新闻</option>
+                            <option value="news_game">游戏新闻</option>
+                            <option value="news_history">历史新闻</option>
+                            <option value="news_food">美食新闻</option>
+                        </select>
+                    </span>
+                    <span>
+                         新闻来源:
+                        <select name="newsSource" id="newsSource">
+                            <option value="all">默认</option>
+                            <option value="news_society">头条</option>
+                            <option value="news_entertainment">新浪</option>
+                        </select>
+                    </span>
+                    <span>
+                         爬取页数:
+                        <select name="page" id="page">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">40</option>
+                        </select>
+                    </span>
+                    <span>
+                         每页数目:
+                        <select name="num" id="num">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                        </select>
+                    </span>
+                </div>
+                <div class="modal-footer">
+                    <button id="close" type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <button id="getNewsStart" type="button" class="btn btn-primary">
+                        开始
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+<div class="showlog">
+    <div class="show-nav">
+        <span><i class="glyphicon glyphicon-cog" aria-hidden="true"></i></span>
+        <span class="show-nav-right-down"><i class="glyphicon glyphicon-menu-down" aria-hidden="true"></i></span>
+        <span class="show-nav-right-up"><i class="glyphicon glyphicon-menu-up" aria-hidden="true"></i></span>
+    </div>
+</div>
+{% end %}
