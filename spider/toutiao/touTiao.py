@@ -1,24 +1,28 @@
-#-*-coding:utf-8-*-
+# -*-coding:utf-8-*-
 __author__ = 'howie'
 
-import sys,time,json,requests
+import sys, time, json, requests
+
 
 class GetToutiao():
     """
     通过今日头条API获取新闻信息,保存至本地excel
     """
-    def __init__(self,count,category,time):
+
+    def __init__(self, count, category, time):
         self.count = count
         self.category = category
         self.time = time
-        self.url = "http://toutiao.com/api/article/recent/?count="+count+"&category="+(category)+"&max_behot_time="+str(time)
+        self.url = "http://toutiao.com/api/article/recent/?count=" + count + "&category=" + (
+        category) + "&max_behot_time=" + str(time)
 
     def getNews(self):
         print(self.url)
         try:
-            header = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36'}
-            root = requests.get("http://toutiao.com/",headers=header)
-            news = requests.get(self.url,headers=header,cookies=root.cookies)
+            header = {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36'}
+            root = requests.get("http://toutiao.com/", headers=header)
+            news = requests.get(self.url, headers=header, cookies=root.cookies)
             allNewsData = []
             try:
                 news = str(news.text).strip("'<>() ").replace('\'', '\"')
@@ -41,11 +45,15 @@ class GetToutiao():
                 else:
                     exit("no data!")
             except:
-                print (repr(news))
-                print (sys.exc_info())
+                print(repr(news))
+                print(sys.exc_info())
             return allNewsData
         except ConnectionError:
             exit("ConnectionError")
 
-#get = GetToutiao("1","news_hot",time.time())
-#print(get.getNews())
+
+# for i in range(1,20):
+#     get = GetToutiao("30", "news_society", time.time())
+#     allNewsData = get.getNews()
+#     for i in allNewsData:
+#         print(i)

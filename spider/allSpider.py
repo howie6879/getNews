@@ -11,21 +11,10 @@ ss.cate = ["news_world", "news_sports", "news_finance", "news_society", "news_en
            "news_tech"]
 
 
-def getTimestamp(startTime):
-    """
-    Des:    将时间转化为时间戳
-    param:  startTime="2016-05-17 12:00:00"(格式)
-    return: timeStamp
-    """
-    timeArray = time.strptime(startTime, "%Y-%m-%d %H:%M:%S")
-    timeStamp = int(time.mktime(timeArray))
-    return timeStamp
-
-
-def touTiao(category, page, num, time):
+def touTiao(category, page, num):
     # 爬取今日头条
     for cate in category:
-        ts.getToutiaoNews(cate, page, num, time)
+        ts.getToutiaoNews(cate, page, num)
 
 
 def sina(num=1000, page=1, type=ss.cate):

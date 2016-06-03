@@ -7,7 +7,7 @@ import controller.newsController as newsController
 
 class DataController(newsController.NewsController):
     def __init__(self):
-        self.initData = self.newsFiles("get","allSource")
+        self.initData = self.newsFiles("get","touTiaoSource")
 
     def repeatedData(self,*dirs):
         """
