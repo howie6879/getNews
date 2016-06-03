@@ -62,7 +62,7 @@ def getNewsContent():
 
             # 采用结巴中文分词提取正文最重要的十个特征词
             # 相关算法 --- tf-idf算法
-            feature = jieba.analyse.extract_tags(textContent, 10)
+            feature = jieba.analyse.extract_tags(textContent, 15)
             new_info["textContent"] = textContent
             new_info["htmlContent"] = htmlContent
             new_info["feature"] = feature
