@@ -17,7 +17,7 @@ class DataController(newsController.NewsController):
         """
         if self.initData:
             for eachFile in self.initData:
-                newsData = pd.read_excel(eachFile)
+                newsData = pd.read_excel(eachFile,sheetname="allNews")
                 newsData = newsData.drop_duplicates()  # 去重
                 # 获取主路径
                 path = os.path.join(os.path.abspath('.'), 'spider')

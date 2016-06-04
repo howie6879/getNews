@@ -18,14 +18,14 @@ class DataOperator(BaseHandler):
                     "news_fashion", "news_travel", "news_discovery", "news_baby", "news_regimen", "news_story",
                     "news_essay", "news_game", "news_history", "news_food"]
 
-
-        allSpider.touTiao(category=allSpider.ts.category, page=10, num=20)
-        allSpider.sina(num=1000, page=10)
+        pass
+        #allSpider.touTiao(category=allSpider.ts.category, page=10, num=20)
+        #allSpider.sina(num=1000, page=10)
         #allSpider.merge()
         #print(DataController.repeatedData(['wordAna','allNews']))      #进行去重操作
-        # allSpider.wordAna()
+        #allSpider.wordAna()
 
         #DataController.rmAllNews(newSource)
         # DataController.rmRepeate(['wordAna','allNews'])            #删除去重文件夹里面的表
-        # DataController.rmRepeate(['wordAna','wordAnaNews'])            #删除分词文件夹里面的表
+        #DataController.rmRepeate(['wordAna','wordAnaNews'])            #删除分词文件夹里面的表
 
