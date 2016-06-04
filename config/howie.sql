@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2016-06-04 02:14:06
+-- Generation Time: 2016-06-04 04:00:26
 -- 服务器版本： 10.1.13-MariaDB
 -- PHP Version: 5.6.20
 
@@ -50,6 +50,21 @@ CREATE TABLE `get_news` (
 CREATE TABLE `news_comment` (
   `news_id` varchar(20) NOT NULL,
   `comment` varchar(20000) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `news_feedback`
+--
+
+CREATE TABLE `news_feedback` (
+  `user_id` varchar(10) NOT NULL,
+  `feedback` varchar(200) DEFAULT NULL,
+  `getTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `reply` varchar(200) DEFAULT NULL,
+  `replyTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `isReply` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -188,15 +203,16 @@ CREATE TABLE `user_mess` (
   `age` int(11) DEFAULT NULL,
   `email` varchar(20) DEFAULT NULL,
   `address` varchar(40) DEFAULT NULL,
-  `image` varchar(60) DEFAULT NULL
+  `image` varchar(60) DEFAULT NULL,
+  `private` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `user_mess`
 --
 
-INSERT INTO `user_mess` (`user_id`, `sex`, `age`, `email`, `address`, `image`) VALUES
-('000001', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `user_mess` (`user_id`, `sex`, `age`, `email`, `address`, `image`, `private`) VALUES
+('000001', NULL, NULL, NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -282,6 +298,12 @@ ALTER TABLE `get_news`
 --
 ALTER TABLE `news_comment`
   ADD KEY `FK_get_news_news_comment` (`news_id`);
+
+--
+-- Indexes for table `news_feedback`
+--
+ALTER TABLE `news_feedback`
+  ADD KEY `FK_user_news_feedback` (`user_id`);
 
 --
 -- Indexes for table `news_mess`
@@ -372,6 +394,12 @@ ALTER TABLE `n_admin`
 --
 ALTER TABLE `news_comment`
   ADD CONSTRAINT `FK_get_news_news_comment` FOREIGN KEY (`news_id`) REFERENCES `get_news` (`news_id`);
+
+--
+-- 限制表 `news_feedback`
+--
+ALTER TABLE `news_feedback`
+  ADD CONSTRAINT `FK_user_news_feedback` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
 -- 限制表 `news_mess`
