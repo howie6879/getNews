@@ -34,3 +34,6 @@ class DataOperator(BaseHandler):
         elif action == "rmAllNews":
             DataController.rmAllNews(newsSource)
             # DataController.rmRepeate(['wordAna','wordAnaNews'])            #删除分词文件夹里面的表
+        elif action == "insertDB":
+            #将新闻插入数据库
+            pass
