@@ -34,16 +34,16 @@ class DataController(newsController.NewsController):
         else:
             return "No Data!"
 
-    def rmAllNews(self,newSource):
-        for i in newSource:
+    def rmAllNews(self,newsSource):
+        for i in newsSource:
             self.newsFiles("rm",i)
         return self.rmRepeate(['wordAna','allNews'])
 
 
 
-newSource = ["touTiaoSource","sinaSource","allSource"]
+newsSource = ["touTiaoSource","sinaSource","allSource"]
 DataController = DataController()
-#print(DataController.rmAllNews(newSource))                     #删除所有原始数据
+#print(DataController.rmAllNews(newsSource))                     #删除所有原始数据
 #print(DataController.initData)
 #print(DataController.initData)
 #DataController.rmRepeate(['wordAna','allNews'])            #删除去重文件夹里面的表

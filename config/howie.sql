@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2016-06-04 04:00:26
+-- Generation Time: 2016-06-05 14:03:06
 -- 服务器版本： 10.1.13-MariaDB
--- PHP Version: 5.6.20
+-- PHP Version: 5.6.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -224,7 +224,8 @@ CREATE TABLE `user_operate` (
   `user_id` varchar(10) NOT NULL,
   `news_id` varchar(20) NOT NULL,
   `comment` varchar(1000) DEFAULT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_love` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

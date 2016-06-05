@@ -7,7 +7,6 @@ import os
 from random import choice
 from spider.toutiao.touTiao import GetToutiao
 
-
 def getToutiaoNews(category, page, num):
     """
     Des:    返回今日头条新闻
@@ -81,6 +80,7 @@ def mkExcel(cate, data):
         jr_sheet.write(line, 7, eachData["tag"])
     jr_work.close()
     log = "%s新闻表抓取完成,抓取数据%d条" % (excelName, line)
+
     with open("log.txt", 'a') as fp:
         fp.write(log + "\n")
     print(log)
