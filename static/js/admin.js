@@ -61,10 +61,18 @@ $(document).ready(function () {
     });
     //数据保存
     $("#save").mouseover(function () {
-        $("#save").attr("src","/static/images/save.svg");
+        $("#save").attr("src", "/static/images/save.svg");
     });
     $("#save").mouseout(function () {
-        $("#save").attr("src","/static/images/save0.svg");
+        $("#save").attr("src", "/static/images/save0.svg");
+    });
+    $('#save').click(function () {
+        $(".show-content").html("<p>正在存储数据...</p>");
+        $.get("/dataOperator", {action: "insertDB"}, function (result) {
+            $(".show-content").append("<p>数据存储完成!</p>");
+            $("#save").css("display","none")
+            $("#save1").css("display","block")
+        });
     });
     //home 底部cmd窗口效果
     $('.show-nav-right-down').click(function () {
