@@ -6,8 +6,6 @@ import controller.newsController as newsController
 
 
 class DataController(newsController.NewsController):
-    def __init__(self):
-        self.initData = self.newsFiles("get","allSource")
 
     def repeatedData(self,*dirs):
         """
@@ -15,6 +13,7 @@ class DataController(newsController.NewsController):
         :param *dirs:文件夹list,dirs[0]里面含有文件夹名称,默认为2个
         :return:     成功返回True,否则返回"No Data"
         """
+        self.initData = self.newsFiles("get","allSource")
         if self.initData:
             for eachFile in self.initData:
                 newsData = pd.read_excel(eachFile,sheetname="allNews")

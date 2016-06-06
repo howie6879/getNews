@@ -23,7 +23,7 @@ def getToutiaoNews(category, page, num):
         #ctime = choice(ltime)
         #print(ctime)
         #获取两天前的时间
-        twoDayAgo = (datetime.datetime.now() - datetime.timedelta(days = 3))
+        twoDayAgo = (datetime.datetime.now() - datetime.timedelta(days = 2))
         #转换为时间戳:
         timeStamp = int(time.mktime(twoDayAgo.timetuple()))
         ctime = choice(range(timeStamp,int(time.time())))

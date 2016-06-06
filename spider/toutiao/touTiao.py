@@ -13,8 +13,8 @@ class GetToutiao():
         self.count = count
         self.category = category
         self.time = time
-        self.url = "http://toutiao.com/api/article/recent/?count=" + count + "&category=" + (
-        category) + "&max_behot_time=" + str(time)
+        self.url = "http://toutiao.com/api/article/recent/?count=" + count + "&category=" + category + "&max_behot_time=" + str(
+            time)
 
     def getNews(self):
         print(self.url)
@@ -50,7 +50,6 @@ class GetToutiao():
             return allNewsData
         except ConnectionError:
             exit("ConnectionError")
-
 
 # for i in range(1,20):
 #     get = GetToutiao("30", "news_society", time.time())
