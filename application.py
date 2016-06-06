@@ -25,6 +25,8 @@ url = [
     (r'/api/newstags', api.NewsTags),
     (r'/api/newscontent', api.NewsContent),
     (r'/api/userinfo', api.UserInfo),
+    (r'/api/userinfochange', api.UserInfoChange),
+    (r'/api/lovenews', api.LoveNews),
     #这个页面处理语句必须放在最后
     (r".*", ErrorHandler)
 ]

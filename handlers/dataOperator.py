@@ -7,6 +7,7 @@ import methods.db as m_sql
 from handlers.base import BaseHandler
 from spider import allSpider
 from controller.dataController import DataController, newsSource
+from spider.newsDb.insertNews import newsInsert
 
 class DataOperator(BaseHandler):
     @tornado.web.authenticated
@@ -35,4 +36,5 @@ class DataOperator(BaseHandler):
             # DataController.rmRepeate(['wordAna','wordAnaNews'])            #删除分词文件夹里面的表
         elif action == "insertDB":
             # 将新闻插入数据库
-            pass
+            newsInsert.insertSql("wordAnaNews")
+            #print("success")
