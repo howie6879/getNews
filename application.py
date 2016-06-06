@@ -20,6 +20,7 @@ url = [
     (r'/userManage',UserManage),
     (r'/changePass',ChangePass),
     (r'/dataOperator',DataOperator),
+    #API地址
     (r'/api/register',api.Register),
     (r'/api/login', api.Login),
     (r'/api/newstags', api.NewsTags),
