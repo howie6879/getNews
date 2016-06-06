@@ -27,6 +27,7 @@ url = [
     (r'/api/userinfo', api.UserInfo),
     (r'/api/userinfochange', api.UserInfoChange),
     (r'/api/lovenews', api.LoveNews),
+    (r'/api/lovelist', api.LoveList),
     #这个页面处理语句必须放在最后
     (r".*", ErrorHandler)
 ]
