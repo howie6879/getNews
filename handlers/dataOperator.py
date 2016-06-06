@@ -21,7 +21,7 @@ class DataOperator(BaseHandler):
                     "news_tech", "news_car", "news_sports", "news_finance", "news_military", "news_world",
                     "news_fashion", "news_travel", "news_discovery", "news_baby", "news_regimen", "news_story",
                     "news_essay", "news_game", "news_history", "news_food"]
-            allSpider.touTiao(category=["news_regimen"], page=3000, num=20)
+            allSpider.touTiao(category=cate, page=page, num=num)
             # allSpider.sina(num=1000, page=10)
             # 先进行合并
             allSpider.merge()
