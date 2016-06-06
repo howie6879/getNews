@@ -7,6 +7,7 @@ import os
 from random import choice
 from spider.toutiao.touTiao import GetToutiao
 
+
 def getToutiaoNews(category, page, num):
     """
     Des:    返回今日头条新闻
@@ -19,19 +20,20 @@ def getToutiaoNews(category, page, num):
     """
     newsData = []
     for page in range(0, page):
-        #ltime = [time.time(),"1464710423","1464796865","1464753667","1464840044","1464883266"]
-        #ctime = choice(ltime)
-        #print(ctime)
-        #获取两天前的时间
-        twoDayAgo = (datetime.datetime.now() - datetime.timedelta(days = 2))
-        #转换为时间戳:
+        # ltime = [time.time(),"1464710423","1464796865","1464753667","1464840044","1464883266"]
+        # ctime = choice(ltime)
+        # print(ctime)
+        # 获取两天前的时间
+        twoDayAgo = (datetime.datetime.now() - datetime.timedelta(days=2))
+        # 转换为时间戳:
         timeStamp = int(time.mktime(twoDayAgo.timetuple()))
-        ctime = choice(range(timeStamp,int(time.time())))
+        ctime = choice(range(timeStamp, int(time.time())))
         toutiao = GetToutiao(str(num), category, ctime)
         allNewsData = toutiao.getNews()
         for news in allNewsData:
             newsData.append(news)
     mkExcel(category, newsData)
+
 
 def getTimestamp(startTime):
     """
@@ -42,6 +44,7 @@ def getTimestamp(startTime):
     timeArray = time.strptime(startTime, "%Y-%m-%d %H:%M:%S")
     timeStamp = int(time.mktime(timeArray))
     return timeStamp
+
 
 def mkExcel(cate, data):
     """

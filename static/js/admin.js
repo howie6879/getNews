@@ -27,37 +27,44 @@ $(document).ready(function () {
         var num = $("#num").val();
         $(".show-content").html("<p>开始进行新闻获取:</p>");
         $(".show-content").append("<p>数据量较多,请耐心等待...</p>");
-        $.get("/dataOperator", {action:"getNews",ttSelect: ttSelect, page: page, num: num}, function (result) {
+        $.get("/dataOperator", {action: "getNews", ttSelect: ttSelect, page: page, num: num}, function (result) {
             $(".show-content").append("<p>新闻爬取完成,请继续下一步!</p>");
             $('#close2').trigger('click');
         });
     });
     //新闻去重
-    $('#repeatedData').click(function(){
-        if(confirm("是否已经进行新闻获取？")){
+    $('#repeatedData').click(function () {
+        if (confirm("是否已经进行新闻获取？")) {
             $(".show-content").append("<p>正在进行数据去重...</p>");
-            $.get("/dataOperator", {action:"repeatedData"}, function (result) {
+            $.get("/dataOperator", {action: "repeatedData"}, function (result) {
                 $(".show-content").append("<p>数据去重完成,请继续下一步!</p>");
             });
         }
     });
     //特征词分析
-    $('#anaData').click(function(){
-        if(confirm("是否已经进行新闻去重？")){
+    $('#anaData').click(function () {
+        if (confirm("是否已经进行新闻去重？")) {
             $(".show-content").append("<p>正在进行内容分析...</p>");
-            $.get("/dataOperator", {action:"anaData"}, function (result) {
+            $.get("/dataOperator", {action: "anaData"}, function (result) {
                 $(".show-content").append("<p>内容分析完成,请继续下一步!</p>");
             });
         }
     });
     //数据清洗
-    $('#rmAllNews').click(function(){
-        if(confirm("确定清洗数据？")){
+    $('#rmAllNews').click(function () {
+        if (confirm("确定清洗数据？")) {
             $(".show-content").append("<p>正在进行数据清洗...</p>");
-            $.get("/dataOperator", {action:"rmAllNews"}, function (result) {
+            $.get("/dataOperator", {action: "rmAllNews"}, function (result) {
                 $(".show-content").append("<p>数据清洗完成,数据分析完成!</p>");
             });
         }
+    });
+    //数据保存
+    $("#save").mouseover(function () {
+        $("#save").attr("src","/static/images/save.svg");
+    });
+    $("#save").mouseout(function () {
+        $("#save").attr("src","/static/images/save0.svg");
     });
     //home 底部cmd窗口效果
     $('.show-nav-right-down').click(function () {

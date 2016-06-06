@@ -9,6 +9,7 @@ from spider import allSpider
 from controller.dataController import DataController, newsSource
 from spider.newsDb.insertNews import newsInsert
 
+
 class DataOperator(BaseHandler):
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
@@ -24,9 +25,10 @@ class DataOperator(BaseHandler):
                     "news_essay", "news_game", "news_history", "news_food"]
             allSpider.touTiao(category=cate, page=page, num=num)
             # allSpider.sina(num=1000, page=10)
+        elif action == "repeatedData":
             # 先进行合并
             allSpider.merge()
-        elif action == "repeatedData":
+            # 进行去重
             print(DataController.repeatedData(['wordAna', 'allNews']))
         elif action == "anaData":
             # 进行词性分析
@@ -37,4 +39,4 @@ class DataOperator(BaseHandler):
         elif action == "insertDB":
             # 将新闻插入数据库
             newsInsert.insertSql("wordAnaNews")
-            #print("success")
+            # print("success")
