@@ -16,15 +16,15 @@ class newsInsert:
     def insertSql(self, mainPath):
         path = os.path.abspath('.') + "/spider/wordAna/" + mainPath
         for dir in os.listdir(path):
-            # print(dir)
             if os.path.splitext(dir)[1] == ".xlsx":
                 file = os.path.join(path, dir)
                 self.insert(file)
 
-    def insert(self, dir):
-        data = xlrd.open_workbook(dir)
+    def insert(self, file):
+        data = xlrd.open_workbook(file)
         table = data.sheets()[0]
         nrows = table.nrows
+        tag = file.split("&")[1]
         for i in range(1, nrows):
             value = table.row_values(i)
             times = time.time()
@@ -36,7 +36,7 @@ class newsInsert:
                                                                          "text_content,html_content,image,keyword)",
                                                  values="('" + newsId + "','" + value[2] + "','" + value[4] + "','" +
                                                         value[1]
-                                                        + "','" + value[6] + "','" + value[8] + "','" + value[
+                                                        + "','" + value[6] + "','" + tag + "','" + value[
                                                             10] + "','" + value[11] + "','" + value[12] + "','" + value[
                                                             9] + "')")
                 if mysqlSuccess:

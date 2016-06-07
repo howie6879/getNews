@@ -24,7 +24,7 @@ class DataOperator(BaseHandler):
                     "news_fashion", "news_travel", "news_discovery", "news_baby", "news_regimen", "news_story",
                     "news_essay", "news_game", "news_history", "news_food"]
             allSpider.touTiao(category=cate, page=page, num=num)
-            # allSpider.sina(num=1000, page=10)
+            allSpider.sina(num=1000, page=2)
         elif action == "repeatedData":
             # 先进行合并
             allSpider.merge()
@@ -35,8 +35,9 @@ class DataOperator(BaseHandler):
             allSpider.wordAna()
         elif action == "rmAllNews":
             DataController.rmAllNews(newsSource)
-            # DataController.rmRepeate(['wordAna','wordAnaNews'])            #删除分词文件夹里面的表
         elif action == "insertDB":
             # 将新闻插入数据库
             newsInsert.insertSql("wordAnaNews")
-            # print("success")
+            # 删除分词文件夹里面的表
+            DataController.rmRepeate(['wordAna', 'wordAnaNews'])
+            print("success")
