@@ -16,6 +16,12 @@
     <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <!--include  js file -->
+    <script src="{{static_url('js/jquery.min.js')}}"></script>
+    <script src="{{static_url('js/d3.min.js')}}"></script>
+    <script src="{{static_url('js/admin.js')}}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{static_url('js/bootstrap.min.js')}}"></script>
 </head>
 <body>
 <header>
@@ -86,10 +92,5 @@
         {% block right %}{% end %}
     </div>
 </section>
-<!--include  js file -->
-<script src="{{static_url('js/jquery.min.js')}}"></script>
-<script src="{{static_url('js/admin.js')}}"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="{{static_url('js/bootstrap.min.js')}}"></script>
 </body>
 </html>

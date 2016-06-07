@@ -20,7 +20,6 @@ url = [
     (r'/userManage',UserManage),
     (r'/changePass',ChangePass),
     (r'/dataOperator',DataOperator),
-    #API地址
     (r'/api/register',api.Register),
     (r'/api/login', api.Login),
     (r'/api/newstags', api.NewsTags),
@@ -29,6 +28,7 @@ url = [
     (r'/api/userinfochange', api.UserInfoChange),
     (r'/api/lovenews', api.LoveNews),
     (r'/api/lovelist', api.LoveList),
+    (r'/api/hotlist', api.HotList),
     #这个页面处理语句必须放在最后
     (r".*", ErrorHandler)
 ]

@@ -30,9 +30,317 @@
     </a>
 </li>
 {% end %}
-
 {% block right %}
-    <div class="">
-        <p>hello</p>
-    </div>
+<div class="d3-content">
+    <div class="svg1"></div>
+    <div class="svg2"></div>
+</div>
+<script>
+    $(document).ready(function () {
+        //admin.html
+        /*自适应高度*/
+        var left_show_height;
+        if (navigator.userAgent.indexOf("Firefox") > 0) {
+            left_show_height = document.documentElement.scrollHeight;
+        }
+        if (window.navigator.userAgent.indexOf("Chrome") !== -1 || navigator.userAgent.indexOf("Safari") > 0) {
+            left_show_height = document.body.scrollHeight;
+        }
+        if (navigator.userAgent.indexOf("MSIE") > 0) {
+            left_show_height = (document.documentElement.scrollHeight > document.documentElement.clientHeight) ? document.documentElement.scrollHeight : document.documentElement.clientHeight;
+        } else {
+            left_show_height = (document.documentElement.scrollHeight > document.documentElement.clientHeight) ? document.documentElement.scrollHeight : document.documentElement.clientHeight;
+        }
+        var width1 = 780;
+        var height1 = parseInt((left_show_height - 50) / 2);
+        //选择画布svg1
+        var svg1 = d3.select(".svg1").append("svg").attr("width", width1)
+                .attr("height", height1);
+        var padding = {left: 30, right: 30, top: 20, bottom: 20};
+        //定义一个数组
+        var dataset = [{{numTag["社会"]}}, {{numTag["娱乐"]}}, {{numTag["科技"]}}, {{numTag["汽车"]}},{{numTag["体育"]}},  {{numTag["财经"]}}, {{numTag["军事"]}}, {{numTag["国际"]}}, {{numTag["时尚"]}}, {{numTag["旅游"]}}, {{numTag["探索"]}}, {{numTag["育儿"]}}, {{numTag["养生"]}}, {{numTag["故事"]}}, {{numTag["美文"]}}, {{numTag["游戏"]}}, {{numTag["历史"]}},{{numTag["美食"]}}];
+        //x轴的比例尺
+        var xScale = d3.scale.ordinal()
+                .domain(d3.range(dataset.length))
+                .rangeRoundBands([0, width1 - padding.left - padding.right]);
+        //y轴的比例尺
+        var yScale = d3.scale.linear()
+                .domain([0, d3.max(dataset)])
+                .range([height1 - padding.top - padding.bottom, 0]);
+        //定义x轴
+        var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .orient("bottom");
+        //定义y轴
+        var yAxis = d3.svg.axis()
+                .scale(yScale)
+                .orient("left");
+        //矩形之间的空白
+        var rectPadding = 4;
+
+        //添加矩形元素
+        var rects = svg1.selectAll(".MyRect")
+                .data(dataset)
+                .enter()
+                .append("rect")
+                .attr("class", "MyRect")
+                .attr("transform", "translate(" + padding.left + "," + padding.top + ")")
+                .attr("x", function (d, i) {
+                    return xScale(i) + rectPadding / 2;
+                })
+                .attr("width", xScale.rangeBand() - rectPadding)
+                .attr("y", function (d) {
+                    var min = yScale.domain()[0];
+                    return yScale(min);
+                })
+                .attr("height", function (d) {
+                    return 0;
+                })
+                .transition()
+                .delay(function (d, i) {
+                    return i * 200;
+                })
+                .duration(2000)
+                .ease("bounce")
+                .attr("y", function (d) {
+                    return yScale(d);
+                })
+                .attr("height", function (d) {
+                    return height1 - padding.top - padding.bottom - yScale(d);
+                });
+
+        //添加文字元素
+        var texts = svg1.selectAll(".MyText")
+                .data(dataset)
+                .enter()
+                .append("text")
+                .attr("class", "MyText")
+                .attr("transform", "translate(" + padding.left + "," + padding.top + ")")
+                .attr("x", function (d, i) {
+                    return xScale(i) + rectPadding / 2;
+                })
+                .attr("dx", function () {
+                    return (xScale.rangeBand() - rectPadding) / 2;
+                })
+                .attr("dy", function (d) {
+                    return 20;
+                })
+                .text(function (d) {
+                    return d;
+                })
+                .attr("y", function (d) {
+                    var min = yScale.domain()[0];
+                    return yScale(min);
+                })
+                .transition()
+                .delay(function (d, i) {
+                    return i * 200;
+                })
+                .duration(2000)
+                .ease("bounce")
+                .attr("y", function (d) {
+                    return yScale(d);
+                });
+
+        //添加x轴
+        svg1.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(" + padding.left + "," + (height1 - padding.bottom) + ")")
+                .call(xAxis);
+
+        //添加y轴
+        svg1.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(" + padding.left + "," + padding.top + ")")
+                .call(yAxis);
+
+        //饼状图
+        var width2 = 270;
+        var height2 = 270;
+
+        var svg2 = d3.select(".svg2")			//选择<body>
+                .append("svg")			//在<body>中添加<svg>
+                .attr("width", width2)	//设定<svg>的宽度属性
+                .attr("height", height2);//设定<svg>的高度属性
+
+        //1.确定初始数据
+        var dataset = [["社会", {{numTag["社会"]}}], ["娱乐", {{numTag["娱乐"]}}], ["科技", {{numTag["科技"]}}], ["汽车", {{numTag["汽车"]}}],
+            ["体育", {{numTag["体育"]}}], ["财经", {{numTag["财经"]}}], ["军事", {{numTag["军事"]}}], ["国际", {{numTag["国际"]}}], ["时尚", {{numTag["时尚"]}}], ["旅游", {{numTag["旅游"]}}], ["探索", {{numTag["探索"]}}],
+            ["育儿", {{numTag["育儿"]}}], ["养生", {{numTag["养生"]}}], ["故事", {{numTag["故事"]}}], ["美文", {{numTag["美文"]}}], ["游戏", {{numTag["游戏"]}}], ["历史",{{numTag["历史"]}}], ["美食", {{numTag["美食"]}}]];
+
+        //2.转换数据
+        var pie = d3.layout.pie()
+                .value(function (d) {
+                    return d[1];
+                });
+        var piedata = pie(dataset);
+        console.log(piedata);
+        //3.绘制
+        //字体大小
+        var fontsize = 14;
+        //外半径和内半径
+        var outerRadius = 400 / 3;
+        var innerRadius = 0;
+        //创建弧生成器
+        var arc = d3.svg.arc()
+                .innerRadius(innerRadius)
+                .outerRadius(outerRadius);
+        var color = d3.scale.category20();
+        //添加对应数目的弧组，即<g>元素
+        var arcs = svg2.selectAll("g")
+                .data(piedata)		//绑定转换后的数据piedata
+                .enter()
+                .append("g")
+                .attr("transform", "translate(" + ( outerRadius ) + "," + ( outerRadius ) + ")");
+        //绘制弧
+        arcs.append("path")
+                .attr("fill", function (d, i) {
+                    return color(i);	//设定弧的颜色
+                })
+                .attr("d", function (d) {
+                    return arc(d);	//使用弧生成器
+                });
+        //绘制弧内的文字
+        arcs.append("text")
+                .attr("transform", function (d) {
+                    var x = arc.centroid(d)[0] * 1.4;		//文字的x坐标
+                    var y = arc.centroid(d)[1] * 1.4;		//文字的y坐标
+                    return "translate(" + x + "," + y + ")";
+                })
+                .attr("text-anchor", "middle")
+                .style("font-size", fontsize)
+                .text(function (d) {
+                    //计算市场份额的百分比
+                    var percent = Number(d.value) / d3.sum(dataset, function (d) {
+                                return d[1];
+                            }) * 100;
+                    //保留1位小数点，末尾加一个百分号返回
+                    return percent.toFixed(1) + "%";
+                });
+        //添加一个提示框
+        var tooltip = d3.select("body")
+                .append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0.0);
+
+        arcs.on("mouseover", function (d) {
+                    /*
+                     鼠标移入时，
+                     （1）通过 selection.html() 来更改提示框的文字
+                     （2）通过更改样式 left 和 top 来设定提示框的位置
+                     （3）设定提示框的透明度为1.0（完全不透明）
+                     */
+
+                    tooltip.html(d.data[0] + "新闻:" + "<br />" + d.data[1] + " 条")
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY + 20) + "px")
+                            .style("opacity", 1.0);
+                })
+                .on("mousemove", function (d) {
+                    /* 鼠标移动时，更改样式 left 和 top 来改变提示框的位置 */
+
+                    tooltip.style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY + 20) + "px");
+                })
+                .on("mouseout", function (d) {
+                    /* 鼠标移出时，将透明度设定为0.0（完全透明）*/
+
+                    tooltip.style("opacity", 0.0);
+                });
+        //力导向图
+        var nodes = [{name: "{{sortTag[0][0]}}"}, {name: "{{sortTag[1][0]}}"},
+            {name: "{{sortTag[2][0]}}"}, {name: "{{sortTag[3][0]}}"},
+            {name: "{{sortTag[4][0]}}"}, {name: "{{sortTag[5][0]}}"},
+            {name: "{{sortTag[6][0]}}"}];
+
+        var edges = [{source: 0, target: 1}, {source: 0, target: 2},
+            {source: 0, target: 3}, {source: 0, target: 4},
+            {source: 1, target: 5}, {source: 1, target: 6}];
+
+        var width = $(".right-sidebar").width();
+        var height = left_show_height - height1 - 60;
+
+
+        var svg = d3.select("body")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+        var force = d3.layout.force()
+                .nodes(nodes)		//指定节点数组
+                .links(edges)		//指定连线数组
+                .size([width, height])	//指定范围
+                .linkDistance(200)	//指定连线长度
+                .charge(-400);	//相互之间的作用力
+
+        force.start();	//开始作用
+
+        //添加连线
+        var svg_edges = svg.selectAll("line")
+                .data(edges)
+                .enter()
+                .append("line")
+                .style("stroke", "#ccc")
+                .style("stroke-width", 1);
+
+        var color = d3.scale.category20();
+
+        //添加节点
+        var svg_nodes = svg.selectAll("circle")
+                .data(nodes)
+                .enter()
+                .append("circle")
+                .attr("r", 20)
+                .style("fill", function (d, i) {
+                    return color(i);
+                })
+                .call(force.drag);	//使得节点能够拖动
+
+        //添加描述节点的文字
+        var svg_texts = svg.selectAll("text")
+                .data(nodes)
+                .enter()
+                .append("text")
+                .style("fill", "black")
+                .attr("dx", 20)
+                .attr("dy", 8)
+                .text(function (d) {
+                    return d.name;
+                });
+
+
+        force.on("tick", function () {	//对于每一个时间间隔
+
+            //更新连线坐标
+            svg_edges.attr("x1", function (d) {
+                        return d.source.x;
+                    })
+                    .attr("y1", function (d) {
+                        return d.source.y;
+                    })
+                    .attr("x2", function (d) {
+                        return d.target.x;
+                    })
+                    .attr("y2", function (d) {
+                        return d.target.y;
+                    });
+
+            //更新节点坐标
+            svg_nodes.attr("cx", function (d) {
+                        return d.x;
+                    })
+                    .attr("cy", function (d) {
+                        return d.y;
+                    });
+
+            //更新文字坐标
+            svg_texts.attr("x", function (d) {
+                        return d.x;
+                    })
+                    .attr("y", function (d) {
+                        return d.y;
+                    });
+        });
+    })
+</script>
 {% end %}

@@ -90,7 +90,7 @@
 
 #### 2-1.注册api
 
-链接：`/api/register?name=huyu&passwd=123456&phone=X&time=X&tooken=X`
+链接：`/api/register?name=huyu&passwd=123456&tags=x&phone=X&time=X&tooken=X`
 
 链接功能：新用户进行注册
 
@@ -99,6 +99,7 @@
 |  name  | 注册用户昵称  |
 | passwd |   密码    |
 | phone  |   电话    |
+| tags  |   标签1，标签2....    |
 |  time  |  注册时间戳  |
 | token  | 身份验证字符串 |
 
@@ -160,7 +161,7 @@
 | image  | 图片url |
 | source  | 来源 |
 查询返回成功：
-`{"message": "success", "data": [{"time": "", "abstract": "", "title": "", "comment_times": 1, "read_times": 1, "love_times": 1, "news_id": "", "image": "", "source": ""}, {"time": "", "abstract": "", "title": "", "comment_times": 2, "read_times": 2, "love_times": 2, "news_id": "", "image": "", "source": ""}]}`
+`{"message": "success", "data": [{"time": "", "abstract": "", "title": "",` `"comment_times": 1, "read_times": 1, "love_times": 1, "news_id": "",` `"image": "", "source": ""}, {"time": "", "abstract": "", "title": "",` `"comment_times": 2, "read_times": 2, "love_times": 2, "news_id": "",` `"image": "", "source": ""}]}`
 
 请求数目超出：
 `{"message": "failed", "data": {"flag": -1}}`
@@ -193,7 +194,7 @@
 | is_love  | 用户是否喜欢该新闻（0/1） |
 
 查询返回成功：
-`{"message": "success", "data": {"content": "", "message": [{"time": "", "username": "", "head_url": "", "comment_content": ""}, {"time": "shijian2", "username": "", "head_url": "", "comment_content": ""}], "is_comment": 1, "is_love": 0}}`
+`{"message": "success", "data": {"content": "", "message": [{"time": "",` `"username": "", "head_url": "", "comment_content": ""}, {"time":` `"shijian2", "username": "", "head_url": "", "comment_content": ""}],` `"is_comment": 1, "is_love": 0}}`
 
 请求失败：`{"message": "failed", "data": {"flag": 0}}`
 
@@ -214,16 +215,131 @@
 | :----: | :-----: |
 | user_name |   用户昵称    |
 | phone  |   用户电话     |
-|  sex  |  用户性别（0男/1女）  |
-|  age  |  用户年龄  |
-| email  | 用户邮箱 |
-| address  | 用户地址 |
 | image  | 头像 |
+| email  | 用户邮箱 |
+| read_times  | 阅读次数 |
+| love_times  | 喜欢次数 |
+| message_times  | 评论次数 |
+
 
 查询返回成功：
-`{"message": "success", "data": {"image": "headurl", "address": "yangjiang", "phone": "15767956536", "sex": 0, "user_name": "\u7528\u623715767956536", "age": 18, "email": "948607893@qq.com"}}`
+`{"message": "success", "data": {"love_times": 1, "phone": "",` `"message_times": 1, "read_times": 1, "user_name": "", "email": "",` `"image": ""}}`
 
 请求失败：`{"message": "failed", "data": {"flag": 0}}`
 
 
+#### 2-6.用户信息修改api
+
+链接：`/api/userinfochange?userid=x&username=x&image=x址`
+`&email=x&time=1&tooken=x`
+
+链接功能：返回用户详细信息
+|   参数   |   说明    |
+| :----: | :-----: |
+| userid  |   用户编号    |
+| username |   用户昵称    |
+| image  | 头像 |
+| email  | 用户邮箱 |
+|  time  |  验证时间戳  |
+| token  | 身份验证字符串 |
+
+**参数返回：**
+参数返回说明：
+|   参数   |   说明    |
+| :----: | :-----: |
+| user_name |   用户昵称    |
+| phone  |   用户电话     |
+| image  | 头像 |
+| email  | 用户邮箱 |
+| read_times  | 阅读次数 |
+| love_times  | 喜欢次数 |
+| message_times  | 评论次数 |
+
+
+查询返回成功：
+`{"message": "success", "data": {"love_times": 1, "phone": "",` `"message_times": 1, "read_times": 1, "user_name": "", "email": "",` `"image": ""}}`
+
+请求失败：`{"message": "failed", "data": {"flag": 0}}`
+
+
+#### 2-7.用户一周喜欢新闻列表api
+
+链接：`/api/lovelist?userid=000001&time=1&tooken=764bfd755bc07f6871eee104219b2b2c`
+
+链接功能：返回用户详细信息
+|   参数   |   说明    |
+| :----: | :-----: |
+| userid  |   用户编号    |
+|  time  |  验证时间戳  |
+| token  | 身份验证字符串 |
+
+**参数返回：**
+参数返回说明：
+|   参数   |   说明    |
+| :----: | :-----: |
+| news_id |   新闻编号    |
+| image  |   新闻图片     |
+| tag  | 新闻标签 |
+| read_times  | 阅读次数 |
+| love_times  | 喜欢次数 |
+| message_times  | 评论次数 |
+
+
+查询返回成功：
+`{"message": "success", "data": [{"read_times": 5, "image": "", "news_id": "", "love_times": 7, "tag": "", "comment_times": 8}]}`
+
+请求失败：`{"message": "failed", "data": {"flag": 0}}`
+
+
+
+
+#### 2-8.热点新闻（每天喜欢/阅读/评论次数最多）api
+
+链接：`/api/hotlist?hot=1&time=1&tooken=764bfd755bc07f6871eee104219b2b2c`
+
+链接功能：返回用户详细信息
+|   参数   |   说明    |
+| :----: | :-----: |
+| hot  |   1为喜欢/2为阅读/3为评论    |
+|  time  |  验证时间戳  |
+| token  | 身份验证字符串 |
+
+**参数返回：**
+参数返回说明：
+|   参数   |   说明    |
+| :----: | :-----: |
+| news_id |   新闻编号    |
+| image  |   新闻图片     |
+| tag  | 新闻标签 |
+| read_times  | 阅读次数 |
+| love_times  | 喜欢次数 |
+| message_times  | 评论次数 |
+
+
+查询返回成功：
+`{"message": "success", "data": [{"news_id":,"read_times": 5, "image": "",  "love_times": 7, "tag": "", "comment_times": 8}]}`
+
+请求失败：`{"message": "failed", "data": {"flag": 0}}`
+
+
+#### 2-9.登录api
+
+链接：`/api/lovenews?newsid=x&userid=x&islove=x&time=x&tooken=x`
+
+链接功能：用户登录
+|   参数   |   说明    |
+| :----: | :-----: |
+| newsid |   新闻编号    |
+| userid  |   用户编号    |
+|  islove  |  1为喜欢/0为取消喜欢  |
+| time  | 时间 |
+| token  | 身份验证字符串 |
+
+**参数返回：**
+
+喜欢成功：`{"message": "success", "data": {"flag": 1}}`
+
+取消喜欢：`{"message": "success", "data": {"flag": 2}}`
+
+请求失败：`{"message": "failed", "data": {"flag": 0}}`
 

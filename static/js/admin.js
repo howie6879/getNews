@@ -1,4 +1,20 @@
 $(document).ready(function () {
+    /*自适应高度*/
+    var left_show = document.getElementById('left');
+    var left_show_height;
+    if (navigator.userAgent.indexOf("Firefox") > 0) {
+        left_show_height = document.documentElement.scrollHeight;
+    }
+    if (window.navigator.userAgent.indexOf("Chrome") !== -1 || navigator.userAgent.indexOf("Safari") > 0) {
+        left_show_height = document.body.scrollHeight;
+    }
+    if (navigator.userAgent.indexOf("MSIE") > 0) {
+        left_show_height = (document.documentElement.scrollHeight > document.documentElement.clientHeight) ? document.documentElement.scrollHeight : document.documentElement.clientHeight;
+    } else {
+        left_show_height = (document.documentElement.scrollHeight > document.documentElement.clientHeight) ? document.documentElement.scrollHeight : document.documentElement.clientHeight;
+    }
+    left_show.style.height = left_show_height - 50 + "px";
+    //dataAna
     //更改密码
     $('#changePass').click(function () {
         var pass = $("#pass").val();
@@ -70,8 +86,8 @@ $(document).ready(function () {
         $(".show-content").html("<p>正在存储数据...</p>");
         $.get("/dataOperator", {action: "insertDB"}, function (result) {
             $(".show-content").append("<p>数据存储完成!</p>");
-            $("#save").css("display","none")
-            $("#save1").css("display","block")
+            $("#save").css("display", "none")
+            $("#save1").css("display", "block")
         });
     });
     //home 底部cmd窗口效果
@@ -87,19 +103,4 @@ $(document).ready(function () {
         $('.show-nav').css("background-color", "#0C0C0C");
         $(".showlog").animate({height: '300px'});
     });
-    /*解决底部栏footer在高度不适应情况下在底部*/
-    var left_show = document.getElementById('left');
-    var left_show_height;
-    if (navigator.userAgent.indexOf("Firefox") > 0) {
-        left_show_height = document.documentElement.scrollHeight;
-    }
-    if (window.navigator.userAgent.indexOf("Chrome") !== -1 || navigator.userAgent.indexOf("Safari") > 0) {
-        left_show_height = document.body.scrollHeight;
-    }
-    if (navigator.userAgent.indexOf("MSIE") > 0) {
-        left_show_height = (document.documentElement.scrollHeight > document.documentElement.clientHeight) ? document.documentElement.scrollHeight : document.documentElement.clientHeight;
-    } else {
-        left_show_height = (document.documentElement.scrollHeight > document.documentElement.clientHeight) ? document.documentElement.scrollHeight : document.documentElement.clientHeight;
-    }
-    left_show.style.height = left_show_height - 50 + "px";
 })
