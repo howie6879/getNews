@@ -3,6 +3,7 @@ body {
     font-family: 'Droid Sans', sans-serif;
     background-image: url("../images/bg.jpg");
     background-color: #e7e7e7;
+    overflow-x: hidden; 
 }
 
 .top-nav > li > a {
@@ -137,6 +138,7 @@ section {
     fill: white;
     text-anchor: middle;
 }
+
 .tooltip {
     font-size: 14px;
     width: 120px;
@@ -148,20 +150,26 @@ section {
     background-color: white;
     border-radius: 5px;
 }
-.svg1{
+
+.svg1 {
+    width: 70%;
     float: left;
 }
-.svg2{
+
+.svg2 {
     float: right;
     padding-top: 30px;
     padding-right: 10px;
 }
-.svg3{
+
+.svg3 {
     width: 100%;
 }
-.tooltip{
+
+.tooltip {
 
 }
+
 /*style for dataAna.html*/
 .container {
     width: 100%;
