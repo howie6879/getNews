@@ -12,7 +12,7 @@ admin = dict(
 #本地数据库配置
 localDatabase = dict(
     localhost="127.0.0.1",
-    database="howie",
+    database="newsTest",
     user="root",
     password="",
     charset="utf8",

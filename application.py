@@ -29,6 +29,10 @@ url = [
     (r'/api/lovenews', api.LoveNews),
     (r'/api/lovelist', api.LoveList),
     (r'/api/hotlist', api.HotList),
+    (r'/api/feedback', api.FeedBack),
+    (r'/api/keyword', api.KeyWord),
+    (r'/api/comment', api.Comment),
+    (r'/api/lovecomment', api.LoveComment),
     #这个页面处理语句必须放在最后
     (r".*", ErrorHandler)
 ]

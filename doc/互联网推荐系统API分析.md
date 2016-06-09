@@ -105,7 +105,7 @@
 
 **参数返回：**
 
-注册结果：`{"data": {"flag": 1}, "message": "success"}`
+注册结果：`{"data": {"user_id": ""}, "message": "success"}`
 
 用户已存在：`{"message": "failed", "data": {"flag": -1}}`
 
@@ -125,7 +125,7 @@
 
 **参数返回：**
 
-登录成功：`{"message": "success", "data": {"flag": 1}}`
+登录成功：`{"message": "success", "data": {"user_id": ""}}`
 
 密码错误：`{"message": "failed", "data": {"flag": -1}}`
 
@@ -186,7 +186,7 @@
 |   参数   |   说明    |
 | :----: | :-----: |
 | content |   新闻html正文    |
-| time  |   留言时间     |
+| comment_time  |   留言时间     |
 |  username  |  留言用户昵称  |
 |  head_url  |  留言用户头像url  |
 | comment_content  | 留言内容 |
@@ -194,7 +194,7 @@
 | is_love  | 用户是否喜欢该新闻（0/1） |
 
 查询返回成功：
-`{"message": "success", "data": {"content": "", "message": [{"time": "",` `"username": "", "head_url": "", "comment_content": ""}, {"time":` `"shijian2", "username": "", "head_url": "", "comment_content": ""}],` `"is_comment": 1, "is_love": 0}}`
+`{"message": "success", "data": {"content": "", "message": [{"time": "",` `"username": "", "head_url": "", "comment_content": "","dianzan_num": "9"}, {"time":` `"shijian2", "username": "", "head_url": "", "comment_content": ""}],` `"is_comment": 1, "is_love": 0}}`
 
 请求失败：`{"message": "failed", "data": {"flag": 0}}`
 
@@ -230,7 +230,7 @@
 
 #### 2-6.用户信息修改api
 
-链接：`/api/userinfochange?userid=x&username=x&image=x址`
+链接：`/api/userinfochange?userid=x&username=x&image=x`
 `&email=x&time=1&tooken=x`
 
 链接功能：返回用户详细信息
@@ -278,6 +278,9 @@
 |   参数   |   说明    |
 | :----: | :-----: |
 | news_id |   新闻编号    |
+| title |   新闻标题    |
+| abstract  |   新闻摘要     |
+| time  | 时间 |
 | image  |   新闻图片     |
 | tag  | 新闻标签 |
 | read_times  | 阅读次数 |
@@ -286,7 +289,7 @@
 
 
 查询返回成功：
-`{"message": "success", "data": [{"read_times": 5, "image": "", "news_id": "", "love_times": 7, "tag": "", "comment_times": 8}]}`
+`{"message": "success",data": [{"comment_times": 0, "image": "", "tag": "", "time": "", "title": "", "love_times": 3, "news_id": "", "abstract": "", "read_times": 7}]}`
 
 请求失败：`{"message": "failed", "data": {"flag": 0}}`
 
@@ -301,6 +304,8 @@
 |   参数   |   说明    |
 | :----: | :-----: |
 | hot  |   1为喜欢/2为阅读/3为评论    |
+|  count  |  请求数量  |
+|  alrequest  |  已请求数量  |
 |  time  |  验证时间戳  |
 | token  | 身份验证字符串 |
 
@@ -309,6 +314,9 @@
 |   参数   |   说明    |
 | :----: | :-----: |
 | news_id |   新闻编号    |
+| title |   新闻标题    |
+| abstract  |   新闻摘要     |
+| time  | 时间 |
 | image  |   新闻图片     |
 | tag  | 新闻标签 |
 | read_times  | 阅读次数 |
@@ -317,12 +325,12 @@
 
 
 查询返回成功：
-`{"message": "success", "data": [{"news_id":,"read_times": 5, "image": "",  "love_times": 7, "tag": "", "comment_times": 8}]}`
+`{"message": "success",data": [{"comment_times": 0, "image": "", "tag": "", "time": "", "title": "", "love_times": 3, "news_id": "", "abstract": "", "read_times": 7}]}`
 
 请求失败：`{"message": "failed", "data": {"flag": 0}}`
 
 
-#### 2-9.登录api
+#### 2-9.喜欢api
 
 链接：`/api/lovenews?newsid=x&userid=x&islove=x&time=x&tooken=x`
 
@@ -343,3 +351,105 @@
 
 请求失败：`{"message": "failed", "data": {"flag": 0}}`
 
+
+#### 2-10.反馈api
+
+链接：`/api/feedback?userid=x&feedback=x`
+`&email=x&time=1&tooken=x`
+
+链接功能：返回用户详细信息
+|   参数   |   说明    |
+| :----: | :-----: |
+| userid  |   用户编号    |
+| feedback |   反馈内容    |
+|  time  |  验证时间戳  |
+| token  | 身份验证字符串 |
+
+**参数返回：**
+
+喜欢成功：`{"message": "success", "data": {"flag": 1}}`
+
+请求失败：`{"message": "failed", "data": {"flag": 0}}`
+
+
+#### 2-11.关键词搜索api
+
+链接：`/api/newstags?keyword=x&time=x&tooken=x`
+
+链接功能：返回新闻列表信息
+|   参数   |   说明    |
+| :----: | :-----: |
+| keyword |   关键词    |
+|  time  |  验证时间戳  |
+| token  | 身份验证字符串 |
+
+**参数返回：**
+返回参数说明：
+|   参数   |   说明    |
+| :----: | :-----: |
+| time |   时间    |
+| abstract  |   摘要    |
+|  title  |  标题  |
+| comment_times  | 评论次数 |
+|  read_times  |  阅读次数  |
+| love_times  | 喜欢次数 |
+| news_id  | 新闻编号 |
+| image  | 图片url |
+| source  | 来源 |
+查询返回成功：
+`{"message": "success", "data": [{"time": "", "abstract": "", "title": "",` `"comment_times": 1, "read_times": 1, "love_times": 1, "news_id": "",` `"image": "", "source": ""}, {"time": "", "abstract": "", "title": "",` `"comment_times": 2, "read_times": 2, "love_times": 2, "news_id": "",` `"image": "", "source": ""}]}`
+
+请求失败：
+`{"message": "failed", "data": {"flag": 0}}`
+
+
+#### 2-12.评论api
+
+链接：`/api/comment?userid=x&newsid=x&content=x&time=x&tooken=x`
+
+链接功能：返回新闻列表信息
+|   参数   |   说明    |
+| :----: | :-----: |
+| userid |   用户编号    |
+|  newsid  |  新闻编号  |
+| content  | 评论内容 |
+|  time  |  验证时间戳  |
+| token  | 身份验证字符串 |
+
+**参数返回：**
+返回参数说明：
+|   参数   |   说明    |
+| :----: | :-----: |
+| user_image |   评论用户头像    |
+| user_id  |   评论用户编号    |
+|  user_name  |  评论用户昵称  |
+| comment_time  | 评论时间 |
+|  content  |  评论内容  |
+| news_id  | 新闻编号 |
+查询返回成功：
+`{"message": "success", "data": {"user_image": "", "user_id": "", "user_name": "", "comment_time": "", "content": "", "news_id": ""}}`
+
+请求失败：
+`{"message": "failed", "data": {"flag": 0}}`
+
+
+#### 2-13.点赞评论api
+
+链接：`/api/feedback?userid=x&feedback=x`
+`&email=x&time=1&tooken=x`
+
+链接功能：返回用户详细信息
+|   参数   |   说明    |
+| :----: | :-----: |
+| userid  |   用户编号    |
+| newsid |   新闻编号    |
+| comment  |   该评论内容    |
+| commenttime |   该评论时间    |
+|  time  |  验证时间戳  |
+| token  | 身份验证字符串 |
+
+**参数返回：**
+
+喜欢成功：`{"message": "success", "data": {"flag": 1}}`
+
+请求失败：`{"message": "failed", "data": {"flag": 0}}`

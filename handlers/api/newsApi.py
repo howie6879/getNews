@@ -60,8 +60,10 @@ class Register(Confirm):
                                                      values="('" + str(user_id) + "')")
                     loveTageSql = mSql.insert_table (table="user_love_tag", field="(user_id,tags)",
                                                       values="('" + str (user_id) + "','" + tags + "')")
+                    user_mess = mSql.select_table(table = "user", column = "user_id", condition = "phone", value = phone)
+                    #print(user_mess[0][0])
                     if insertSql and user_messSql and loveTageSql:
-                        data = {"flag": 1}
+                        data = {"user_id": user_mess[0][0]}
                         result = {"message": "success", "data": data}
                         result = json.dumps(result)
                         self.write(result)
@@ -88,10 +90,11 @@ class Login(Confirm):
                 mSql.cur.execute(numsqllogin)
                 # 提交到数据库执行
                 information = mSql.cur.fetchall()
+                user_mess = mSql.select_table(table="user", column="user_id", condition="phone", value=phone)
                 if information:
                     if information[0][3] == passwd:
                         # 登录成功
-                        data = {"flag": 1}
+                        data = {"user_id": user_mess[0][0]}
                         result = {"message": "success", "data": data}
                         result = json.dumps(result)
                         self.write(result)
@@ -252,60 +255,80 @@ class NewsContent(Confirm):
                 mSql.cur.execute(messageSql)
                 # 提交到数据库执行,得到评论内容
                 messageall = mSql.cur.fetchall()
+                #print(messageall[0][1])
                 if user_id:
                     mSql.cur.execute(userBehaviorSql)
                     # 提交到数据库执行,得到用户是否评论跟是否喜欢
                     userBehavior = mSql.cur.fetchall()
                     if userBehavior:
-                        is_comment = userBehavior[0][0]
+
+                        if userBehavior[0][0]:
+                            is_comment = 0
+                        else:
+                            is_comment = userBehavior[0][0]
                         if userBehavior[0][1] == 2:
                             is_love = 1
                         else:
                             is_love = 0
                 # {##}每条新闻详情
                 if messageall:
-                    for mess in messageall[0][1].split("{##}"):
-                        me = mess.split("{++}")
-                        time = str(me[2])
-                        comment_content = me[1]
-                        # 通过用户编号查询用户评论的昵称和头像
-                        username = "select user.name,user_mess.image from user,user_mess where  user.user_id = '" + me[
-                            0] + "' and " \
-                                 "user_mess.user_id = '" + me[0] + "'"
-                        mSql.cur.execute(username)
-                        # 提交到数据库执行,得到评论的用户的信息
-                        com_username = mSql.cur.fetchall()
-                        head_url = com_username[0][1]
-                        uname = com_username[0][0]
-                    message.append({"head_url": head_url, "username": uname, "time": time,
-                                    "comment_content":comment_content })
+                    if messageall[0][1]:
+                        allComment= messageall[0][1].split("{##}")
+                        for i in range(0,len(allComment)-1):
+                            me = allComment[i].split("{++}")
+                            times = str(me[2])
+                            comment_content = me[1]
+                            # 通过用户编号查询用户评论的昵称和头像
+                            username = "select user.name,user_mess.image from user,user_mess where  user.user_id = '" + me[
+                                0] + "' and " \
+                                     "user_mess.user_id = '" + me[0] + "'"
+                            mSql.cur.execute(username)
+                            # 提交到数据库执行,得到评论的用户的信息
+                            com_username = mSql.cur.fetchall()
+                            head_url = com_username[0][1]
+                            uname = com_username[0][0]
+                            message.append({"head_url": head_url, "username": uname, "comment_time": times,"comment_content":comment_content,"dianzan_num":me[3]})
+
                 data = {"content":news_content , "is_comment": is_comment, "is_love": is_love, "message": message}
                 #print(data)
+                print("data success!")
+                result = {"message": "success", "data": data}
+                result = json.dumps(result)
+                self.write(result)
                 #****阅读相关数据库更新
-                timescore = mSql.select_table(table = "user_behavior", column = "times,score", condition = "news_id", value = news_id + "' and user_id = '" + user_id)
-                tag = mSql.select_table (table="get_news", column="tag", condition="news_id", value=news_id)
-                if_timescore = False
-                if_read_times = False
-                if_tag_points = False
-                if timescore:
-                    #******************************新闻分数******************************
-                    #mSql.update_column(table = "user_behavior",column = "times",value_set = times, condition = "user_id",value_find = user_id + "' and news_id = '" +news_id)
-                    uptimesSql = "update user_behavior set times  = times + 1 where user_id = '" +user_id+ "' and news_id = '" +news_id+ "'"
-                    print(uptimesSql)
-                    mSql.cur.execute (uptimesSql)
-                    # 提交到数据库执行,得到评论内容
-                    mSql.cur.fetchall ()
-                    mSql.conn.commit ()
-                    upscoresSql = "update user_behavior set score  = score + 1 where user_id = '" + user_id + "' and news_id = '" + news_id + "'"
-                    mSql.cur.execute (upscoresSql)
-                    # 提交到数据库执行,得到评论内容
-                    mSql.cur.fetchall ()
-                    mSql.conn.commit ()
-                    if_timescore = True
-                else:
-                    # ******************************新闻分数******************************
-                    mSql.insert_table(table = "user_behavior", field = "(user_id,news_id,news_tag,score,times)", values = "('" +user_id+ "','" +news_id+ "','" +tag[0][0]+ "',1,1)")
-                    if_timescore = True
+                if user_id:
+                    timescore = mSql.select_table(table = "user_behavior", column = "times,score", condition = "news_id", value = news_id + "' and user_id = '" + user_id)
+                    #print("haha")
+                    #print(timescore)
+                    tag = mSql.select_table (table="get_news", column="tag", condition="news_id", value=news_id)
+
+                    if timescore:
+                        #******************************新闻分数******************************
+                        #mSql.update_column(table = "user_behavior",column = "times",value_set = times, condition = "user_id",value_find = user_id + "' and news_id = '" +news_id)
+                        uptimesSql = "update user_behavior set times  = times + 1 where user_id = '" +user_id+ "' and news_id = '" +news_id+ "'"
+                        print(uptimesSql)
+                        mSql.cur.execute (uptimesSql)
+                        # 提交到数据库执行
+                        mSql.cur.fetchall ()
+                        mSql.conn.commit ()
+                        upscoresSql = "update user_behavior set score  = score + 1 where user_id = '" + user_id + "' and news_id = '" + news_id + "'"
+                        mSql.cur.execute (upscoresSql)
+                        # 提交到数据库执行
+                        mSql.cur.fetchall ()
+                        mSql.conn.commit ()
+
+                    else:
+                        # ******************************新闻分数******************************
+                        mSql.insert_table(table = "user_behavior", field = "(user_id,news_id,news_tag,score,times)", values = "('" +user_id+ "','" +news_id+ "','" +tag[0][0]+ "',1,1)")
+
+
+                #设置老新闻
+                is_old = "update get_news set is_old = 1 where news_id = '" + news_id+ "'"
+                #print (is_old)
+                mSql.cur.execute (is_old)
+                # 提交到数据库执行
+                mSql.cur.fetchall ()
+                mSql.conn.commit ()
 
                 # 设置新闻基本信息表阅读次数
                 read_times = mSql.select_table(table = "news_mess", column = "read_times", condition = "news_id", value = news_id)
@@ -313,37 +336,42 @@ class NewsContent(Confirm):
                     readtimesSql = "update news_mess set read_times  = read_times + 1 where news_id = '" + news_id + "'"
                     print (readtimesSql)
                     mSql.cur.execute (readtimesSql)
-                    # 提交到数据库执行,得到评论内容
+                    # 提交到数据库执行
                     mSql.cur.fetchall ()
                     mSql.conn.commit ()
-                    if_read_times = True
+
                 else:
                     mSql.insert_table (table="news_mess", field="(news_id,tag,read_times)",
                                        values="('"  + news_id + "','" + tag [0] [0] + "',1)")
-                    if_read_times = True
+
 
                 #************************用户标签因子历史分数****************************
-                tag_points = mSql.select_table (table="user_tag_score", column=tag [0] [0], condition="user_id", value=user_id)
-                if tag_points:
-                    point = "update user_tag_score set "+tag[0][0]+ " = " +tag[0][0]+ " + 1 where user_id = '" + user_id + "'"
-                    print (point)
-                    mSql.cur.execute (point)
-                    # 提交到数据库执行,得到评论内容
-                    mSql.cur.fetchall ()
-                    mSql.conn.commit ()
-                    if_tag_points = True
-                else:
-                    mSql.insert_table (table="user_tag_score", field="(user_id," +tag [0] [0]+ ")",
-                                       values="('" + user_id + "',1)")
-                    if_tag_points = True
-                if if_timescore and if_read_times and if_tag_points:
-                    print("data success!")
-                    result = {"message": "success", "data": data}
-                    result = json.dumps(result)
-                    self.write(result)
-                else:
-                    # 出现错误则回滚
-                    mSql.conn.rollback ()
+                if user_id:
+                    if_exist = mSql.select_table (table="user_tag_score", column="user_id", condition="user_id", value=user_id)
+                    tag_points = mSql.select_table (table="user_tag_score", column=tag [0] [0], condition="user_id", value=user_id)
+                    if if_exist:
+                        if tag_points:
+                            if tag_points[0][0]:
+                                point = "update user_tag_score set "+tag[0][0]+ " = " +tag[0][0]+ " + 1 where user_id = '" + user_id + "'"
+                                print (point)
+                                mSql.cur.execute (point)
+                                # 提交到数据库执行
+                                mSql.cur.fetchall ()
+                                mSql.conn.commit ()
+                            else:
+                                point = "update user_tag_score set " + tag [0] [0] + " = 1 where user_id = '" + user_id + "'"
+                                print (point)
+                                mSql.cur.execute (point)
+                                # 提交到数据库执行
+                                mSql.cur.fetchall ()
+                                mSql.conn.commit ()
+                        else:
+                            self.errorRequest (num=1)
+                    else:
+                        mSql.insert_table (table="user_tag_score", field="(user_id," +tag [0] [0]+ ")",
+                                           values="('" + user_id + "',1)")
+
+
             except:
                 # 出现错误则回滚
                 mSql.conn.rollback()
@@ -450,7 +478,6 @@ class UserInfoChange(Confirm):
                 "read_times": read_times, "love_times": len (love), "message_times": message_times}
         return data
 
-
 class LoveNews(Confirm):
     # 喜欢功能
     def get(self, *args, **kwargs):
@@ -459,73 +486,80 @@ class LoveNews(Confirm):
         is_love = self.get_argument('islove')
         news_id = self.get_argument('newsid')
         getTooken = self.get_argument ('tooken')
-        time = self.get_argument ('time')
-        tooken = self.tooken (time=time)
+        retime = self.get_argument ('time')
+        tooken = self.tooken (time=retime)
         if getTooken == tooken and len (all) == 5:
+            localtime = time.strftime ("%Y-%m-%d %H:%M:%S", time.localtime ())
             try:
-                #用户喜欢
-                success = False
-                if is_love == '1':
-                    tag = mSql.select_table(table = "get_news", column = "tag", condition = "news_id", value = news_id)
-                    love_times = mSql.select_table(table = "news_mess", column = "love_times", condition = "news_id", value = news_id)
-                    love_times = love_times[0][0] +1
-                    tag_point = mSql.select_table(table = "user_tag_score", column = tag[0][0], condition = "user_id", value = user_id)
-                    #is_userBehavior = mSql.select_table(table = "user_behavior", column = "*", condition = "news_id ", value = news_id + "' and user_id = '" +user_id)
-
-                    #用户行为表的更新
-                    update_love = mSql.update_column (table ="user_behavior" , column = "behavior_type",value_set = '1',condition = "news_id ", value_find = news_id + "' and user_id = '" +user_id )
-                    #查询user _behavior表是否有该用户和新闻
-                    is_operate = mSql.select_table(table = "user_operate", column = "*", condition = "news_id ", value = news_id + "' and user_id = '" +user_id)
-                    #更新用户操作表
-                    if is_operate:
-                        operate_islove = mSql.update_column (table ="user_operate" , column = "is_love",value_set = '1',condition = "news_id ", value_find = news_id + "' and user_id = '" +user_id )
-                        operate_time = mSql.update_column (table="user_operate", column="time", value_set=time,condition="news_id ",value_find=news_id + "' and user_id = '" + user_id)
-                    else:
-                        insert_operate = mSql.insert_table(table = "user_operate", field = "(user_id,news_id,is_love,time)", values = "('" +user_id+ "','" +news_id+ "','1','" +time+ "')")
-
-                    #更新新闻基本信息表
-                    update_mess = mSql.update_column (table ="news_mess" , column = "love_times",value_set = str(love_times),condition = "news_id ", value_find = news_id )
-
-                    #********************更新用户标签因子分数（历史分数）******************************
-
-                    if tag_point:
-                        user_tag_points = mSql.update_column (table ="user_tag_score" , column = tag[0][0],value_set = tag[0][0] +" + 1",condition = "user_id ", value_find = user_id )
-                    else:
-                        point =1
-                        insert_tage_score = mSql.insert_table(table = "user_tag_score", field = "(user_id,"+tag[0][0]+")", values = "('" +user_id+ "','" +str(point)+ "')")
-                    success = True
-
-                #用户取消喜欢
-                elif is_love == '0':
-                    tag = mSql.select_table (table="get_news", column="tag", condition="news_id", value=news_id)
-                    love_times = mSql.select_table (table="news_mess", column="love_times", condition="news_id", value=news_id)
-                    love_times = love_times [0] [0] + 1
-                    tag_point = mSql.select_table (table="user_tag_score", column=tag [0] [0], condition="user_id",
-                                                   value=user_id)
-                    # 用户行为表的更新
-                    update_love = mSql.update_column (table="user_behavior", column="behavior_type", value_set='0',
-                                              condition="news_id ", value_find=news_id + "' and user_id = '" + user_id)
-                    # 更新用户操作表
-                    operate_islove = mSql.update_column (table="user_operate", column="is_love", value_set='0',
-                                                 condition="news_id ",value_find=news_id + "' and user_id = '" + user_id)
-                    operate_time = mSql.update_column (table="user_operate", column="time", value_set="",
-                                               condition="news_id ", value_find=news_id + "' and user_id = '" + user_id)
-
-                    # 更新新闻基本信息表
-                    update_mess = mSql.update_column (table="news_mess", column="love_times", value_set="love_tomes - 1 ",
-                                                condition="news_id ", value_find=news_id)
-
-                    # ********************更新用户标签因子分数（历史分数）******************************
-                    user_tag_points = user_tag_points = mSql.update_column (table ="user_tag_score" , column = tag[0][0],value_set = tag[0][0] +" - 1",condition = "user_id ", value_find = user_id )
-                    success = True
+                behavior_type = mSql.select_table(table = "user_behavior", column = "behavior_type", condition = "news_id", value = news_id + "' and user_id = '" +user_id)
+                if behavior_type[0][0] == 1:
+                    self.errorRequest (num=-1)
                 else:
-                    self.errorRequest (num=0)
+                    #用户喜欢
                     success = False
-                if success:
-                    data = {"flag": 2}
-                    result = {"message": "success", "data": data}
-                    result = json.dumps (result)
-                    self.write (result)
+                    if is_love == '1':
+                        tag = mSql.select_table(table = "get_news", column = "tag", condition = "news_id", value = news_id)
+                        love_times = mSql.select_table(table = "news_mess", column = "love_times", condition = "news_id", value = news_id)
+                        love_times = love_times[0][0] +1
+                        tag_point = mSql.select_table(table = "user_tag_score", column = tag[0][0], condition = "user_id", value = user_id)
+                        #is_userBehavior = mSql.select_table(table = "user_behavior", column = "*", condition = "news_id ", value = news_id + "' and user_id = '" +user_id)
+
+                        #用户行为表的更新
+                        update_love = mSql.update_column (table ="user_behavior" , column = "behavior_type",value_set = '1',condition = "news_id ", value_find = news_id + "' and user_id = '" +user_id )
+                        #查询user _behavior表是否有该用户和新闻
+                        is_operate = mSql.select_table(table = "user_operate", column = "*", condition = "news_id ", value = news_id + "' and user_id = '" +user_id)
+                        #更新用户操作表
+                        if is_operate:
+                            operate_islove = mSql.update_column (table ="user_operate" , column = "is_love",value_set = '1',condition = "news_id ", value_find = news_id + "' and user_id = '" +user_id )
+                            operate_time = mSql.update_column (table="user_operate", column="time", value_set=localtime,condition="news_id ",value_find=news_id + "' and user_id = '" + user_id)
+                        else:
+                            insert_operate = mSql.insert_table(table = "user_operate", field = "(user_id,news_id,is_love,time)", values = "('" +user_id+ "','" +news_id+ "','1','" +localtime+ "')")
+
+                        #更新新闻基本信息表
+                        update_mess = mSql.update_column (table ="news_mess" , column = "love_times",value_set = str(love_times),condition = "news_id ", value_find = news_id )
+
+                        #********************更新用户标签因子分数（历史分数）******************************
+
+                        point = "update user_tag_score set " + tag [0] [0] + " = " + tag [0] [0] + " + 1 where user_id = '" + user_id + "'"
+                        print (point)
+                        mSql.cur.execute (point)
+                        # 提交到数据库执行
+                        mSql.cur.fetchall ()
+                        mSql.conn.commit ()
+
+                        success = 1
+
+                    #用户取消喜欢
+                    elif is_love == '0':
+                        tag = mSql.select_table (table="get_news", column="tag", condition="news_id", value=news_id)
+                        love_times = mSql.select_table (table="news_mess", column="love_times", condition="news_id", value=news_id)
+                        love_times = love_times [0] [0] + 1
+                        tag_point = mSql.select_table (table="user_tag_score", column=tag [0] [0], condition="user_id",
+                                                       value=user_id)
+                        # 用户行为表的更新
+                        update_love = mSql.update_column (table="user_behavior", column="behavior_type", value_set='0',
+                                                  condition="news_id ", value_find=news_id + "' and user_id = '" + user_id)
+                        # 更新用户操作表
+                        operate_islove = mSql.update_column (table="user_operate", column="is_love", value_set='0',
+                                                     condition="news_id ",value_find=news_id + "' and user_id = '" + user_id)
+                        operate_time = mSql.update_column (table="user_operate", column="time", value_set="",
+                                                   condition="news_id ", value_find=news_id + "' and user_id = '" + user_id)
+
+                        # 更新新闻基本信息表
+                        update_mess = mSql.update_column (table="news_mess", column="love_times", value_set="love_tomes - 1 ",
+                                                    condition="news_id ", value_find=news_id)
+
+                        # ********************更新用户标签因子分数（历史分数）******************************
+                        user_tag_points = user_tag_points = mSql.update_column (table ="user_tag_score" , column = tag[0][0],value_set = tag[0][0] +" - 1",condition = "user_id ", value_find = user_id )
+                        success = 2
+                    else:
+                        self.errorRequest (num=0)
+                        success = 0
+                    if success:
+                        data = {"flag": success}
+                        result = {"message": "success", "data": data}
+                        result = json.dumps (result)
+                        self.write (result)
             except:
                 # 出现错误则回滚
                 mSql.conn.rollback ()
@@ -539,18 +573,28 @@ class LoveList(Confirm):
         all = self.request.arguments
         user_id = self.get_argument ('userid')
         getTooken = self.get_argument ('tooken')
-        time = self.get_argument ('time')
-        tooken = self.tooken (time=time)
+        retime = self.get_argument ('time')
+        tooken = self.tooken (time=retime)
         if getTooken == tooken and len (all) == 3:
+            #print("ha")
+
+            localtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            startTime = (str(localtime).split(' '))[0]
+            each = startTime.split('-')
+            timeTwo = int(each[2]) + 1
+            times = each[0] + "-" + each[1] + "-" + "0" + str(timeTwo)
             try:
                 love_listSql = "select news_id,time from user_operate where is_love = 1 " \
-                               "and now()-time < 7*24*3600 and user_id = '" +user_id+ "'"
+                               "and TIMESTAMPDIFF(DAY,time,'" +times+ "') < 7 and user_id = '" +user_id+ "'"
                 #print(love_listSql)
                 mSql.cur.execute (love_listSql)
                 # 提交到数据库执行
                 love_list = mSql.cur.fetchall ()
                 data = []
                 for item in love_list:
+                    getNews = mSql.select_table(table = "get_news", column = "title,abstract,time", condition = "news_id", value = item[0])
+                    each_get_news = getNews[0]
+                    #news_
                     news_mess = mSql.select_table(table = "news_mess", column = "*", condition = "news_id", value = item[0])
                     image = mSql.select_table(table = "get_news", column = "image", condition = "news_id", value = item[0])
                     if image[0][0].count("http://") >1:
@@ -559,7 +603,9 @@ class LoveList(Confirm):
                     else:
                         image = image[0][0]
                     if news_mess:
-                        data.append({"news_id":news_mess[0][0],"tag":news_mess[0][1],"image":image,"read_times":news_mess[0][2],"love_times":news_mess[0][3],"comment_times":news_mess[0][4]})
+                        data.append({"news_id":news_mess[0][0],"tag":news_mess[0][1],"image":image,"read_times":news_mess[0][2],"love_times":news_mess[0][3],
+                                     "comment_times":news_mess[0][4],"title":each_get_news[0],"abstract":each_get_news[1],"time":str(each_get_news[2])})
+                #print(data)
                 result = {"message": "success", "data": data}
                 result = json.dumps (result)
                 self.write (result)
@@ -612,8 +658,8 @@ class HotList(Confirm):
         try:
             #allLove = mSql.select_table(table = "hot", column = "news_id,tag,love_times,read_times,comment_times", condition = "1", value = "1 order by love_times desc")
             listSql = "select news_id,tag,image,love_times,read_times,comment_times,abstract," \
-                      "source,title from news_hot where TIMESTAMPDIFF(DAY,time,'" +time+ "') < 1 order by love_times desc"
-            #print(listSql)
+                      "source,title from news_hot where TIMESTAMPDIFF(DAY,time,'" +time+ "') < 10 order by love_times desc"
+            print(listSql)
             mSql.cur.execute (listSql)
             # 提交到数据库执行
             allLove = mSql.cur.fetchall ()
@@ -634,11 +680,11 @@ class HotList(Confirm):
             self.errorRequest (num=0)
     def read(self,time,count,alrequest):
         data = []
-        print("read")
+        #print("read")
         try:
             # allLove = mSql.select_table(table = "hot", column = "news_id,tag,love_times,read_times,comment_times", condition = "1", value = "1 order by love_times desc")
             listSql = "select news_id,tag,image,love_times,read_times,comment_times,abstract," \
-                      "source,title from news_hot where TIMESTAMPDIFF(DAY,time,'" + time + "') < 1 order by read_times desc"
+                      "source,title from news_hot where TIMESTAMPDIFF(DAY,time,'" + time + "') < 10 order by read_times desc"
             # print(listSql)
             mSql.cur.execute (listSql)
             # 提交到数据库执行
@@ -651,7 +697,8 @@ class HotList(Confirm):
                     # print(image)
                 else:
                     image = love [2]
-                data.append ({"news_id": love [0], "tag": love [1],"image":image,"love_times":love[3],"read_times":love[4],"comment_times":love[5],"abstract":love[6],"source":love[7],"title":love[8]})
+                data.append ({"news_id": love [0], "tag": love [1],"image":image,"love_times":love[3],"read_times":love[4],
+                              "comment_times":love[5],"abstract":love[6],"source":love[7],"title":love[8]})
 
             result = {"message": "success", "data": data}
             result = json.dumps (result)
@@ -664,7 +711,7 @@ class HotList(Confirm):
         try:
             # allLove = mSql.select_table(table = "hot", column = "news_id,tag,love_times,read_times,comment_times", condition = "1", value = "1 order by love_times desc")
             listSql = "select news_id,tag,image,love_times,read_times,comment_times,abstract," \
-                      "source,title from news_hot where TIMESTAMPDIFF(DAY,time,'" + time + "') < 1 order by comment_times desc"
+                      "source,title from news_hot where TIMESTAMPDIFF(DAY,time,'" + time + "') < 10 order by comment_times desc"
             # print(listSql)
             mSql.cur.execute (listSql)
             # 提交到数据库执行
@@ -684,3 +731,197 @@ class HotList(Confirm):
             self.write (result)
         except:
             self.errorRequest (num=0)
+
+class FeedBack(Confirm):
+    # 反馈
+    def get(self, *args, **kwargs):
+        all = self.request.arguments
+        user_id = self.get_argument ('userid')
+        feedBack = self.get_argument ('feedback')
+        getTooken = self.get_argument ('tooken')
+        retime = self.get_argument ('time')
+        tooken = self.tooken (time=retime)
+        if getTooken == tooken and len (all) == 4:
+            times = time.time()
+            print(str(times))
+            localtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            try:
+
+                mSql.insert_table(table = "news_feedback ", field = "(user_id,feedback,getTime)", values = "('" + user_id + "','" +feedBack+ "','"+ localtime +"')")
+                data = {"flag": 1}
+                result = {"message": "success", "data": data}
+                result = json.dumps (result)
+                self.write (result)
+            except:
+                # 出现错误则回滚
+                mSql.conn.rollback ()
+        else:
+            self.errorRequest (num=0)
+
+class KeyWord(Confirm):
+    # 关键词搜索
+    def get(self, *args, **kwargs):
+        all = self.request.arguments
+        keyWord = self.get_argument ('keyword')
+        getTooken = self.get_argument ('tooken')
+        retime = self.get_argument ('time')
+        tooken = self.tooken (time=retime)
+        data = []
+        read_times = 0
+        love_times = 0
+        comment_times = 0
+        if getTooken == tooken and len (all) == 3:
+            try:
+                keySql = "select news_id from get_news where title like '%" +keyWord+ "%'"
+                #print(keySql)
+                mSql.cur.execute (keySql)
+                # 提交到数据库执行
+                news_id_list = mSql.cur.fetchall ()
+                for news_id in news_id_list:
+                    news_content = mSql.select_table (table="get_news",
+                                                      column="news_id,title,time,source,image,abstract",
+                                                      condition="news_id ", value=news_id[0])
+                    opData = mSql.select_table (table="news_mess", column="read_times,love_times,comment_times",
+                                                condition="news_id ", value=news_id[0])
+                    if opData:
+                        read_times = opData [0] [0]
+                        love_times = opData [0] [1]
+                        comment_times = opData [0] [2]
+                    if news_content [0] [4].count ("http://") > 1:
+                        image = (news_content [0] [4].split (",")) [0]
+                        # print(image)
+                    else:
+                        image = news_content [0] [4]
+
+                    data.append({"news_id": news_content [0][0], "title": news_content [0][1], "time": str(news_content[0][2]),
+                                 "source": news_content [0] [3],"image": image, "abstract": news_content [0] [5], "read_times": read_times,
+                                 "love_times": love_times, "comment_times": comment_times})
+                result = {"message": "success", "data": data}
+                result = json.dumps (result)
+                # print(data[0])
+                self.write (result)
+            except:
+                # 出现错误则回滚
+                mSql.conn.rollback ()
+        else:
+            self.errorRequest (num=0)
+
+class Comment(Confirm):
+    # 评论
+    def get(self, *args, **kwargs):
+        all = self.request.arguments
+        user_id = self.get_argument ('userid')
+        news_id = self.get_argument ('newsid')
+        content = self.get_argument("content")
+        getTooken = self.get_argument ('tooken')
+        retime = self.get_argument ('time')
+        tooken = self.tooken (time=retime)
+        localtime = time.strftime ("%Y-%m-%d %H:%M:%S", time.localtime ())
+        comment = user_id + "{++}" + content + "{++}" + localtime + "{++}" + '1' + "{##}"
+        news_comment = news_id + "{++}" + content + "{++}" + localtime  + "{##}"
+        if getTooken == tooken and len (all) == 5:
+            try:
+                tags = mSql.select_table(table = "get_news", column = "tag", condition = "news_id", value = news_id)
+                tag = tags[0][0]
+                is_comment = mSql.select_table(table = "news_comment", column = "comment", condition = "news_id", value = news_id)
+                #print(is_comment)
+                #如果该新闻已有评论
+                if is_comment:
+                    commentNew = is_comment[0][0] + comment
+                    mSql.update_column(table = "news_comment",column = "comment",value_set = commentNew, condition = "news_id",value_find = news_id)
+                #如果还没有评论
+                else:
+                    comment = user_id + "{++}" + content + "{++}" + localtime + "{++}" +'1' + "{##}"
+                    mSql.insert_table(table = "news_comment", field = "(news_id,comment)", values = "('" + news_id + "','" + comment + "')")
+
+                #****************************设置用户对应分数*******************************************
+                upBehaviorSql = "update user_behavior set is_comment = 1,score = score + 2 " \
+                                "where user_id = '" +user_id+ "' and news_id = '" +news_id+ "'"
+                mSql.cur.execute (upBehaviorSql)
+                mSql.conn.commit ()
+                print ("评论成功，用户对此条新闻 分数 加1")
+
+                #设置新闻基本信息表
+                upNews_mess = "update news_mess set comment_times = comment_times + 1 where news_id = '"  + news_id + "'"
+                mSql.cur.execute (upNews_mess)
+                mSql.conn.commit ()
+                print ("评论成功，用户对此条新闻 评论次数 加1")
+
+                #设置用户操作表
+                is_comment = mSql.select_table(table = "user_operate", column = "comment", condition = "user_id", value = user_id +"' and news_id = '" +news_id)
+                if is_comment:
+                    mSql.update_column(table = "user_operate",column = "comment",value_set = is_comment[0][0] + news_comment, condition = "user_id",value_find = user_id + "' and news_id = '" + news_id)
+                else:
+                    mSql.insert_table(table = "user_operate", field = "(user_id,news_id,comment,is_love,time)",
+                                      values = "('" +user_id+ "','" +news_id+ "','" +news_comment+ "',0,'" +localtime +"')")
+                print("评论成功，用户操作表更新")
+
+                #*******************用户标签因子分数表对应该标签历史分数***************************
+                point = "update user_tag_score set " + tag + " = " + tag  + " + 2 where user_id = '" + user_id + "'"
+                #print (point)
+                mSql.cur.execute (point)
+                # 提交到数据库执行,得到评论内容
+                mSql.cur.fetchall ()
+                mSql.conn.commit ()
+                print("评论成功，用户对标签因子 分数 加2")
+
+
+                #查询评论的用户的个人信息返回
+                image = mSql.select_table(table = "user_mess", column = "image", condition = "user_id", value = user_id)
+                name = mSql.select_table (table="user", column="name", condition="user_id", value=user_id)
+                data = {"user_id": user_id,"user_name":name[0][0],"user_image":image[0][0],"news_id":news_id,
+                        "content":content,"comment_time":localtime}
+                result = {"message": "success", "data": data}
+                result = json.dumps (result)
+                self.write (result)
+            except:
+                # 出现错误则回滚
+                mSql.conn.rollback ()
+        else:
+            self.errorRequest (num=0)
+
+class LoveComment(Confirm):
+    # 反馈
+    def get(self, *args, **kwargs):
+        all = self.request.arguments
+        user_id = self.get_argument ('userid')
+        news_id = self.get_argument ('newsid')
+        comment = self.get_argument("comment")
+        comment_time = self.get_argument("commenttime")
+        getTooken = self.get_argument ('tooken')
+        retime = self.get_argument ('time')
+        tooken = self.tooken (time=retime)
+        #print(tooken)
+        news_comment = ''
+        new_love = ''
+        if getTooken == tooken and len (all) == 6:
+            try:
+                commentAllList = mSql.select_table(table = "news_comment", column = "*", condition = "news_id", value = news_id)
+                commentAll = commentAllList[0][1].split("{##}")
+                #print(commentAllList[0][1])
+                for i in range(0,len(commentAll)-1):
+                    each = commentAll[i].split("{++}")
+                    if comment_time == each [2] and comment == each [1] and user_id == each[0]:
+                        #print (each [3])
+                        new_love = str(int (each [3])+ 1)
+                        break
+                for n in range (0, len (commentAll) - 1):
+                    each = commentAll [n].split ("{++}")
+                    if comment_time == each [2] and comment == each [1] and user_id == each[0]:
+                        news_comment = news_comment + each[0] + "{++}" + each[1] + "{++}" + each[2] + "{++}" + new_love + "{##}"
+                        #continue
+                    else:
+                        news_comment = news_comment + commentAll[n] + "{##}"
+                        #continue
+                mSql.update_column(table = "news_comment",column = "comment",value_set = news_comment, condition = "news_id",value_find = news_id)
+                data = {"flag": 1}
+                result = {"message": "success", "data": data}
+                result = json.dumps (result)
+                self.write (result)
+            except:
+                # 出现错误则回滚
+                mSql.conn.rollback ()
+        else:
+            self.errorRequest (num=0)
+
+

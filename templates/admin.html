@@ -34,6 +34,7 @@
 <div class="d3-content">
     <div class="svg1"></div>
     <div class="svg2"></div>
+    <div class="svg3"></div>
 </div>
 <script>
     $(document).ready(function () {
@@ -261,7 +262,7 @@
         var height = left_show_height - height1 - 60;
 
 
-        var svg = d3.select("body")
+        var svg = d3.select(".svg3")
                 .append("svg")
                 .attr("width", width)
                 .attr("height", height);
