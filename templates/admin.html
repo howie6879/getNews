@@ -219,7 +219,7 @@
                     return percent.toFixed(1) + "%";
                 });
         //添加一个提示框
-        var tooltip = d3.select("body")
+        var tooltip = d3.select(".svg2")
                 .append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0.0);
@@ -232,15 +232,15 @@
                      （3）设定提示框的透明度为1.0（完全不透明）
                      */
 
-                    tooltip.html(d.data[0] + "新闻:" + "<br />" + d.data[1] + " 条")
-                            .style("left", (d3.event.pageX) + "px")
+                    tooltip.html(d.data[0] + "新闻: "+ d.data[1] + " 条")
+                            .style("left", (d3.event.pageX-100) + "px")
                             .style("top", (d3.event.pageY + 20) + "px")
                             .style("opacity", 1.0);
                 })
                 .on("mousemove", function (d) {
                     /* 鼠标移动时，更改样式 left 和 top 来改变提示框的位置 */
 
-                    tooltip.style("left", (d3.event.pageX) + "px")
+                    tooltip.style("left", (d3.event.pageX-100) + "px")
                             .style("top", (d3.event.pageY + 20) + "px");
                 })
                 .on("mouseout", function (d) {
