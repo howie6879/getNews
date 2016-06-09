@@ -3,7 +3,8 @@ __author__ = 'howie,jeezy'
 import tornado.web
 import hashlib
 import json
-import time
+import  datetime,time
+#import calender
 from config.n_conf import admin
 import methods.db as mSql
 
@@ -322,6 +323,8 @@ class NewsContent(Confirm):
                         mSql.insert_table(table = "user_behavior", field = "(user_id,news_id,news_tag,score,times)", values = "('" +user_id+ "','" +news_id+ "','" +tag[0][0]+ "',1,1)")
 
 
+
+
                 #设置老新闻
                 is_old = "update get_news set is_old = 1 where news_id = '" + news_id+ "'"
                 #print (is_old)
@@ -594,17 +597,36 @@ class LoveList(Confirm):
                 for item in love_list:
                     getNews = mSql.select_table(table = "get_news", column = "title,abstract,time", condition = "news_id", value = item[0])
                     each_get_news = getNews[0]
-                    #news_
+
+                    oldTimeList = str (each_get_news [2]).split(' ')
+                    oldTimeDate = oldTimeList[0].split('-')
+                    d1 = datetime.datetime (int(oldTimeDate[0]), int(oldTimeDate[1]), int(oldTimeDate[2]))
+                    d2 = datetime.datetime (int(each[0]), int(each[1]), int(each[2]))
+                    cdate = (d2-d1).days
+                    if cdate == 0:
+                        chineseTime = "今天"
+                    elif cdate == 1 :
+                        chineseTime = "昨天"
+                    elif cdate == 2 :
+                        chineseTime = "前天"
+                    else:
+                        chineseTime = oldTimeDate[1] + "月"+ oldTimeDate[2] + "号"
+
                     news_mess = mSql.select_table(table = "news_mess", column = "*", condition = "news_id", value = item[0])
                     image = mSql.select_table(table = "get_news", column = "image", condition = "news_id", value = item[0])
-                    if image[0][0].count("http://") >1:
-                        image = (image[0][0].split(","))[0]
-                        #print(image)
+                    tag = mSql.select_table(table = "news_tag_chinese", column = news_mess[0][1], condition = "'1'", value = "1")
+                    if image[0][0]:
+                        if image[0][0].count("http://") >1:
+                            image = (image[0][0].split(","))[0]
+                            #print(image)
+                        else:
+                            image = image[0][0]
                     else:
-                        image = image[0][0]
+                        image = ''
+                    #print("haha")
                     if news_mess:
-                        data.append({"news_id":news_mess[0][0],"tag":news_mess[0][1],"image":image,"read_times":news_mess[0][2],"love_times":news_mess[0][3],
-                                     "comment_times":news_mess[0][4],"title":each_get_news[0],"abstract":each_get_news[1],"time":str(each_get_news[2])})
+                        data.append({"news_id":news_mess[0][0],"tag":tag[0][0],"image":image,"read_times":news_mess[0][2],"love_times":news_mess[0][3],
+                                     "comment_times":news_mess[0][4],"title":each_get_news[0],"abstract":each_get_news[1],"time":chineseTime})
                 #print(data)
                 result = {"message": "success", "data": data}
                 result = json.dumps (result)
@@ -615,6 +637,8 @@ class LoveList(Confirm):
 
         else:
             self.errorRequest (num=0)
+
+
 
 class HotList(Confirm):
     # 查询返回热点新闻
@@ -627,7 +651,11 @@ class HotList(Confirm):
         time = self.get_argument ('time')
         tooken = self.tooken (time=time)
         if getTooken == tooken and len (all) == 5:
-            self.loveList(hot_type,count,alrequest)
+            sqlcount = mSql.select_table(table = "news_hot", column = "news_id", condition = "'1'", value = "1")
+            if int (alrequest) + int (count) > len(sqlcount):
+                self.errorRequest (num=-1)
+            else:
+                self.loveList(hot_type,count,alrequest)
 
         else:
             self.errorRequest (num=0)
@@ -659,20 +687,25 @@ class HotList(Confirm):
             #allLove = mSql.select_table(table = "hot", column = "news_id,tag,love_times,read_times,comment_times", condition = "1", value = "1 order by love_times desc")
             listSql = "select news_id,tag,image,love_times,read_times,comment_times,abstract," \
                       "source,title from news_hot where TIMESTAMPDIFF(DAY,time,'" +time+ "') < 10 order by love_times desc"
-            print(listSql)
+            #print(listSql)
             mSql.cur.execute (listSql)
             # 提交到数据库执行
             allLove = mSql.cur.fetchall ()
             for j in range (int (alrequest), int (alrequest) + int (count)):
                 # print(self.dataNews (id_list[j][0]))
                 love = allLove[j]
-                if love[2].count ("http://") > 1:
-                    image = (love[2].split (",")) [0]
-                    # print(image)
+                tag = mSql.select_table (table="news_tag_chinese", column=love [1], condition="'1'", value="1")
+                print(love[2])
+                if love[2]:
+                    if love[2].count ("http://") > 1:
+                        image = (love[2].split (",")) [0]
+                        # print(image)
+                    else:
+                        image = love[2]
                 else:
-                    image = love[2]
-                data.append({"news_id":love[0],"tag":love[1],"image":image,"love_times":love[3],"read_times":love[4],"comment_times":love[5],"abstract":love[6],"source":love[7],"title":love[8]})
-
+                    image = ''
+                data.append({"news_id":love[0],"tag":tag[0][0],"image":image,"love_times":love[3],"read_times":love[4],"comment_times":love[5],"abstract":love[6],"source":love[7],"title":love[8]})
+                #print(data)
             result = {"message": "success", "data": data}
             result = json.dumps (result)
             self.write (result)
@@ -692,12 +725,16 @@ class HotList(Confirm):
             for j in range (int (alrequest), int (alrequest) + int (count)):
                 # print(self.dataNews (id_list[j][0]))
                 love = allLove [j]
-                if love [2].count ("http://") > 1:
-                    image = (love [2].split (",")) [0]
-                    # print(image)
+                tag = mSql.select_table(table = "news_tag_chinese", column = love [1], condition = "'1'", value = "1")
+                if love [2]:
+                    if love [2].count ("http://") > 1:
+                        image = (love [2].split (",")) [0]
+                        # print(image)
+                    else:
+                        image = love [2]
                 else:
-                    image = love [2]
-                data.append ({"news_id": love [0], "tag": love [1],"image":image,"love_times":love[3],"read_times":love[4],
+                    image = ''
+                data.append ({"news_id": love [0], "tag": tag [0][0],"image":image,"love_times":love[3],"read_times":love[4],
                               "comment_times":love[5],"abstract":love[6],"source":love[7],"title":love[8]})
 
             result = {"message": "success", "data": data}
@@ -719,12 +756,16 @@ class HotList(Confirm):
             for j in range (int (alrequest), int (alrequest) + int (count)):
                 # print(self.dataNews (id_list[j][0]))
                 love = allLove [j]
-                if love [2].count ("http://") > 1:
-                    image = (love [2].split (",")) [0]
-                    # print(image)
+                tag = mSql.select_table (table="news_tag_chinese", column=love [1], condition="'1'", value="1")
+                if love [2]:
+                    if love [2].count ("http://") > 1:
+                        image = (love [2].split (",")) [0]
+                        # print(image)
+                    else:
+                        image = love [2]
                 else:
-                    image = love [2]
-                data.append ({"news_id": love [0], "tag": love [1],"image":image,"love_times":love[3],"read_times":love[4],"comment_times":love[5],"abstract":love[6],"source":love[7],"title":love[8]})
+                    image = ''
+                data.append ({"news_id": love [0], "tag": tag[0][0],"image":image,"love_times":love[3],"read_times":love[4],"comment_times":love[5],"abstract":love[6],"source":love[7],"title":love[8]})
 
             result = {"message": "success", "data": data}
             result = json.dumps (result)
@@ -850,7 +891,14 @@ class Comment(Confirm):
                 #设置用户操作表
                 is_comment = mSql.select_table(table = "user_operate", column = "comment", condition = "user_id", value = user_id +"' and news_id = '" +news_id)
                 if is_comment:
-                    mSql.update_column(table = "user_operate",column = "comment",value_set = is_comment[0][0] + news_comment, condition = "user_id",value_find = user_id + "' and news_id = '" + news_id)
+                    if is_comment[0][0]:
+                        mSql.update_column (table="user_operate", column="comment",
+                                            value_set= is_comment[0][0] + news_comment, condition="user_id",
+                                            value_find=user_id + "' and news_id = '" + news_id)
+                    else:
+                        print("ha")
+                        mSql.update_column(table = "user_operate",column = "comment",value_set = news_comment,
+                                           condition = "user_id",value_find = user_id + "' and news_id = '" + news_id)
                 else:
                     mSql.insert_table(table = "user_operate", field = "(user_id,news_id,comment,is_love,time)",
                                       values = "('" +user_id+ "','" +news_id+ "','" +news_comment+ "',0,'" +localtime +"')")
@@ -881,7 +929,7 @@ class Comment(Confirm):
             self.errorRequest (num=0)
 
 class LoveComment(Confirm):
-    # 反馈
+    # 赞评论
     def get(self, *args, **kwargs):
         all = self.request.arguments
         user_id = self.get_argument ('userid')
