@@ -3,7 +3,7 @@ body {
     font-family: 'Droid Sans', sans-serif;
     background-image: url("../images/bg.jpg");
     background-color: #e7e7e7;
-    overflow-x: hidden; 
+    overflow-x: hidden;
 }
 
 .top-nav > li > a {
@@ -158,8 +158,8 @@ section {
 
 .svg2 {
     float: right;
-    padding-top: 30px;
-    padding-right: 10px;
+    padding-top: 5%;
+    padding-right: 2%;
 }
 
 .svg3 {
