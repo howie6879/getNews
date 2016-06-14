@@ -9,6 +9,7 @@ cur = conn.cursor()
 
 def select_table(table, column, condition, value):
     sql = "select " + column + " from " + table + " where " + condition + "= '" + value + "'"
+    print(sql)
     cur.execute(sql)
     lines = cur.fetchall()
     return lines
@@ -16,6 +17,7 @@ def select_table(table, column, condition, value):
 
 def insert_table(table, field, values):
     sql = "insert into " + table + field + " values" + values
+    print(sql)
     try:
         cur.execute(sql)
         conn.commit()
@@ -25,6 +27,7 @@ def insert_table(table, field, values):
 
 def update_column(table,column,value_set, condition,value_find):
     sql = "update " + table + " set " + column + "= '" + value_set + "' where " + condition + "='" + value_find  + "'"
+    print(sql)
     try:
         cur.execute (sql)
         conn.commit ()

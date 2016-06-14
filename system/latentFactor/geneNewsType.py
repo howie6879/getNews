@@ -1,78 +1,53 @@
 # -*-coding:utf-8-*-
-__author__ = 'Jeezy'
 
-'''新闻-标签（类型）潜在因子矩阵计算，与用户-标签（类型）潜在因子矩阵相乘得到推荐新闻'''
-'''数据表来源：新闻数据表，存入：新闻标签因子表,然后分析各个新闻各个标签对应的偏值（权重）。分析的方法是计算主要特征词（由计算得到）在各新闻中所占比值'''
+import methods.db as db
 
-#import geneUserNews as gut
-class getNewsType:
+
+class NewsTagDataTool(object):
     def __init__(self):
         #存新闻编号
-        self.newsNum = []
-        #总分数
-        self.sumPoints = 0
-        #存新闻编号对应的类型所占比重
-        self.typeCount = []
-        self.judge = False
+        self.new_id_list = []
+        self.newsTagMat = []
+
+        #存取新闻id对应的类别
+        self.news_type_dict = {}
+
+    def getData(self):
+        try:
+            conn = db.conn
+            # 获取游标
+            cur = conn.cursor()
+            cur.execute('select * from news_tag_deep')
+            data = cur.fetchall()
+            for item in data:
+                #获得新闻id
+                self.new_id_list.append(item[0])
+                #当前新闻标签比例因子集合，标签名称顺序按数据表设计来
+                tagsWeight = []
+                for tag in item[1:len(item)]:
+                    tagsWeight.append(tag)
+                self.newsTagMat.append(tagsWeight)
+
+            cur.execute("select news_id,tag from get_news where is_old=0")
+
+            data = cur.fetchall()
+            # print(data)
+            for item in data:
+                #获取新闻的id及对应的类别：
+                self.news_type_dict[item[0]] = item[1]
+
+            #print(self.news_type_dict)
+            # print(self.new_id_list)
+            # print(self.newsTagMat)
+            return self.news_type_dict,self.new_id_list,self.newsTagMat
+        except Exception as e:
+            print(e)
+
+# ntTool = NewsTagDataTool()
+# x,y,z=ntTool.getData()
+# print(x)
+# print(y)
 
 
 
 
-    def getData(self,content):
-        #用户编号（暂不用），新闻编号，用户-新闻潜在因子矩阵
-        #这里肯定要根据编号获取新闻 正文，如不能，就传链接参数
-        #userdata, ndata, geneData = gut.userGet()
-        # 测试数据（假设已获取正文）
-        if self.judge == False:
-            # 存新闻编号
-            self.newsNum = []
-            # 总分数
-            self.sumPoints = 0
-            # 存新闻编号对应的类型所占比重
-            self.typeCount = []
-            self.judge = True
-        news = ["你好，热北京包括价格额不分分工你好认同别人和人工好，你安徽你好恶和感染"]
-
-        #return news
-        self.proportionCul(news[0])
-        return(self.typeCount)
-        #print(self.typeCount)
-        #print(self.userNum)
-
-
-    def proportionCul(self,content):
-        #计算新闻编号对应的类型所占比重,并将新闻编号及比重放进其对应矩阵
-        #约定好顺序，与UserType对应,如：0为全部，1为热点......
-        #print(num,content)
-        #exit()
-        #科技
-        a =content.count("你好") +content.count("你好")+content.count("你好")+content.count("你好")+content.count("你好")
-        self.typeCount.insert(0,a)
-        # 科技
-        b = content.count ("工") + content.count ("和") + content.count ("工") + content.count ("工") + content.count ("好")
-        self.typeCount.insert (0, b)
-        # 科技
-        c = content.count ("你") + content.count ("你好") + content.count ("工") + content.count ("工") + content.count ("你好")
-        self.typeCount.insert (0, c)
-        # 科技
-        d = content.count ("好") + content.count ("你好") + content.count ("工") + content.count ("你好") + content.count ("和")
-        self.typeCount.insert (0, d)
-        # 科技
-        e = content.count ("好") + content.count ("工") + content.count ("好") + content.count ("和") + content.count ("你好")
-        self.typeCount.insert (0, e)
-        #......
-        # 计算各类型总分数
-        self.sumPoints = self.sumPoints + a + b + c + d + e  # 各类型分数相加
-        # 计算偏值（权重）
-        self.typeWeight ()
-
-    def typeWeight(self):
-        # 计算偏值（权重）
-        for i in range(0,len(self.typeCount)):
-            self.typeCount[i] = self.typeCount[i]/self.sumPoints
-        self.judge = False
-        #print(self.typeCount)
-        #return(self.typeCount)
-
-#gnt = geneNewsType()
-#gnt.getData(1)

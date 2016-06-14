@@ -14,6 +14,9 @@ $(document).ready(function () {
         left_show_height = (document.documentElement.scrollHeight > document.documentElement.clientHeight) ? document.documentElement.scrollHeight : document.documentElement.clientHeight;
     }
     left_show.style.height = left_show_height - 50 + "px";
+    //var second_show = document.getElementById('second');
+    //second_show.style.height = left_show_height - 50 + "px";
+    
     //dataAna
     //更改密码
     $('#changePass').click(function () {

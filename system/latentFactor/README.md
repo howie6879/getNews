@@ -1,0 +1,7 @@
+"update user_tag_score set news_baby,news_entertainment,news_discovery,news_history,news_society," \
+                                            "news_game,news_sports,news_car,news_essay,news_tech,news_military,news_travel,news_fashion,news_regimen," \
+                                            "news_story,news_finance,news_food,news_world = '" +tag_list_score['news_baby']+"','"+tag_list_score['news_entertainment']+"','"+\
+                                            tag_list_score['news_discovery']+"','"+tag_list_score['news_history']+"','"+tag_list_score['news_society']+"','"+tag_list_score['news_game']+"','"+\
+                                            tag_list_score['news_sports']+"','"+tag_list_score['news_car']+"','"+tag_list_score['news_essay']+"','"+tag_list_score['news_tech']+\
+                                            "','"+tag_list_score['news_military']+"','"+tag_list_score['news_travel']+"','"+tag_list_score['news_fashion']+"','"+tag_list_score['news_regimen']\
+                                            +"','"+tag_list_score['news_story']+"','"+tag_list_score['news_finance']+"','"+tag_list_score['news_food']+"','"+tag_list_score['news_world']+"'  where user_id = '" + user_id + "'"

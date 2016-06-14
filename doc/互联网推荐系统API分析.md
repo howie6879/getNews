@@ -1,4 +1,4 @@
-﻿## 互联网推荐系统API分析
+## 互联网推荐系统API分析
 
 ### 一、目标新闻网站api分析
 
@@ -94,14 +94,14 @@
 
 链接功能：新用户进行注册
 
-|   参数   |   说明    |
-| :----: | :-----: |
-|  name  | 注册用户昵称  |
-| passwd |   密码    |
-| phone  |   电话    |
-| tags  |   标签1，标签2....    |
-|  time  |  注册时间戳  |
-| token  | 身份验证字符串 |
+|   参数   |     说明      |
+| :----: | :---------: |
+|  name  |   注册用户昵称    |
+| passwd |     密码      |
+| phone  |     电话      |
+|  tags  | 标签1，标签2.... |
+|  time  |    注册时间戳    |
+| token  |   身份验证字符串   |
 
 **参数返回：**
 
@@ -138,28 +138,28 @@
 链接：`/api/newstags?count=x&alrequest=x&userid=x&tag=x&time=x&tooken=x`
 
 链接功能：返回新闻列表信息
-|   参数   |   说明    |
-| :----: | :-----: |
-| count |   请求新闻数量    |
-| alrequest  |   已请求新闻数量    |
-|  userid  |  用户编号  |
-| tag  | 新闻标签（默认空为全部） |
-|  time  |  验证时间戳  |
-| token  | 身份验证字符串 |
+|    参数     |      说明      |
+| :-------: | :----------: |
+|   count   |    请求新闻数量    |
+| alrequest |   已请求新闻数量    |
+|  userid   |     用户编号     |
+|    tag    | 新闻标签（默认空为全部） |
+|   time    |    验证时间戳     |
+|   token   |   身份验证字符串    |
 
 **参数返回：**
 返回参数说明：
-|   参数   |   说明    |
-| :----: | :-----: |
-| time |   时间    |
-| abstract  |   摘要    |
-|  title  |  标题  |
-| comment_times  | 评论次数 |
-|  read_times  |  阅读次数  |
-| love_times  | 喜欢次数 |
-| news_id  | 新闻编号 |
-| image  | 图片url |
-| source  | 来源 |
+|      参数       |  说明   |
+| :-----------: | :---: |
+|     time      |  时间   |
+|   abstract    |  摘要   |
+|     title     |  标题   |
+| comment_times | 评论次数  |
+|  read_times   | 阅读次数  |
+|  love_times   | 喜欢次数  |
+|    news_id    | 新闻编号  |
+|     image     | 图片url |
+|    source     |  来源   |
 查询返回成功：
 `{"message": "success", "data": [{"time": "", "abstract": "", "title": "",` `"comment_times": 1, "read_times": 1, "love_times": 1, "news_id": "",` `"image": "", "source": ""}, {"time": "", "abstract": "", "title": "",` `"comment_times": 2, "read_times": 2, "love_times": 2, "news_id": "",` `"image": "", "source": ""}]}`
 
@@ -176,25 +176,25 @@
 链接功能：返回新闻列表信息
 |   参数   |   说明    |
 | :----: | :-----: |
-| newsid |   新闻编号    |
-| userid  |   用户编号    |
+| newsid |  新闻编号   |
+| userid |  用户编号   |
 |  time  |  验证时间戳  |
 | token  | 身份验证字符串 |
 
 **参数返回：**
 参数返回说明：
-|   参数   |   说明    |
-| :----: | :-----: |
-| content |   新闻html正文    |
-| comment_time  |   留言时间     |
-|  username  |  留言用户昵称  |
-|  head_url  |  留言用户头像url  |
-| comment_content  | 留言内容 |
-| is_comment  | 用户是否评论该新闻（0/1） |
-| is_love  | 用户是否喜欢该新闻（0/1） |
+|       参数        |       说明       |
+| :-------------: | :------------: |
+|     content     |    新闻html正文    |
+|  comment_time   |      留言时间      |
+|    username     |     留言用户昵称     |
+|    head_url     |   留言用户头像url    |
+| comment_content |      留言内容      |
+|   is_comment    | 用户是否评论该新闻（0/1） |
+|     is_love     | 用户是否喜欢该新闻（0/1） |
 
 查询返回成功：
-`{"message": "success", "data": {"content": "", "message": [{"time": "",` `"username": "", "head_url": "", "comment_content": "","dianzan_num": "9"}, {"time":` `"shijian2", "username": "", "head_url": "", "comment_content": ""}],` `"is_comment": 1, "is_love": 0}}`
+`{"message": "success", "data": {"content": "", "comment_list": [{"time": "",` `"username": "", "head_url": "", "comment_content": "","dianzan_num": "9"}, {"time":` `"shijian2", "username": "", "head_url": "", "comment_content": ""}],` `"is_comment": 1, "is_love": 0}}`
 
 请求失败：`{"message": "failed", "data": {"flag": 0}}`
 
@@ -205,21 +205,21 @@
 链接功能：返回用户详细信息
 |   参数   |   说明    |
 | :----: | :-----: |
-| userid  |   用户编号    |
+| userid |  用户编号   |
 |  time  |  验证时间戳  |
 | token  | 身份验证字符串 |
 
 **参数返回：**
 参数返回说明：
-|   参数   |   说明    |
-| :----: | :-----: |
-| user_name |   用户昵称    |
-| phone  |   用户电话     |
-| image  | 头像 |
-| email  | 用户邮箱 |
-| read_times  | 阅读次数 |
-| love_times  | 喜欢次数 |
-| message_times  | 评论次数 |
+|      参数       |  说明  |
+| :-----------: | :--: |
+|   user_name   | 用户昵称 |
+|     phone     | 用户电话 |
+|     image     |  头像  |
+|     email     | 用户邮箱 |
+|  read_times   | 阅读次数 |
+|  love_times   | 喜欢次数 |
+| message_times | 评论次数 |
 
 
 查询返回成功：
@@ -234,26 +234,26 @@
 `&email=x&time=1&tooken=x`
 
 链接功能：返回用户详细信息
-|   参数   |   说明    |
-| :----: | :-----: |
-| userid  |   用户编号    |
-| username |   用户昵称    |
-| image  | 头像 |
-| email  | 用户邮箱 |
-|  time  |  验证时间戳  |
-| token  | 身份验证字符串 |
+|    参数    |   说明    |
+| :------: | :-----: |
+|  userid  |  用户编号   |
+| username |  用户昵称   |
+|  image   |   头像    |
+|  email   |  用户邮箱   |
+|   time   |  验证时间戳  |
+|  token   | 身份验证字符串 |
 
 **参数返回：**
 参数返回说明：
-|   参数   |   说明    |
-| :----: | :-----: |
-| user_name |   用户昵称    |
-| phone  |   用户电话     |
-| image  | 头像 |
-| email  | 用户邮箱 |
-| read_times  | 阅读次数 |
-| love_times  | 喜欢次数 |
-| message_times  | 评论次数 |
+|      参数       |  说明  |
+| :-----------: | :--: |
+|   user_name   | 用户昵称 |
+|     phone     | 用户电话 |
+|     image     |  头像  |
+|     email     | 用户邮箱 |
+|  read_times   | 阅读次数 |
+|  love_times   | 喜欢次数 |
+| message_times | 评论次数 |
 
 
 查询返回成功：
@@ -269,23 +269,23 @@
 链接功能：返回用户详细信息
 |   参数   |   说明    |
 | :----: | :-----: |
-| userid  |   用户编号    |
+| userid |  用户编号   |
 |  time  |  验证时间戳  |
 | token  | 身份验证字符串 |
 
 **参数返回：**
 参数返回说明：
-|   参数   |   说明    |
-| :----: | :-----: |
-| news_id |   新闻编号    |
-| title |   新闻标题    |
-| abstract  |   新闻摘要     |
-| time  | 时间 |
-| image  |   新闻图片     |
-| tag  | 新闻标签 |
-| read_times  | 阅读次数 |
-| love_times  | 喜欢次数 |
-| message_times  | 评论次数 |
+|      参数       |  说明  |
+| :-----------: | :--: |
+|    news_id    | 新闻编号 |
+|     title     | 新闻标题 |
+|   abstract    | 新闻摘要 |
+|     time      |  时间  |
+|     image     | 新闻图片 |
+|      tag      | 新闻标签 |
+|  read_times   | 阅读次数 |
+|  love_times   | 喜欢次数 |
+| message_times | 评论次数 |
 
 
 查询返回成功：
@@ -301,27 +301,27 @@
 链接：`/api/hotlist?hot=1&time=1&tooken=764bfd755bc07f6871eee104219b2b2c`
 
 链接功能：返回用户详细信息
-|   参数   |   说明    |
-| :----: | :-----: |
-| hot  |   1为喜欢/2为阅读/3为评论    |
-|  count  |  请求数量  |
-|  alrequest  |  已请求数量  |
-|  time  |  验证时间戳  |
-| token  | 身份验证字符串 |
+|    参数     |       说明       |
+| :-------: | :------------: |
+|    hot    | 1为喜欢/2为阅读/3为评论 |
+|   count   |      请求数量      |
+| alrequest |     已请求数量      |
+|   time    |     验证时间戳      |
+|   token   |    身份验证字符串     |
 
 **参数返回：**
 参数返回说明：
-|   参数   |   说明    |
-| :----: | :-----: |
-| news_id |   新闻编号    |
-| title |   新闻标题    |
-| abstract  |   新闻摘要     |
-| time  | 时间 |
-| image  |   新闻图片     |
-| tag  | 新闻标签 |
-| read_times  | 阅读次数 |
-| love_times  | 喜欢次数 |
-| message_times  | 评论次数 |
+|      参数       |  说明  |
+| :-----------: | :--: |
+|    news_id    | 新闻编号 |
+|     title     | 新闻标题 |
+|   abstract    | 新闻摘要 |
+|     time      |  时间  |
+|     image     | 新闻图片 |
+|      tag      | 新闻标签 |
+|  read_times   | 阅读次数 |
+|  love_times   | 喜欢次数 |
+| message_times | 评论次数 |
 
 
 查询返回成功：
@@ -335,13 +335,13 @@
 链接：`/api/lovenews?newsid=x&userid=x&islove=x&time=x&tooken=x`
 
 链接功能：用户登录
-|   参数   |   说明    |
-| :----: | :-----: |
-| newsid |   新闻编号    |
-| userid  |   用户编号    |
-|  islove  |  1为喜欢/0为取消喜欢  |
-| time  | 时间 |
-| token  | 身份验证字符串 |
+|   参数   |     说明      |
+| :----: | :---------: |
+| newsid |    新闻编号     |
+| userid |    用户编号     |
+| islove | 1为喜欢/0为取消喜欢 |
+|  time  |     时间      |
+| token  |   身份验证字符串   |
 
 **参数返回：**
 
@@ -358,12 +358,12 @@
 `&email=x&time=1&tooken=x`
 
 链接功能：返回用户详细信息
-|   参数   |   说明    |
-| :----: | :-----: |
-| userid  |   用户编号    |
-| feedback |   反馈内容    |
-|  time  |  验证时间戳  |
-| token  | 身份验证字符串 |
+|    参数    |   说明    |
+| :------: | :-----: |
+|  userid  |  用户编号   |
+| feedback |  反馈内容   |
+|   time   |  验证时间戳  |
+|  token   | 身份验证字符串 |
 
 **参数返回：**
 
@@ -377,25 +377,25 @@
 链接：`/api/newstags?keyword=x&time=x&tooken=x`
 
 链接功能：返回新闻列表信息
-|   参数   |   说明    |
-| :----: | :-----: |
-| keyword |   关键词    |
-|  time  |  验证时间戳  |
-| token  | 身份验证字符串 |
+|   参数    |   说明    |
+| :-----: | :-----: |
+| keyword |   关键词   |
+|  time   |  验证时间戳  |
+|  token  | 身份验证字符串 |
 
 **参数返回：**
 返回参数说明：
-|   参数   |   说明    |
-| :----: | :-----: |
-| time |   时间    |
-| abstract  |   摘要    |
-|  title  |  标题  |
-| comment_times  | 评论次数 |
-|  read_times  |  阅读次数  |
-| love_times  | 喜欢次数 |
-| news_id  | 新闻编号 |
-| image  | 图片url |
-| source  | 来源 |
+|      参数       |  说明   |
+| :-----------: | :---: |
+|     time      |  时间   |
+|   abstract    |  摘要   |
+|     title     |  标题   |
+| comment_times | 评论次数  |
+|  read_times   | 阅读次数  |
+|  love_times   | 喜欢次数  |
+|    news_id    | 新闻编号  |
+|     image     | 图片url |
+|    source     |  来源   |
 查询返回成功：
 `{"message": "success", "data": [{"time": "", "abstract": "", "title": "",` `"comment_times": 1, "read_times": 1, "love_times": 1, "news_id": "",` `"image": "", "source": ""}, {"time": "", "abstract": "", "title": "",` `"comment_times": 2, "read_times": 2, "love_times": 2, "news_id": "",` `"image": "", "source": ""}]}`
 
@@ -408,24 +408,24 @@
 链接：`/api/comment?userid=x&newsid=x&content=x&time=x&tooken=x`
 
 链接功能：返回新闻列表信息
-|   参数   |   说明    |
-| :----: | :-----: |
-| userid |   用户编号    |
-|  newsid  |  新闻编号  |
-| content  | 评论内容 |
-|  time  |  验证时间戳  |
-| token  | 身份验证字符串 |
+|   参数    |   说明    |
+| :-----: | :-----: |
+| userid  |  用户编号   |
+| newsid  |  新闻编号   |
+| content |  评论内容   |
+|  time   |  验证时间戳  |
+|  token  | 身份验证字符串 |
 
 **参数返回：**
 返回参数说明：
-|   参数   |   说明    |
-| :----: | :-----: |
-| user_image |   评论用户头像    |
-| user_id  |   评论用户编号    |
-|  user_name  |  评论用户昵称  |
-| comment_time  | 评论时间 |
-|  content  |  评论内容  |
-| news_id  | 新闻编号 |
+|      参数      |   说明   |
+| :----------: | :----: |
+|  user_image  | 评论用户头像 |
+|   user_id    | 评论用户编号 |
+|  user_name   | 评论用户昵称 |
+| comment_time |  评论时间  |
+|   content    |  评论内容  |
+|   news_id    |  新闻编号  |
 查询返回成功：
 `{"message": "success", "data": {"user_image": "", "user_id": "", "user_name": "", "comment_time": "", "content": "", "news_id": ""}}`
 
@@ -439,14 +439,14 @@
 `&email=x&time=1&tooken=x`
 
 链接功能：返回用户详细信息
-|   参数   |   说明    |
-| :----: | :-----: |
-| userid  |   用户编号    |
-| newsid |   新闻编号    |
-| comment  |   该评论内容    |
-| commenttime |   该评论时间    |
-|  time  |  验证时间戳  |
-| token  | 身份验证字符串 |
+|     参数      |   说明    |
+| :---------: | :-----: |
+|   userid    |  用户编号   |
+|   newsid    |  新闻编号   |
+|   comment   |  该评论内容  |
+| commenttime |  该评论时间  |
+|    time     |  验证时间戳  |
+|    token    | 身份验证字符串 |
 
 **参数返回：**
 

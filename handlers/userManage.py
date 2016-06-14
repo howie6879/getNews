@@ -10,4 +10,5 @@ class UserManage(BaseHandler):
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
         header = "用户管理"
+
         self.render("userManage.html",header=header)

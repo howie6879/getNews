@@ -8,7 +8,8 @@ from handlers.base import BaseHandler
 from spider import allSpider
 from controller.dataController import DataController, newsSource
 from spider.newsDb.insertNews import newsInsert
-
+from system.classPredict.main import startPredict
+from system.latentFactor.geneCalcul import GeneCulcal
 
 class DataOperator(BaseHandler):
     @tornado.web.authenticated
@@ -41,3 +42,11 @@ class DataOperator(BaseHandler):
             # 删除分词文件夹里面的表
             DataController.rmRepeate(['wordAna', 'wordAnaNews'])
             print("success")
+        elif action == "traindata":
+            print("haha")
+            startPredict()
+
+
+        elif action == "recommend":
+            gc = GeneCulcal()
+            gc.getMatData()
