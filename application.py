@@ -6,6 +6,7 @@ from handlers.errorHandler import ErrorHandler
 from handlers.index import IndexHandler
 from handlers.admin import AdminHandler
 from handlers.dataAna import DataAna
+from handlers.system import System
 from handlers.newsManage import NewsManage
 from handlers.UmFeedBack import UmFeedBack
 from handlers.UmMyNote import UmMyNote
@@ -18,6 +19,7 @@ url = [
     (r'/', IndexHandler),
     (r'/admin',AdminHandler),
     (r'/dataAna',DataAna),
+    (r'/system',System),
     (r'/newsManage',NewsManage),
     (r'/userManage',UserManage),
     (r'/umMyNote', UmMyNote),

@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 
 {% block header %}
-<title></title>
+<title>{{ header }}</title>
 {% end %}
 
 {% block left-nav %}
@@ -23,13 +23,13 @@
         <span class="">新闻管理</span>
     </a>
 </li>
-<li class="active">
+<li>
     <a href="/userManage">
         <i class="glyphicon glyphicon-user" aria-hidden="true"></i>
         <span class="">用户管理</span>
     </a>
 </li>
-<li>
+<li class="active">
     <a href="/system">
         <i class="glyphicon glyphicon-cog" aria-hidden="true"></i>
         <span class="">系统信息</span>
@@ -37,28 +37,11 @@
 </li>
 {% end %}
 
-
 {% block right %}
 
-<div id= "second" class = "left-sidebar nav-list second-menu">
-<li>
-    <a href="/userManage">
-        <i class="glyphicon " aria-hidden="true"></i>
-        <span class="">用户信息</span>
-    </a>
-</li>
-<li class="active">
-    <a href="/umFeedBack">
-        <i class="glyphicon " aria-hidden="true"></i>
-        <span class="">反馈信息</span>
-    </a>
-</li>
-<li>
-    <a href="/umMyNote">
-        <i class="glyphicon " aria-hidden="true"></i>
-        <span class="">管理日志</span>
-    </a>
-</li>
+
+<div class="container">
 
 </div>
+
 {% end %}
