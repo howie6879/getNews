@@ -14,7 +14,6 @@ $(document).ready(function () {
         left_show_height = (document.documentElement.scrollHeight > document.documentElement.clientHeight) ? document.documentElement.scrollHeight : document.documentElement.clientHeight;
     }
     left_show.style.height = left_show_height - 50 + "px";
-    document.getElementById('systemPage').style.height = left_show_height + 3 + "px";
     //var second_show = document.getElementById('second');
     //second_show.style.height = left_show_height - 50 + "px";
     
@@ -107,4 +106,5 @@ $(document).ready(function () {
         $('.show-nav').css("background-color", "#0C0C0C");
         $(".showlog").animate({height: '300px'});
     });
+    $('#systemPage').css('height',left_show_height+"3"+"px");
 })
