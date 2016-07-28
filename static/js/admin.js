@@ -14,7 +14,7 @@ $(document).ready(function () {
         left_show_height = (document.documentElement.scrollHeight > document.documentElement.clientHeight) ? document.documentElement.scrollHeight : document.documentElement.clientHeight;
     }
     left_show.style.height = left_show_height - 50 + "px";
-    document.getElementById('systemPage').style.height = left_show_height + 2 + "px";
+    document.getElementById('systemPage').style.height = left_show_height + 3 + "px";
     //var second_show = document.getElementById('second');
     //second_show.style.height = left_show_height - 50 + "px";
     
