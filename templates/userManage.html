@@ -18,6 +18,12 @@
     </a>
 </li>
 <li>
+    <a href="/spider">
+        <i class="glyphicon glyphicon-save" aria-hidden="true"></i>
+        <span class="">爬虫管理</span>
+    </a>
+</li>
+<li>
     <a href="/newsManage">
         <i class="glyphicon glyphicon-file" aria-hidden="true"></i>
         <span class="">新闻管理</span>
@@ -40,7 +46,10 @@
 
 {% block right %}
 
+<script src="{{static_url('js/userManage.js')}}"></script>
+
 <div id= "second" class = "left-sidebar nav-list second-menu">
+
 <li class="active">
     <a href="/userManage">
         <i class="glyphicon " aria-hidden="true"></i>
@@ -64,90 +73,24 @@
 
 <div>
     <div class="row user_third_menu">
-      <div class="col-sm-3 user_third_head">
-        <img src="{{static_url('images/admin.jpg')}}" class = "img-circle img-thumbnail super_head">
+      <div class="col-sm-1 user_third_head">
+
       </div>
-      <div class="col-sm-3">
-               <table class="table table-bordered">
-                   <caption>用户管理</caption>
-                   <thead>
-                      <tr>
-                         <th>用户编号</th>
-                         <th>昵称</th>
-                      </tr>
-                   </thead>
-                   <tbody>
-                      <tr>
-                         <td>000001</td>
-                         <td><a>Jeezy</a></td>
-                      </tr>
-                      <tr>
-                         <td>000002</td>
-                         <td><a>Howie</a></td>
-                      </tr>
-                      <tr>
-                         <td>000003</td>
-                         <td><a>Azusal</a></td>
-                      </tr>
-                   <tr>
-                         <td>000004</td>
-                         <td><a>Jay</a></td>
-                      </tr>
-                   <tr>
-                         <td>000005</td>
-                         <td><a>James</a></td>
-                      </tr>
-                   <tr>
-                         <td>000006</td>
-                         <td><a>Pune</a></td>
-                      </tr>
-                   </tbody>
-                </table>
-              <ul class="pagination pagination-lg">
-                  <li><a href="#">&laquo;</a></li>
-                  <li><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">4</a></li>
-                  <li><a href="#">&raquo;</a></li>
-                </ul>
+      <div class="col-sm-5">
+          <div id = "page1" class = "page1">
+          </div>
+
+              <ul class="pager">
+                <li><a id="last" href="#">Previous</a></li>
+                <li><a id="next" href="#">Next</a></li>
+              </ul>
       </div>
-        <div class="col-sm-3">
-             <table class="table table-bordered">
-                   <caption>用户信息</caption>
-                   <thead>
-                      <tr>
-                         <th>信息</th>
-                         <th>内容</th>
-                      </tr>
-                   </thead>
-                   <tbody>
-                      <tr>
-                         <td>电话</td>
-                         <td>1576****632</td>
-                      </tr>
-                      <tr>
-                         <td>年龄</td>
-                         <td>22</td>
-                      </tr>
-                      <tr>
-                         <td>性别</td>
-                         <td>男</td>
-                      </tr>
-                   <tr>
-                         <td>地址</td>
-                         <td>广东省广州市白云区</td>
-                      </tr>
-                   <tr>
-                         <td>邮箱</td>
-                         <td><a>214685956@qq.com</a></td>
-                      </tr>
-                   <tr>
-                         <td>是否老用户</td>
-                         <td>是</td>
-                      </tr>
-                   </tbody>
-                </table>
+        <div  class="col-sm-3">
+            <div id="user_info" class="user_info">
+
+
+            </div>
+
         </div>
     </div>
    <div class="row">

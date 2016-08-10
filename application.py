@@ -6,6 +6,7 @@ from handlers.errorHandler import ErrorHandler
 from handlers.index import IndexHandler
 from handlers.admin import AdminHandler
 from handlers.dataAna import DataAna
+from handlers.spider import Spider
 from handlers.system import System
 from handlers.newsManage import NewsManage
 from handlers.UmFeedBack import UmFeedBack
@@ -19,6 +20,7 @@ url = [
     (r'/', IndexHandler),
     (r'/admin',AdminHandler),
     (r'/dataAna',DataAna),
+    (r'/spider', Spider),
     (r'/system',System),
     (r'/newsManage',NewsManage),
     (r'/userManage',UserManage),
@@ -40,6 +42,9 @@ url = [
     (r'/api/comment', api.Comment),
     (r'/api/lovecomment', api.LoveComment),
     (r'/api/exitread', api.ExitRead),
+    (r'/api/adminuser', api.AdminUser),
+    (r'/api/adminuserinfo', api.AdminUserInfo),
+    (r'/api/adminfeedback', api.AdminFeedback),
     (r'/api/returntags', api.ReturnTags),
     #这个页面处理语句必须放在最后
     (r".*", ErrorHandler)

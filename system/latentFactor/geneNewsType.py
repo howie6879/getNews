@@ -1,6 +1,6 @@
 # -*-coding:utf-8-*-
 
-import methods.db as db
+from methods.pDb import newsDb
 
 
 class NewsTagDataTool(object):
@@ -14,11 +14,10 @@ class NewsTagDataTool(object):
 
     def getData(self):
         try:
-            conn = db.conn
-            # 获取游标
-            cur = conn.cursor()
-            cur.execute('select * from news_tag_deep')
-            data = cur.fetchall()
+
+            db = newsDb()
+            data = db.select_table_two(table="news_tag_deep",column="*")
+
             for item in data:
                 #获得新闻id
                 self.new_id_list.append(item[0])
@@ -28,10 +27,10 @@ class NewsTagDataTool(object):
                     tagsWeight.append(tag)
                 self.newsTagMat.append(tagsWeight)
 
-            cur.execute("select news_id,tag from get_news where is_old=0")
-
-            data = cur.fetchall()
+            datasql = "select news_id,tag from get_news where is_old = 0"
+            data = db.select_table_three(datasql)
             # print(data)
+
             for item in data:
                 #获取新闻的id及对应的类别：
                 self.news_type_dict[item[0]] = item[1]
@@ -40,6 +39,7 @@ class NewsTagDataTool(object):
             # print(self.new_id_list)
             # print(self.newsTagMat)
             return self.news_type_dict,self.new_id_list,self.newsTagMat
+
         except Exception as e:
             print(e)
 
@@ -47,7 +47,7 @@ class NewsTagDataTool(object):
 # x,y,z=ntTool.getData()
 # print(x)
 # print(y)
-
+#
 
 
 

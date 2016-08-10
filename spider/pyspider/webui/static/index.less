@@ -1,0 +1,125 @@
+/* vim: set et sw=2 ts=2 sts=2 ff=unix fenc=utf8: */
+/* Author: Binux<i@binux.me> */
+/*         http://binux.me */
+/* Created on 2014-02-23 00:28:30 */
+
+@import "variable";
+
+h1 {
+  margin-top: 5px;
+}
+
+header .alert {
+  position: absolute;;
+  width: 50rem;
+  left: 50%;
+  margin-left: -25rem;
+}
+
+.queue-info {
+  th, td {
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+}
+
+.projects {
+  min-width: 850px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+
+  .project-group {
+    width: 80px;
+  }
+
+  .project-name {
+    font-weight: bold;
+  }
+
+  .project-status {
+    width: 100px;
+  }
+  .project-status-span(@color) {
+    border: solid 1px darken(@color, 10%);
+    padding: 1px 5px 0 5px;
+    background: @color;
+    color: white;
+  }
+  .project-status>span {
+    .project-status-span(lighten(black, 50%));
+  }
+  span.status-TODO {
+    .project-status-span(@orange);
+  }
+  span.status-STOP {
+    .project-status-span(@red);
+  }
+  span.status-CHECKING {
+    .project-status-span(darken(@yellow, 10%));
+  }
+  span.status-DEBUG {
+    .project-status-span(@blue);
+  }
+  span.status-RUNNING {
+    .project-status-span(@green);
+  }
+
+  .project-rate {
+    width: 110px;
+  }
+
+  .project-time {
+    width: 110px;
+  }
+  
+  th.project-progress {
+    position: relative;
+    span {
+      position: absolute;
+    }
+  }
+
+  td.project-progress {
+    position: relative;
+    min-width: 5%;
+    &.progress-all {
+      min-width: 10%;
+    }
+
+    .progress {
+      position: relative;
+      margin: 0;
+      background-color: #aaa;
+      .progress-text {
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        font-weight: bold;
+        color: #fff;
+        pointer-events: none;
+      }
+      .progress-bar {
+        -webkit-transition: none;
+        transition: none;
+      }
+    }
+  }
+
+  .project-actions {
+    width: 200px;
+  }
+}
+
+.global-btn {
+  margin-top: -5px;
+  padding: 10px 10px 10px 10px;
+
+  .create-btn-div {
+    float: right;
+  }
+
+  .active-btn-div {
+    float: left;
+  }
+}
+

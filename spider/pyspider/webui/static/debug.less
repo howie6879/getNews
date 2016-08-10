@@ -1,0 +1,429 @@
+/* vim: set et sw=2 ts=2 sts=2 ff=unix fenc=utf8: */
+/* Author: Binux<i@binux.me> */
+/*         http://binux.me */
+/* Created on 2014-02-23 00:28:30 */
+
+@import "variable";
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.warning {
+  color: @orange;
+}
+.error {
+  color: @red;
+}
+
+@control-height: 35px;
+#control {
+  z-index: 9999;
+  min-width: 760px;
+  width: 100%;
+  height: @control-height;
+  position: fixed;
+  left: 0;
+  right: 0;
+  background-color: @gray-lighter;
+  box-shadow: 0px 1px 2px @gray-light;
+
+  div {
+    line-height: 35px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .webdav-btn {
+    position: relative;
+    float: right;
+    padding: 1px 7px 0 7px;
+    line-height: 21px;
+    border-radius: 5px;
+    border: solid 1px @blue;
+    background: white;
+    color: @blue;
+    cursor: pointer;
+    margin: 6px 0 0 10px;
+
+    &:hover {
+      background: lighten(@blue, 10%);
+      color: white;
+    }
+    &.active {
+      background: @blue;
+      color: white;
+    }
+  }
+}
+
+#editarea {
+  width: 100%;
+  position: fixed;
+  top: @control-height + 2px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  //debug
+}
+
+.debug-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.resize {
+  background-color: @gray;
+  cursor: ew-resize;
+  &:hover + .debug-panel {
+    border-left: dashed 1px @gray !important;
+ }
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 40%);
+}
+
+.focus .CodeMirror-activeline-background {
+  background: #e8f2ff !important;
+}
+.CodeMirror-activeline-background {
+  background: transparent !important;
+}
+
+#task-panel {
+  height: 100%;
+  overflow-x: auto;
+}
+
+.right-top-btn(@color: @green) {
+  z-index: 99;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: @color;
+  border-radius: 0 0 0 5px;
+  color: white;
+  margin: 0;
+  padding: 3px 7px 5px 10px;
+  cursor: pointer;
+  font-weight: bold;
+  line-height: 15px;
+
+  &:hover {
+    background: darken(@color, 10%);
+  }
+}
+
+#run-task-btn {
+  .right-top-btn(@color: @green);
+}
+#undo-redo-btn-group {
+  @color: lighten(@green, 15%);
+  .right-top-btn(@color: @color);
+
+  top: auto;
+  bottom: 0;
+  border-radius: 5px 0 0 0;
+  padding: 5px 0 3px 0;
+  /*box-shadow: 0px 0px 30px @color;*/
+  overflow: hidden;
+
+  &:hover {
+    background: @color;
+  }
+
+  a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 7px 3px 10px;
+    &:hover {
+      background: darken(@color, 10%);
+    }
+  }
+}
+#save-task-btn {
+  .right-top-btn(@color: @blue);
+}
+
+#task-editor {
+  position: relative;
+
+  .CodeMirror {
+    height: auto;
+    padding-bottom: 3px;
+    background: lighten(@green, 30%);
+  }
+  .CodeMirror-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  &.focus .CodeMirror-activeline-background {
+    background: lighten(@green, 40%) !important;
+  }
+}
+
+#tab-control {
+  list-style-type: none;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 8px 20px;
+  padding: 0;
+
+  li {
+    position: relative;
+    float: right;
+    padding: 1px 7px 0 7px;
+    line-height: 21px;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: solid 1px @blue;
+    background: white;
+    color: @blue;
+    cursor: pointer;
+
+    &:hover {
+      background: lighten(@blue, 10%);
+      color: white;
+    }
+    &.active {
+      background: @blue;
+      color: white;
+    }
+
+    span {
+      position: absolute;
+      top: -5px;
+      right: -10px;
+      background: @red;
+      color: white;
+      font-size: 80%;
+      font-weight: bold;
+      padding: 2px 5px 0 5px;
+      border-radius: 10px;
+    }
+  }
+}
+
+#debug-tabs {
+  margin-bottom: 45px;
+}
+
+#tab-web {
+  &.fixed {
+    padding-top: 24px;
+  }
+
+  iframe {
+    border-width: 0;
+    width: 100%;
+  }
+}
+
+#tab-html {
+  margin: 0;
+  padding: 7px 5px;
+
+  pre {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+#tab-follows {
+  .newtask {
+    position: relative;
+    height: 30px;
+    line-height: 30px;
+    background: lighten(@orange, 30%);
+    border-bottom: solid 1px @orange;
+    border-top: solid 1px @orange;
+    margin-top: -1px;
+    padding-left: 5px;
+    padding-right: 70px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+
+    &:hover {
+      background: lighten(@orange, 20%);
+      .task-more {
+        background: lighten(@orange, 20%);
+      }
+    }
+    .task-callback {
+      color: darken(@orange, 10%);
+    }
+    .task-url {
+      font-size: 95%;
+      text-decoration: underline;
+      font-weight: lighter;
+      color: @blue;
+    }
+    .task-more {
+      position: absolute;
+      right: 33px;
+      top: 0px;
+      float: right;
+      color: @orange;
+      padding: 0 10px;
+      background: lighten(@orange, 30%);
+      border-radius: 10px;
+    }
+    .task-run {
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 80%;
+      padding: 0 10px 0 30px;
+      float: right;
+      border-bottom: solid 1px lighten(@green, 20%);
+      border-top: solid 1px lighten(@green, 20%);
+      background: lighten(@green, 10%);
+      color: white;
+      text-shadow: 0 0 10px white;
+      font-weight: bold;
+
+      &:hover {
+        background: @green;
+      }
+    }
+  }
+  .task-show {
+    pre {
+      margin: 5px 5px 10px 5px;
+    }
+  }
+}
+
+#python-editor {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  bottom: 0;
+
+  .CodeMirror {
+    height: 100%;
+    padding-bottom: 20px;
+  }
+}
+
+#python-log {
+  width: 100%;
+  min-height: 10px;
+  max-height: 40%;
+  background: rgba(0, 0, 0, 60%);
+  overflow: auto;
+
+  #python-log-show {
+    z-index: 89;
+    width: auto;
+    padding-top: 5px;
+    background: @red;
+    box-shadow: 0 2px 20px @red;
+    cursor: pointer;
+  }
+  pre {
+    margin: 0;
+    padding: 10px 10px;
+    color: white;
+  }
+}
+
+#css-selector-helper {
+  background-color: @gray-lighter;
+  padding: 0;
+  width: 100%;
+  height: 24px;
+  text-align: right;
+  white-space: nowrap;
+
+  &.fixed {
+    position: absolute;
+    top: 0;
+
+  }
+
+  button {
+    line-height: 16px;
+    vertical-align: 2px;
+  }
+}
+
+span.element {
+  position: relative;
+  height: 24px;
+  display: inline-block;
+  padding: 0 0.2em;
+  cursor: pointer;
+  color: lighten(@gray, 35%);
+  z-index: 99999;
+
+  &.invalid {
+    display: none;
+  }
+  &.selected {
+    color: black;
+  }
+  &:hover {
+    background-color: darken(@gray-lighter, 15%);
+
+    & > ul {
+      display: block;
+    }
+  }
+
+  & > ul {
+    display: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 24px;
+    left: 0;
+    background-color: @gray-lighter;
+    border: 1px solid black;
+    border-top-width: 0;
+    color: lighten(@gray, 35%);
+
+    & > li {
+      display: block;
+      text-align: left;
+      white-space: nowrap;
+      padding: 0 4px;
+
+      &.selected {
+        color: black;
+      }
+      &:hover {
+        background-color: darken(@gray-lighter, 15%);
+      }
+    }
+  }
+}
+
+.copy-selector-input {
+  height: 24px;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  padding-right: 0.2em;
+  font-size: 1em;
+  text-align: right;
+  width: 100%;
+  margin-left: -100px;
+  background: @gray-lighter;
+}

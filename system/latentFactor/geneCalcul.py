@@ -7,7 +7,7 @@ __author__ = 'Jeezy'
 # from geneUserType import UserTagDataTool
 from system.latentFactor.geneNewsType import NewsTagDataTool
 from system.latentFactor.geneUserType import UserTagDataTool
-import methods.db as db
+from methods.pDb import newsDb
 import traceback
 
 
@@ -37,7 +37,6 @@ class GeneCulcal:
     # 每一个矩阵,及对应id集合的获取和计算
     def getMatData(self):
         try:
-
             self.news_type_dict,self.new_id_list,self.newsType = self.ntTool.getData()
             self.user_id_list,self.userType = self.utTool.getData()
             self.finalCalcul()
@@ -70,18 +69,13 @@ class GeneCulcal:
 
     def saveToDb(self):
 
-        conn = db.conn
-        # 获取游标
-        cur = conn.cursor()
-
-
         user_id_score_dict = {}
         #use the user_id_list to initalize the user_id_score_dict
         for user_id in self.user_id_list:
             user_id_score_dict[user_id] = None
 
-        cur.execute("select * from news_recommend")
-        data = cur.fetchall()
+        db = newsDb()
+        data = db.select_table_two(table="news_recommend", column = "*")
         for d in data:
             if d[1] == None:
                 user_id_score_dict[d[0]] = None
@@ -111,15 +105,17 @@ class GeneCulcal:
             print(tmpstr)
             #if the table named news_recommend has not the id of this user,we should insert the data.
             if user_id_score_dict[self.user_id_list[i]] == None:
-                cur.execute("insert into news_recommend value('" + self.user_id_list[i] + "','" + tmpstr + "')")
+                db.insert_table(table = "news_recommend", field = "", values = "('" + self.user_id_list[i] + "','" + tmpstr + "')")
             else:
                 updateStr = user_id_score_dict[self.user_id_list[i]] + "$" + tmpstr
                 # 更新数据表news_recommend
-                cur.execute ("update news_recommend set news_score = '" + updateStr + "' where user_id='" + self.user_id_list [i] + "'")
-            print(str(i))
-        conn.commit()
+                db.update_column(table= "news_recommend", column = "news_score", value_set = updateStr, condition = "user_id", value_find =self.user_id_list [i] )
+            #print(str(i))
 
 
 
-# gc = GeneCulcal()
+
+ # gc = GeneCulcal()
+ # gc.getMatData()
+
 # 14715714711

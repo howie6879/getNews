@@ -2,7 +2,7 @@ import pymysql
 import os
 from system.classPredict.newsPredict import NewPredict
 from system.classPredict.predictTool import NavieBayesPredict
-import methods.db as db
+from methods.pDb import newsDb
 
 
 
@@ -14,13 +14,11 @@ model_file = "system/classPredict/NavieBayesInfo/model.txt"
 result_file = "system/classPredict/NavieBayesInfo/predict_result.txt"
 
 def startPredict():
-    db.cur.execute("delete from news_tag_deep")
-    db.conn.commit()
+    db = newsDb()
+
     try:
-
-        db.cur.execute('select news_id,text_content from get_news where is_old=0')
-        data = db.cur.fetchall()
-
+        datasql = "select news_id,text_content from get_news where is_old = 0"
+        data = db.select_table_three(datasql)
         for d in data:
             new = {}
             new["id"] = d[0]

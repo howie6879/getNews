@@ -19,26 +19,25 @@ class ExcelOperator():
     def getExcelInfo(self,filePath):
         try:
             data = xlrd.open_workbook(filePath)
+            list = []
+            if data:
+                table = data.sheet_by_index(0)
+                if table:
+                    nrows = table.nrows  # 表的行数
+                    colnames = table.row_values(0)  # 表的列名(list)
+                    clen = len(colnames)  # 列名个数
+                    for rownum in range(1, nrows):
+                        row = table.row_values(rownum)
+                        if row:
+                            app = {}
+                            for i in range(1, clen):
+                                app[self.colnames[i]] = row[i]
+                            list.append(app)
+
+            return list
         except:
             print ("xlrd读取" + filePath + "文件出错")
-
-
-        list = []
-        if data:
-            table = data.sheet_by_index(0)
-            if table:
-                nrows = table.nrows                 #表的行数
-                colnames = table.row_values(0)      #表的列名(list)
-                clen = len(colnames)                #列名个数
-                for rownum in range(1,nrows):
-                    row = table.row_values(rownum)
-                    if row:
-                        app = {}
-                        for i in range(1,clen):
-                            app[self.colnames[i]] = row[i]
-                        list.append(app)
-
-        return list
+            exit()
 
     def saveToExcel(self,excelName,sheetName,data):
         """
@@ -80,7 +79,9 @@ class ExcelOperator():
             jr_sheet.write(line, 5, eachData["keywords"])
             jr_sheet.write(line, 6, eachData["abstract"])
             if eachData["display_url"].find("sina.com") != -1:
-                jr_sheet.write(line, 7,' '.join(eachData["img"]))
+                if eachData["img"]:
+                    sinaImg = ','.join(eachData["img"])
+                    jr_sheet.write(line, 7, sinaImg)
             else:
                 jr_sheet.write (line, 7, str (eachData ["images"]))
             jr_sheet.write(line, 8, eachData["tag"])

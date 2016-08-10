@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ project_name }} - Debugger - pyspider</title>
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <meta name="description" content="pyspider - debugger - {{ project_name }}">
+    <meta name="author" content="binux">
+
+    <link href="{{ url_for('cdn', path='codemirror/3.22.0/codemirror.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('cdn', path='font-awesome/4.0.3/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('cdn', path='codemirror/3.22.0/addon/dialog/dialog.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='debug.css') }}" rel="stylesheet">
+
+    <script src="{{ url_for('cdn', path='jquery/1.11.0/jquery.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='codemirror/3.22.0/codemirror.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='codemirror/3.22.0/mode/xml/xml.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='codemirror/3.22.0/mode/css/css.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='codemirror/3.22.0/mode/javascript/javascript.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='codemirror/3.22.0/mode/htmlmixed/htmlmixed.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='codemirror/3.22.0/mode/python/python.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='codemirror/3.22.0/addon/search/search.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='codemirror/3.22.0/addon/search/searchcursor.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='codemirror/3.22.0/addon/dialog/dialog.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='codemirror/3.22.0/addon/selection/active-line.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='codemirror/3.22.0/addon/runmode/runmode.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='codemirror/2.36.0/formatting.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='URI.js/1.11.2/URI.min.js') }}"></script>
+  </head>
+
+  <body>
+    <section id="control">
+      <div class="title pull-left"><a href="/">pyspider</a> &gt; {{ project_name }}</div>
+      <div class="pull-right">
+        <a href="http://docs.pyspider.org/" target="_blank">Documentation</a>
+        <span class="webdav-btn">WebDAV Mode</span>
+      </div>
+    </section>
+    <section id="editarea">
+      <div id="left-area" class="debug-panel" style="right: 50%">
+        <div id="task-panel">
+          <div id="task-editor" class="editor">
+            <div id="run-task-btn">run</div>
+            <div id="undo-redo-btn-group">
+              <a href="javascript:;" id="undo-btn"> &lt; </a>|<a href="javascript:;" id="redo-btn">&gt; </a>
+            </div>
+          </div>
+          <div id="python-log" style="display: none;">
+            <pre style="display: none;"></pre>
+            <div id="python-log-show"></div>
+          </div>
+          <div id="debug-tabs">
+            <div id="tab-web" class="tab" style="display: none;">
+              <div id="css-selector-helper">
+                <input class="copy-selector-input" />
+                <button class="btn copy-selector"><i class="fa fa-clipboard" title="copy css selector"></i></button>
+                <button class="btn add-to-editor"><i class="fa fa-arrow-right" title="add to editor"></i></button>
+              </div>
+              <div class="iframe-box"></div>
+            </div>
+            <div id="tab-html" class="tab" style="display: none;"><pre class="cm-s-default"></pre></div>
+            <div id="tab-follows" class="tab">
+              {# <div class="newtask">
+                <span class="task-callback">__callback__</span> &gt; <span class="task-url">__url__</span>
+                <div class="task-run"><i class="fa fa-play"></i></div>
+                <div class="task-more"> <i class="fa fa-ellipsis-h"></i> </div>
+              </div> #}
+            </div>
+            <div id="tab-messages" class="tab" style="display: none;">
+              <pre class="cm-s-default"></pre>
+            </div>
+          </div>
+        </div>
+        <ul id="tab-control">
+          <li data-id="tab-messages">messages<span class="num" style="display: none;"></span></li>
+          <li data-id="tab-follows">follows<span class="num" style="display: none;"></span></li>
+          <li data-id="tab-html">html</li>
+          <li data-id="tab-web" class="active">web</li>
+          <li id="J-enable-css-selector-helper">enable css selector helper</li>
+        </ul>
+        <div class="overlay" style="display: none;"></div>
+      </div>
+
+      <div id="right-area" class="debug-panel" style="left: 50%">
+        <div id="python-editor" class="editor focus">
+          <div id="save-task-btn">save</div>
+        </div>
+        <div class="overlay" style="display: none;"></div>
+      </div>
+    </section>
+
+    <script>
+      var task_content = {{ task | tojson | tojson | safe }};
+      var script_content = {{ script | tojson | safe }};
+    </script>
+    <script src="{{ url_for('static', filename='splitter.js') }}"></script>
+    <script src="{{ url_for('static', filename='debug.js') }}"></script>
+  </body>
+</html>
+<!-- vim: set et sw=2 ts=2 sts=2 ff=unix fenc=utf8 syntax=htmldjango: -->
+

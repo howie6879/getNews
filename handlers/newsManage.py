@@ -2,7 +2,6 @@
 __author__ = 'howie'
 import tornado.web
 import tornado.escape
-import methods.db as m_sql
 from handlers.base import BaseHandler
 
 class NewsManage(BaseHandler):
@@ -11,3 +10,4 @@ class NewsManage(BaseHandler):
     def get(self, *args, **kwargs):
         header = "新闻管理"
         self.render("newsManage.html",header=header)
+

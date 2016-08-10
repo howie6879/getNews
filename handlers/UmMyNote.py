@@ -2,7 +2,6 @@
 __author__ = 'howie'
 import tornado.web
 import tornado.escape
-import methods.db as m_sql
 from handlers.base import BaseHandler
 
 class UmMyNote(BaseHandler):

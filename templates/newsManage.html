@@ -17,6 +17,12 @@
         <span class="">数据分析</span>
     </a>
 </li>
+<li>
+    <a href="/spider">
+        <i class="glyphicon glyphicon-save" aria-hidden="true"></i>
+        <span class="">爬虫管理</span>
+    </a>
+</li>
 <li class="active">
     <a href="/newsManage">
         <i class="glyphicon glyphicon-file" aria-hidden="true"></i>
@@ -38,8 +44,73 @@
 {% end %}
 
 {% block right %}
-    <div class="">
-        <p>hello</p>
+<script src="{{static_url('js/newsManage.js')}}"></script>
+
+    <div id="news_list" class="row news_list">
+        <div class=" row each_news">
+
+           <table class="table">
+           <caption>用户最多评论</caption>
+           <thead>
+              <tr>
+                 <th>新闻编号</th>
+                 <th>新闻标题</th>
+                 <th>新闻来源</th>
+                 <th>发表时间</th>
+                 <th>阅读人数</th>
+                 <th>喜欢人数</th>
+                 <th>评论人数</th>
+              </tr>
+           </thead>
+           <tbody>
+                <div id="news_table">
+                    <tr>
+                 <td>e16931cd6f3fe68662a7</td>
+                 <td>司马懿怒挖诸葛亮坟，终于跪下了</td>
+                  <td>新浪新闻</td>
+                 <td>2016-08-07 15:12:09</td>
+                  <td>25</td>
+                 <td>10</td>
+                  <td>5</td>
+              </tr>
+              <tr>
+                 <td>e16931cd6f3fe68662a7</td>
+                 <td>司马懿怒挖诸葛亮坟，终于跪下了</td>
+                  <td>新浪新闻</td>
+                 <td>2016-08-07 15:12:09</td>
+                  <td>25</td>
+                 <td>10</td>
+                  <td>5</td>
+              </tr>
+                </div>
+
+           </tbody>
+
+        </table>
+        </div>
+
     </div>
+    <div class="row control_button">
+        <div  class="col-sm-3">
+            <div id="read_list" class="read_list">
+                <a id="read" href="">最多阅读</a>
+            </div>
+        </div>
+        <div  class="col-sm-3">
+            <div id="love_list" class="read_list">
+                <a id="love" href="">最多喜欢</a>
+            </div>
+        </div>
+        <div  class="col-sm-3">
+            <div id="comment_list" class="read_list">
+                <a id="comment" href="">最多评论</a>
+            </div>
+        </div>
+        <div  class="col-sm-3">
+            <div id="delete_but" class="read_list">
+                <a id="" href="">新闻去旧</a>
+            </div>
+        </div>
+   </div>
 {% end %}
 

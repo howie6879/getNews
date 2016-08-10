@@ -3,7 +3,7 @@ __author__ = 'Howie'
 
 import tornado.escape
 import hashlib
-import methods.db as mSql
+from methods.pDb import newsDb
 from config.n_conf import admin
 from handlers.base import BaseHandler
 
@@ -15,6 +15,7 @@ class IndexHandler(BaseHandler):
     def post(self):
         username = self.get_argument("username")
         password = self.get_argument("password")
+        mSql = newsDb()
         result = mSql.select_table("n_admin", "*", "name", username)
         if result:
             db_pwd = result[0][2]

@@ -1,6 +1,6 @@
 # -*-coding:utf-8-*-
 
-import methods.db as db
+from methods.pDb import newsDb
 
 '''用户-标签（类型）潜在因子矩阵计算，与新闻-标签（类型）潜在因子矩阵相乘得到推荐新闻'''
 '''数据表来源：用户行为信息表，存入标签喜欢程度表,计算方法是，通过用户行为信息表信息，计算各用户对各标签的喜欢程度'''
@@ -16,11 +16,8 @@ class UserTagDataTool(object):
 
     def getData(self):
         try:
-            conn = db.conn
-            # 获取游标
-            cur = conn.cursor()
-            cur.execute('select * from user_tag_score')
-            data = cur.fetchall()
+            db = newsDb()
+            data = db.select_table_two(table="user_tag_score",column="*")
             for item in data:
                 # 获得用户id
                 self.user_id_list.append(item[0])

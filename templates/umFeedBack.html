@@ -18,6 +18,12 @@
     </a>
 </li>
 <li>
+    <a href="/spider">
+        <i class="glyphicon glyphicon-save" aria-hidden="true"></i>
+        <span class="">爬虫管理</span>
+    </a>
+</li>
+<li>
     <a href="/newsManage">
         <i class="glyphicon glyphicon-file" aria-hidden="true"></i>
         <span class="">新闻管理</span>
@@ -40,6 +46,8 @@
 
 {% block right %}
 
+<script src="{{static_url('js/userManage.js')}}"></script>
+
 <div id= "second" class = "left-sidebar nav-list second-menu">
 <li>
     <a href="/userManage">
@@ -61,4 +69,45 @@
 </li>
 
 </div>
+
+<script src="{{static_url('js/feedback.js')}}"></script>
+
+<div id="feedback" class="feedback">
+
+    <div id="not_feedback">
+        <div class="each_feedback">
+            <div class="feedback_name">
+            等一句地老天荒:
+        </div>
+        <div class="feedback_content">
+             INSERT语句是最常见的SQL语句之一,但是MySQL中INSERT语句的用法和标准用法不尽相同,下文就为您详细介绍MySQL中INSERT的一般用法,供您参考。 1用法 在..
+        </div>
+        <div class="feedback_gettime">
+            2016-07-15 12:12:12
+        </div>
+        <div class="feedback_isreply">
+            是否已审批: <span class="rep">否</span>
+        </div>
+
+        <input class="rep_button" type="button" value="审批">
+        </div>
+
+
+        <hr>
+
+
+
+    </div>
+
+    <ul class="pager">
+        <li><a id="shang" href="#">Previous</a></li>
+        <li><a id="xia" href="#">Next</a></li>
+    </ul>
+
+
+</div>
+
+
 {% end %}
+
+

@@ -62,7 +62,7 @@ class ContentOperator():
             if header == None:
                 header = soup.find('h1', id="main_title")
 
-            if keywordTag==None:
+            if keywordTag == None:
                 keywordTag = soup.find('p', class_="art_keywords")
 
             if content == None or header == None:
@@ -75,31 +75,37 @@ class ContentOperator():
                 patten = re.compile('<p.*?>(.*?)</p>', re.S)
                 item = re.findall(patten, str(quotation))
                 abstract = item[0]
-                # print(abstract)
             else:
-                abstract = str(textContent).split('。')[0]
-
+                abstract = str(textContent)
+                abstract = re.sub('\s*','',re.sub('\n*','',abstract))[0:100]
+            abstract = re.findall(r'<meta\s*name="?description"?\s*content="(.*?)"', newstr)[0] + abstract
+            print(abstract)
+            img_url_list = []
             if content:
                 img_list = BeautifulSoup(htmlContent, "lxml").find_all("img")
+                if img_list:
+                    for img in img_list:
+                        if 'ico' not in str(img.get("src")):
+                            img_url_list.append(img.get("src"))
+            keyword_list = []
             if keywordTag:
                 keyword = keywordTag.find_all("a")
-            img_url_list = []
-            if img_list:
-                for img in img_list:
-                    img_url_list.append(img.get("src"))
+                if keyword:
+                    for word in keyword:
+                        keyword_list.append(word.get_text())
 
-            keyword_list = []
-            if keyword:
-                for word in keyword:
-                    keyword_list.append(word.get_text())
-
+            # print(textContent)
+            # print(htmlContent)
+            # print(','.join(img_url_list))
+            # print(','.join(keyword_list))
+            # print(abstract)
             return textContent, htmlContent, img_url_list, keyword_list, abstract
 
         except ConnectionError:
             exit("ConnecttionError")
         except Exception as e:
             print(e)
-            return None, None, None, None
+            return None, None, None, None, None
 
     def parseHtml(self, htmlContent):
         """

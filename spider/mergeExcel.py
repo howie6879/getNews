@@ -36,12 +36,12 @@ class mergeExcel:
         self.allNews['news_history'] = []
         self.allNews['news_food'] = []
         # 定义新闻类型列表
-        self.category = ["__all__", "news_hot", "video", "gallery_detail", "news_society", "news_entertainment",
+        self.category = ["news_society", "news_entertainment",
                          "news_tech", "news_car", "news_sports", "news_finance", "news_military", "news_world",
                          "news_fashion", "news_travel", "news_discovery", "news_baby", "news_regimen", "news_story",
                          "news_essay", "news_game", "news_history", "news_food", ]
         # 定义网站列表,如有新增网站，可在此添加用于合并
-        self.newsSourse = ["sinaSource", "touTiaoSource"]
+        self.newsSourse = ["sinaSource", "touTiaoSource","pyspiderSource"]
 
     def merge(self,mainPath,secondPath):
         for typeSourse in self.newsSourse:

@@ -5,7 +5,7 @@ import os
 import xlrd
 import time
 import hashlib
-import methods.db as mSql
+from methods.pDb import newsDb
 import random
 
 
@@ -25,6 +25,7 @@ class newsInsert:
         table = data.sheets()[0]
         nrows = table.nrows
         tag = file.split("&")[1]
+        db = newsDb ()
         for i in range(1, nrows):
             value = table.row_values(i)
             times = time.time()
@@ -32,18 +33,20 @@ class newsInsert:
             startNum = random.randint(0, (len(md5newid) - 20))
             newsId = str(md5newid)[startNum:(startNum + 20)]
             try:
-                mysqlSuccess = mSql.insert_table(table="get_news", field="(news_id,news_link,source,title,abstract,tag,"
+
+                mysqlSuccess = db.insert_table(table="get_news", field="(news_id,news_link,source,title,abstract,tag,"
                                                                          "text_content,html_content,image,keyword)",
                                                  values="('" + newsId + "','" + value[2] + "','" + value[4] + "','" +
                                                         value[1]
                                                         + "','" + value[6] + "','" + tag + "','" + value[
                                                             10] + "','" + value[11] + "','" + value[12] + "','" + value[
-                                                            9] + "')")
+                                                           9] + "')")
+
                 if mysqlSuccess:
                     print("新闻保存sql完成!")
             except:
                 # 出现错误则回滚
-                mSql.conn.rollback()
+                print("404")
 
 
 newsInsert = newsInsert()

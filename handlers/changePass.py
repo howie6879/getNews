@@ -3,7 +3,7 @@ __author__ = 'howie'
 import tornado.web
 import tornado.escape
 import hashlib
-import methods.db as mSql
+from methods.pDb import newsDb
 from config.n_conf import admin
 from handlers.base import BaseHandler
 
@@ -14,12 +14,8 @@ class ChangePass(BaseHandler):
         password = self.get_argument("pass")
         password = str(hashlib.md5((admin["TOKEN"] + password).encode("utf-8")).hexdigest())
         sql = "update n_admin set pass='" + password + "' where name = 'admin'"  # 执行SQL语句
-
-        try:
-            mSql.cur.execute(sql)
-            # 提交到数据库执行
-            mSql.conn.commit()
+        mSql = newsDb()
+        if mSql.exeSql(sql):
             self.write("密码修改成功")
-        except:
-           # 出现错误则回滚
-           mSql.conn.rollback()
+        else:
+            self.write("密码修改失败")

@@ -3,7 +3,7 @@ __author__ = 'Howie'
 
 import tornado.web
 import tornado.escape
-import methods.db as m_sql
+from methods.pDb import newsDb
 from handlers.base import BaseHandler
 
 
@@ -21,7 +21,8 @@ class AdminHandler(BaseHandler):
                     "news_regimen":"养生", "news_story":"故事","news_essay":"美文", "news_game":"游戏", "news_history":"历史", "news_food":"美食"}
             numTag = {}
             for i in cateType.keys():
-                result = m_sql.select_table(table="get_news",column="count(*)",condition="tag",value=i)
+                mSql = newsDb()
+                result = mSql.select_table(table="get_news",column="count(*)",condition="tag",value=i)
                 numTag[cateType[i]]=result[0][0]
             #排序
             sortTag = list(sorted(numTag.items(), key=lambda d:d[1], reverse = True))

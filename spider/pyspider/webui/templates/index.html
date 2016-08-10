@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>爬虫管理 - pyspider</title>
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <meta name="description" content="pyspider dashboard">
+    <meta name="author" content="binux">
+    <link href="{{ url_for('cdn', path='twitter-bootstrap/3.1.1/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('cdn', path='x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css') }}" rel="stylesheet">
+    <link href="{{ url_for('cdn', path='sortable/0.6.0/css/sortable-theme-bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='index.css') }}" rel="stylesheet">
+
+    <script src="{{ url_for('cdn', path='jquery/1.11.0/jquery.min.js') }}"></script>
+  </head>
+
+  <body>
+    <header>
+      <div id="need-set-status-alert" class="alert alert-danger alert-dismissible" style="display:none;" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        Project is not started, please set status to RUNNING or DEBUG.
+      </div>
+      <h1>爬虫管理 - pyspider</h1>
+      <table class="table queue-info">
+        <tr>
+          <th>scheduler</th>
+          <td class="queue_value" title="scheduler2fetcher">???</td>
+          <th>fetcher</th>
+          <td class="queue_value" title="fetcher2processor">???</td>
+          <th>processor</th>
+          <td class="queue_value" title="processor2result">???</td>
+          <th>result_worker</th>
+        </tr>
+        <tr>
+          <td style="border-width: 0px 1px;"></td>
+          <td colspan=3></td>
+          <td style="border-width: 0px 1px;"></td>
+          <td colspan=2 style="border-width: 0px;"></td>
+        </tr>
+        <tr>
+          <td style="border-width: 0px 0px 1px 1px"></td>
+          <td colspan=3 style="border-width: 1px 0px;">
+            <span class="queue_value" title="newtask_queue">???</span>
+            + <span class="queue_value" title="status_queue">???</span>
+          </td>
+          <td style="border-width: 0px 1px 1px 0px;"></td>
+          <td colspan=2 style="border-width: 0px;"></td>
+        </tr>
+      </table>
+    </header>
+    <section>
+      <div class="global-btn clearfix">
+        <div class="create-btn-div">
+          <button class="project-create btn btn-default btn-primary" data-toggle="modal" data-target="#create-project-modal">Create</button>
+        </div>
+
+        <div class="active-btn-div">
+          {% if config.scheduler_rpc is not none %}
+            <a class="btn btn-default btn-info" href='/tasks' target=_blank>Recent Active Tasks</a>
+          {% endif %}
+        </div>
+
+        <div class="modal fade" id="create-project-modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Create New Project</h4>
+              </div>
+              <form class="form-horizontal" method="POST">
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label" for="project-name">Project Name</label>
+                    <div class="col-sm-9">
+                      <input class="form-control" type="text" name="project-name" autocomplete="off">
+                      <span class="help-block" style="display: none;">[a-zA-Z0-9_]+</span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label" for="start-urls">Start URL(s)</label>
+                    <div class="col-sm-9">
+                      <input class="form-control" type="text" name="start-urls">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label" for="script-mode">Mode</label>
+                    <div class="col-sm-9">
+                      <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default active">
+                          <input type="radio" name="script-mode" id="mode-script" autocomplete="off" value="script" checked> Script
+                        </label>
+                        <label class="btn btn-default">
+                          <input type="radio" name="script-mode" id="mode-slime" autocomplete="off" value="slime"> Slime
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table sortable-theme-bootstrap projects">
+        <thead>
+          <tr>
+            <th>group</th>
+            <th>project name</th>
+            <th>status</th>
+            <th>rate/burst</th>
+            <th data-type="num">avg time</th>
+            <th class="project-progress" data-type="num">&nbsp;<span>progress</span></th>
+            <th data-type="num">&nbsp;</th>
+            <th data-type="num">&nbsp;</th>
+            <th data-type="num">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+            <th data-type="num">actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for project in projects %}
+          <tr data-name="{{ project['name'] }}">
+            <td class="project-group"><span>{{ project['group'] or '' }}</span></td>
+            <td class="project-name"><a href="/debug/{{ project['name'] }}">{{ project['name'] }}</a></td>
+            <td class="project-status">
+              <span class="status-{{ project['status'] }}" data-value="{{ project['status'] }}">{{ project['status'] }}</span>
+            </td>
+            <td class="project-rate"><span>{{ project['rate'] }}/{{ project['burst'] }}</span></td>
+            <td class="project-time"></td>
+            <td class="project-progress progress-5m">
+              <div class="progress">
+                <div class="progress-text">5m</div>
+                <div class="progress-bar progress-pending"></div>
+                <div class="progress-bar progress-bar-success progress-success"></div>
+                <div class="progress-bar progress-bar-warning progress-retry"></div>
+                <div class="progress-bar progress-bar-danger progress-failed"></div>
+              </div>
+            </td>
+            <td class="project-progress progress-1h">
+              <div class="progress">
+                <div class="progress-text">1h</div>
+                <div class="progress-bar progress-pending"></div>
+                <div class="progress-bar progress-bar-success progress-success"></div>
+                <div class="progress-bar progress-bar-warning progress-retry"></div>
+                <div class="progress-bar progress-bar-danger progress-failed"></div>
+              </div>
+            </td>
+            <td class="project-progress progress-1d">
+              <div class="progress">
+                <div class="progress-text">1d</div>
+                <div class="progress-bar progress-pending"></div>
+                <div class="progress-bar progress-bar-success progress-success"></div>
+                <div class="progress-bar progress-bar-warning progress-retry"></div>
+                <div class="progress-bar progress-bar-danger progress-failed"></div>
+              </div>
+            </td>
+            <td class="project-progress progress-all">
+              <div class="progress">
+                <div class="progress-text">all</div>
+                <div class="progress-bar progress-pending"></div>
+                <div class="progress-bar progress-bar-success progress-success"></div>
+                <div class="progress-bar progress-bar-warning progress-retry"></div>
+                <div class="progress-bar progress-bar-danger progress-failed"></div>
+              </div>
+            </td>
+            <td class="project-actions" data-value="{{ project.updatetime }}">
+              # if config.scheduler_rpc is not none:
+              <button class="project-run btn btn-default btn-xs">Run</button>
+              <a class="btn btn-default btn-xs" href="/tasks?project={{ project.name }}" target=_blank>Active Tasks</a>
+              # endif
+              # if config.resultdb:
+              <a class="btn btn-default btn-xs" href="/results?project={{ project.name }}" target=_blank>Results</a>
+              # endif
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+    <script src="{{ url_for('cdn', path='twitter-bootstrap/3.1.1/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js') }}"></script>
+    <script src="{{ url_for('cdn', path='sortable/0.6.0/js/sortable.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+  </body>
+</html>
+<!-- vim: set et sw=2 ts=2 sts=2 ff=unix fenc=utf8 syntax=htmldjango: -->
+

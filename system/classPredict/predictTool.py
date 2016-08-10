@@ -1,7 +1,7 @@
 #coding:utf-8
 
 import math
-import methods.db as db
+from methods.pDb import newsDb
 
 class NavieBayesPredict(object):
     """使用训练好的模型进行预测"""
@@ -112,7 +112,7 @@ class NavieBayesPredict(object):
             line = self.test_data_file.readline().strip()
 
         #提交总体sql事务
-        db.conn.commit()
+        #db.conn.commit()
 
     # def evaluation(self):
     #     #评价当前分类器的准确性
@@ -148,6 +148,7 @@ class NavieBayesPredict(object):
     #         print (class_id,'->precision=',precision,'recall=',recall)
 
     def saveToDb(self,new_id,class_score):
+        db = newsDb()
         list = [str(class_score["society"]),str(class_score["entertainment"]),str(class_score["tech"]),str(class_score["car"]),
                           str(class_score["sports"]),str(class_score["finance"]),str(class_score["military"]),str(class_score["world"]),
                           str(class_score["fashion"]),str(class_score["travel"]),str(class_score["discovery"]),str(class_score["baby"]),
@@ -155,10 +156,10 @@ class NavieBayesPredict(object):
                           str(class_score["history"]),str(class_score["food"])]
 
         tmpstr = ','.join(list)
-        sql = "insert into news_tag_deep values('" + new_id+ "'," + tmpstr + ")"
-
-        db.cur.execute(sql)
+        print(tmpstr)
+        db.insert_table(table = "news_tag_deep", field= "", values = "('" + new_id+ "'," + tmpstr + ")")
         print("存储" + new_id + "新闻的类别偏重比例")
+
 
     def predict(self):
         self.loadModel()
