@@ -24,7 +24,7 @@ class DataOperator(BaseHandler):
                     "news_fashion", "news_travel", "news_discovery", "news_baby", "news_regimen", "news_story",
                     "news_essay", "news_game", "news_history", "news_food"]
             allSpider.touTiao(category=cate, page=page, num=num)
-            allSpider.sina(num=1000, page=10)
+            allSpider.sina(num=1000, page=2)
             print("success")
         elif action == "repeatedData":
             # 先进行合并
