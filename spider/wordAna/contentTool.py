@@ -25,9 +25,22 @@ class ContentOperator():
             header = soup.find('div', class_="article-header")
             content = soup.find('div', class_="article-content")
 
-            if content == None or header == None:
-                return None, None, None
+            title = soup.find('h1', class_="title").get_text()
+            abstract = re.findall(r'<meta\s*name="?description"?\s*content="(.*?)"', newstr)[0]
+            keywords = re.findall(r'<meta\s*name="?keywords"?\s*content="(.*?)"', newstr)[0]
+            source = soup.find('span', class_="src").get_text()
+            tag = soup.find('a', ga_event="click_channel").get_text()
+            cateType = {"社会": "news_society", "娱乐": "news_entertainment", "科技": "news_tech", "汽车": "news_car",
+                        "体育": "news_sports", "财经": "news_finance",
+                        "军事": "news_military", "国际": "news_world", "时尚": "news_fashion", "旅游": "news_travel",
+                        "探索": "news_discovery", "育儿": "news_baby",
+                        "养生": "news_regimen", "美文": "news_story", "故事": "news_essay", "游戏": "news_game",
+                        "历史": "news_history", "美食": "news_food"}
 
+            try:
+                tag = cateType[tag]
+            except Exception:
+                tag = 'news_society'
             htmlContent = str(header) + str(content)
             textContent = self.parseHtml(htmlContent)
 
@@ -38,7 +51,7 @@ class ContentOperator():
                 for img in img_list:
                     img_url_list.append(img.get("src"))
 
-            return textContent, htmlContent, img_url_list
+            return textContent, htmlContent, img_url_list, title, abstract, keywords, source, tag
 
         except ConnectionError:
             exit("ConnecttionError")
@@ -77,7 +90,7 @@ class ContentOperator():
                 abstract = item[0]
             else:
                 abstract = str(textContent)
-                abstract = re.sub('\s*','',re.sub('\n*','',abstract))[0:100]
+                abstract = re.sub('\s*', '', re.sub('\n*', '', abstract))[0:100]
             abstract = re.findall(r'<meta\s*name="?description"?\s*content="(.*?)"', newstr)[0] + abstract
             print(abstract)
             img_url_list = []

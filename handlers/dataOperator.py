@@ -49,7 +49,7 @@ class DataOperator(BaseHandler):
             # 将新闻插入数据库
             newsInsert.insertSql("wordAnaNews")
             # 删除分词文件夹里面的表
-            #DataController.rmRepeate(['wordAna', 'wordAnaNews'])
+            DataController.rmRepeate(['wordAna', 'wordAnaNews'])
             startPredict()
             gc = GeneCulcal()
             gc.getMatData()

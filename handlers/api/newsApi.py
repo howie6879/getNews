@@ -143,9 +143,8 @@ class NewsTags(Confirm):
             db = newsDb()
             # 通过用户id在推荐表中寻找要推荐的新闻id
             information = db.select_table(table = "news_recommend", column = "*", condition = "user_id", value =user_id )
-            print(information[0][1].count("$"))
             try:
-                if user_id:
+                if user_id !="" and user_id !=" ":
                     if information:
                     # 得到该用户的推荐新闻
                         if information[0][1].count("$"):
@@ -196,7 +195,6 @@ class NewsTags(Confirm):
                                     for d in range(0,20):
                                         re_news.append(each_news[d][0])
                             else:
-                                print("nei,")
                                 for i in range(0, len(eng_tags)):
                                     if chi_tags[i] == love_tags[0][0]:
                                         select_tag = eng_tags[i]
@@ -241,6 +239,7 @@ class NewsTags(Confirm):
         read_times = 0
         love_times = 0
         comment_times = 0
+        image = ""
         news_content = db.select_table (table="get_news", column="news_id,title,time,source,image,abstract",
                                               condition="news_id ",value=news_id)
         opData = db.select_table (table="news_mess", column="read_times,love_times,comment_times",
@@ -277,20 +276,21 @@ class NewsTags(Confirm):
             #chineseTime = str(int(((d2 - d1).seconds) / 3600)) + "小时前"
 
 
-
-
-
         if opData:
             read_times = opData[0][0]
             love_times = opData[0][1]
             comment_times = opData[0][2]
+        print("**********"+str(news_content [0][4].count("icon")) + "**********")
         if news_content [0][4].count("http://") > 1:
-            image = (news_content [0][4].split(","))[0]
+            for i in range(0,len(news_content [0][4].split(","))):
+                if (news_content [0][4].split(","))[i].count("icon")<1:
+                    image = (news_content [0][4].split(","))[i]
+                    break
             #print(image)
         else:
-            image = news_content [0][4]
-        #print(str(news_content[0][2]))
-        #print(str(news_content))
+            if news_content [0][4].count("icon")<1:
+                image = news_content [0][4]
+
         data={"news_id": news_content [0][0], "title": news_content [0][1], "time": chineseTime, "source": news_content [0] [3],
              "image": image, "abstract": news_content [0] [5], "read_times": read_times,
              "love_times": love_times, "comment_times": comment_times}
@@ -308,6 +308,7 @@ class NewsContent(Confirm):
         time = self.get_argument('time')
         tooken = self.tooken(time=time)
         message = []
+        relate_list = []
         is_love = 0
         time = ''
         uname = ''
@@ -318,7 +319,13 @@ class NewsContent(Confirm):
             db = newsDb()
             news = db.select_table(table="get_news",column="html_content,news_link",condition="news_id",value=news_id)
             messageall = db.select_table(table="news_comment",column="*",condition="news_id",value=news_id)
-
+            relate = db.select_table_three("select tag from get_news where news_id = '"+news_id+"'")
+            tag =  relate[0][0]
+            all_relate = db.select_table_three("select news_id,title from get_news where tag ='"+tag+"'")
+            ar = random.sample(all_relate,3)
+            for i in range(0,len(ar)):
+                relate_list.append({"news_id":ar[i][0],"news_title":ar[i][1]})
+            print(relate_list)
             try:
                 news_content = news[0][0]
                 news_url = news[0][1]
@@ -356,8 +363,8 @@ class NewsContent(Confirm):
                             uname = com_username[0][0]
                             message.append({"head_url": head_url,"user_id":me[0], "username": uname, "comment_time": times,"comment_content":comment_content,"dianzan_num":me[3]})
 
-                data = {"news_id":news_id,"content":news_content ,"news_url":news_url, "is_comment": is_comment, "is_love": is_love, "comment_list": message}
-                print(data)
+                data = {"news_id":news_id,"content":news_content ,"news_url":news_url, "is_comment": is_comment, "is_love": is_love, "comment_list": message,"relate_list":relate_list}
+
                 print("data success!")
                 result = {"message": "success", "data": data}
                 result = json.dumps(result)

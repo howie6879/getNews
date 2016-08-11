@@ -43,7 +43,28 @@ def getNewsContent():
 
                 elif urlstr.find("toutiao.com") != -1:
                     print(urlstr)
-                    textContent, htmlContent, img_url_list = ct.getToutiaoContent(urlstr)
+                    textContent, htmlContent, img_url_list, title, abstract, keywords, source, tag = ct.getToutiaoContent(
+                        urlstr)
+                    if title:
+                        new_info["title"] = title
+                    else:
+                        new_info["title"] = ''
+                    if abstract:
+                        new_info["abstract"] = abstract
+                    else:
+                        new_info["abstract"] = ''
+                    if keywords:
+                        new_info["keywords"] = keywords
+                    else:
+                        new_info["keywords"] = ''
+                    if source:
+                        new_info["source"] = source
+                    else:
+                        new_info["source"] = ''
+                    if tag:
+                        new_info["tag"] = tag
+                    else:
+                        new_info["tag"] = ''
 
                 if textContent == None or htmlContent == None:
                     pass

@@ -2,11 +2,11 @@
 __author__ = 'Jeezy'
 
 import os
-import xlrd
 import time
 import hashlib
 from methods.pDb import newsDb
 import random
+import pandas as pd
 
 
 class newsInsert:
@@ -21,13 +21,12 @@ class newsInsert:
                 self.insert(file)
 
     def insert(self, file):
-        data = xlrd.open_workbook(file)
-        table = data.sheets()[0]
-        nrows = table.nrows
+        data = pd.read_excel(file,sheetname="allNews")
+        data = data.drop_duplicates(subset='title', keep='last')
         tag = file.split("&")[1]
         db = newsDb ()
-        for i in range(1, nrows):
-            value = table.row_values(i)
+        for i in range(0, len(data) ):
+            value = data.values[i]
             times = time.time()
             md5newid = hashlib.md5(str(times).encode("utf-8")).hexdigest()
             startNum = random.randint(0, (len(md5newid) - 20))
