@@ -161,19 +161,21 @@ class NewsTags(Confirm):
                             # 请求大于有效值
                             self.errorRequest (num=-1)
                         else:
-                            if tag:
+                            if tag == '':
+                                for i in range(int(alrequest), int(alrequest) + int(count)):
+                                    news_id = news[i].split('+')[0]
+                                    data.append(self.dataNews(news_id))
+                            else:
                                 id_list = db.select_table(table="get_news", column="news_id", condition="tag",
                                                           value=tag)
-                            else:
-                                id_list = db.select_table_two(table="get_news", column="news_id")
-                            if len(id_list) < int(alrequest) + int(count):
-                                for j in range(int(alrequest), len(id_list)):
-                                    # print(self.dataNews (id_list[j][0]))
-                                    data.append(self.dataNews(id_list[j][0]))
-                            else:
-                                for j in range(int(alrequest), int(alrequest) + int(count)):
-                                    # print(self.dataNews (id_list[j][0]))
-                                    data.append(self.dataNews(id_list[j][0]))
+                                if len(id_list) < int(alrequest) + int(count):
+                                    for j in range(int(alrequest), len(id_list)):
+                                        # print(self.dataNews (id_list[j][0]))
+                                        data.append(self.dataNews(id_list[j][0]))
+                                else:
+                                    for j in range(int(alrequest), int(alrequest) + int(count)):
+                                        # print(self.dataNews (id_list[j][0]))
+                                        data.append(self.dataNews(id_list[j][0]))
 
 
                     else:

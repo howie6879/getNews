@@ -13,7 +13,7 @@ class GetToutiao():
         self.count = count
         self.category = category
         self.time = time
-        self.url = "http://toutiao.com/api/article/recent/?count=" + count + "&category=" + category + "&max_behot_time=" + str(
+        self.url = "http://toutiao.com/api/article/recent/?count=" + count + "&category=" + category + "&as=A1A587AA0C2D2E1&cp=57ACCD52BEB1EE1&max_behot_time=" + str(
             time)
 
     def getNews(self):
