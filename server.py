@@ -1,17 +1,16 @@
-#-*- coding: utf-8 -*
+# -*- coding: utf-8 -*
 __author__ = 'Howie'
 
 import tornado.options
 import tornado.ioloop
-from application import  application
+from application import application
 
 
-def main():
-    tornado.options.parse_command_line()
-    application.listen(8888)
-    print("Development server is running at http://127.0.0.1:8888")
+def main(port):
+    #tornado.options.parse_command_line()
+    application.listen(port)
+    print("Development server is running at http://127.0.0.1:%s" % port)
     print("Quit the server with Control-C")
     tornado.ioloop.IOLoop.instance().start()
 
-if __name__ == "__main__":
-    main()
+#main(8888)

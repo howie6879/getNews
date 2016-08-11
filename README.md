@@ -8,5 +8,16 @@
 
 对采集的新闻数据进行分析，后台实现图形化操作，生成API供Android调用
 
-**spider/**目录下为爬虫模块
+
+```
+myNews
+Usage: myNews [-p] <port>
+
+Options:
+    -h,--help       显示帮助菜单
+    -p              端口号
+
+Example:
+    myNews -p 8888  设置端口号为8888
+```
 
