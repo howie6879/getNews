@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2016-08-10 12:33:04
+-- Generation Time: 2016-08-11 19:45:06
 -- 服务器版本： 10.1.13-MariaDB
 -- PHP Version: 5.6.20
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `get_news` (
   `news_id` varchar(20) NOT NULL,
-  `news_link` varchar(100) DEFAULT NULL,
+  `news_link` varchar(200) DEFAULT NULL,
   `source` varchar(20) DEFAULT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `title` varchar(50) NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE `get_news` (
   `tag` varchar(20) NOT NULL,
   `text_content` mediumtext NOT NULL,
   `html_content` mediumtext NOT NULL,
-  `image` varchar(100) DEFAULT NULL,
+  `image` varchar(1000) DEFAULT NULL,
   `keyword` varchar(100) NOT NULL,
   `is_old` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -83,7 +83,7 @@ INSERT INTO `news_feedback` (`user_id`, `feedback`, `getTime`, `reply`, `replyTi
 CREATE TABLE `news_hot` (
 `news_id` varchar(20)
 ,`time` timestamp
-,`image` varchar(100)
+,`image` varchar(1000)
 ,`abstract` varchar(500)
 ,`source` varchar(20)
 ,`title` varchar(50)
@@ -106,6 +106,27 @@ CREATE TABLE `news_mess` (
   `love_times` int(11) NOT NULL DEFAULT '0',
   `comment_times` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `news_nums`
+--
+
+CREATE TABLE `news_nums` (
+  `tag` varchar(20) NOT NULL,
+  `nums` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 替换视图以便查看 `news_nums_view`
+--
+CREATE TABLE `news_nums_view` (
+`tag` varchar(20)
+,`count` bigint(21)
+);
 
 -- --------------------------------------------------------
 
@@ -571,8 +592,8 @@ CREATE TABLE `user_tag_score` (
 --
 
 INSERT INTO `user_tag_score` (`user_id`, `news_society`, `news_entertainment`, `news_tech`, `news_car`, `news_sports`, `news_finance`, `news_military`, `news_world`, `news_fashion`, `news_travel`, `news_discovery`, `news_baby`, `news_regimen`, `news_story`, `news_essay`, `news_game`, `news_history`, `news_food`) VALUES
-('000001', 4, 2, 2, 1, 3, 4, 2, 2, 1, 1, 3, 1, 3, 1, 1, 2, 22, 2),
-('000002', 1, 3, 1, 14, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 3, 1),
+('000001', 2.694537046614036, 2.512533923323375, 2.6750895454310064, 2.1522782579492628, 2.799692362566384, 2.250496310034508, 3.108259730537031, 3.3311367459787666, 2.2092105327698275, 2.7812033222513652, 2.2123955479525237, 2.9696680705535488, 2.176075568076781, 2.144448250281169, 2.9159446905096824, 2.0957476792748952, 3.680511261795824, 2.2907711541000144),
+('000002', 5.23694051421028, 4.4558833154063775, 8.476075682968919, 13.67755177926377, 3.4937616943340575, 5.838625269616177, 5.673629955818645, 5.122406927701453, 6.310783928477896, 4.258381588785207, 5.841571127377751, 6.43179983772713, 5.874526075937517, 5.791844857872957, 7.22612400088063, 5.360897620264073, 3.753835917929619, 6.17535990542753),
 ('000003', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('000004', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('000005', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
@@ -639,7 +660,7 @@ INSERT INTO `user_tag_score` (`user_id`, `news_society`, `news_entertainment`, `
 ('000066', 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1),
 ('000067', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1),
 ('000068', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-('000069', 1, 4, 7, 3, 1, 10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 5, 1),
+('000069', 1.5497209752611714, 4.684211844004147, 9.662894649793694, 3.4335737307436975, 1.362041133395879, 12.971001385730487, 2.0561922416905314, 2.3408948114293455, 1.7496557333844642, 1.5268666010248908, 1.9823199713678405, 1.7530789990901845, 1.881822511462544, 1.7671557992271185, 2.0183009422470386, 5.038980176136956, 5.287616674729766, 1.933671819280247),
 ('000071', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('000072', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('000073', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
@@ -654,6 +675,15 @@ DROP TABLE IF EXISTS `news_hot`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `news_hot`  AS  select `a`.`news_id` AS `news_id`,`a`.`time` AS `time`,`a`.`image` AS `image`,`a`.`abstract` AS `abstract`,`a`.`source` AS `source`,`a`.`title` AS `title`,`b`.`tag` AS `tag`,`b`.`love_times` AS `love_times`,`b`.`read_times` AS `read_times`,`b`.`comment_times` AS `comment_times` from (`get_news` `a` join `news_mess` `b`) where (`a`.`news_id` = `b`.`news_id`) ;
 
+-- --------------------------------------------------------
+
+--
+-- 视图结构 `news_nums_view`
+--
+DROP TABLE IF EXISTS `news_nums_view`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `news_nums_view`  AS  select `get_news`.`tag` AS `tag`,count(`get_news`.`tag`) AS `count` from `get_news` group by `get_news`.`tag` ;
+
 --
 -- Indexes for dumped tables
 --
@@ -662,7 +692,9 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- Indexes for table `get_news`
 --
 ALTER TABLE `get_news`
-  ADD PRIMARY KEY (`news_id`);
+  ADD PRIMARY KEY (`news_id`),
+  ADD UNIQUE KEY `get_news_title_uindex` (`title`),
+  ADD UNIQUE KEY `get_news_news_id_uindex` (`news_id`);
 
 --
 -- Indexes for table `news_comment`

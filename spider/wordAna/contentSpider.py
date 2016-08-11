@@ -33,6 +33,8 @@ def getNewsContent():
         for new_info in infoList:
             urlstr = new_info["display_url"]
             # 区分链接，链接来自头条或新浪，关键词，toutiao.com和sina.com
+            htmlContent, textContent, title, abstract, keywords, source, tag = '', '', '', '', '', '', ''
+            img_url_list = []
             try:
                 # 这里需要去除sina的滚动图片类新闻及多媒体新闻
                 if urlstr.find("sina.com") != -1 and urlstr.find("slide") == -1 and urlstr.find("video") == -1:
@@ -65,21 +67,18 @@ def getNewsContent():
                         new_info["tag"] = tag
                     else:
                         new_info["tag"] = ''
-
-                if textContent == None or htmlContent == None:
-                    pass
+            except:
+                pass
                 # 采用结巴中文分词提取正文最重要的十个特征词
                 # 相关算法 --- tf-idf算法
                 # print(textContent)
-                feature = jieba.analyse.extract_tags(textContent, 15)
-                new_info["textContent"] = textContent
-                new_info["htmlContent"] = htmlContent
-                new_info["feature"] = feature
-                new_info["img"] = img_url_list
-                last_list.append(new_info)
-                # print(new_info)
-            except:
-                pass
+            feature = jieba.analyse.extract_tags(textContent, 15)
+            new_info["textContent"] = textContent
+            new_info["htmlContent"] = htmlContent
+            new_info["feature"] = feature
+            new_info["img"] = img_url_list
+            last_list.append(new_info)
+
         # 信息过滤、爬取及关键词提取完毕，开始将它存到excel表中
         excelName = os.path.join(finalDir, file)
         print("excelName:" + excelName)

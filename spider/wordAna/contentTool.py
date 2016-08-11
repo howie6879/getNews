@@ -43,13 +43,7 @@ class ContentOperator():
                 tag = 'news_society'
             htmlContent = str(header) + str(content)
             textContent = self.parseHtml(htmlContent)
-
-            img_list = BeautifulSoup(htmlContent, "lxml").find_all("img")
-
-            img_url_list = []
-            if img_list:
-                for img in img_list:
-                    img_url_list.append(img.get("src"))
+            img_url_list = re.findall(r'<img.*?src="(.*?)"/?>',htmlContent)
 
             return textContent, htmlContent, img_url_list, title, abstract, keywords, source, tag
 
@@ -92,7 +86,7 @@ class ContentOperator():
                 abstract = str(textContent)
                 abstract = re.sub('\s*', '', re.sub('\n*', '', abstract))[0:100]
             abstract = re.findall(r'<meta\s*name="?description"?\s*content="(.*?)"', newstr)[0] + abstract
-            print(abstract)
+            #print(abstract)
             img_url_list = []
             if content:
                 img_list = BeautifulSoup(htmlContent, "lxml").find_all("img")

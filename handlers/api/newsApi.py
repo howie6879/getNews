@@ -161,19 +161,19 @@ class NewsTags(Confirm):
                             # 请求大于有效值
                             self.errorRequest (num=-1)
                         else:
-                            if tag == '':
-                                for i in range (int (alrequest), int (alrequest) + int (count)):
-                                    print(news [i].split ('+') [0])
-                                    news_id = news [i].split ('+') [0]
-                                    data.append (self.dataNews (news_id))
+                            if tag:
+                                id_list = db.select_table(table="get_news", column="news_id", condition="tag",
+                                                          value=tag)
                             else:
-                                n = 0
-                                for i in range (int (alrequest), lenght):
-                                    if n < int (count):
-                                        news_id = news [i].split ('+') [0]
-                                        if tag == news [i].split ('+') [1]:
-                                            n = n + 1
-                                            data.append (self.dataNews (news_id))
+                                id_list = db.select_table_two(table="get_news", column="news_id")
+                            if len(id_list) < int(alrequest) + int(count):
+                                for j in range(int(alrequest), len(id_list)):
+                                    # print(self.dataNews (id_list[j][0]))
+                                    data.append(self.dataNews(id_list[j][0]))
+                            else:
+                                for j in range(int(alrequest), int(alrequest) + int(count)):
+                                    # print(self.dataNews (id_list[j][0]))
+                                    data.append(self.dataNews(id_list[j][0]))
 
 
                     else:
@@ -280,7 +280,6 @@ class NewsTags(Confirm):
             read_times = opData[0][0]
             love_times = opData[0][1]
             comment_times = opData[0][2]
-        print("**********"+str(news_content [0][4].count("icon")) + "**********")
         if news_content [0][4].count("http://") > 1:
             for i in range(0,len(news_content [0][4].split(","))):
                 if (news_content [0][4].split(","))[i].count("icon")<1:
@@ -845,7 +844,7 @@ class HotList(Confirm):
         try:
             #allLove = mSql.select_table(table = "hot", column = "news_id,tag,love_times,read_times,comment_times", condition = "1", value = "1 order by love_times desc")
             listSql = "select news_id,tag,image,love_times,read_times,comment_times,abstract," \
-                      "source,title,time from news_hot where TIMESTAMPDIFF(DAY,time,'" +times+ "') < 10 order by love_times desc"
+                      "source,title,time from news_hot where TIMESTAMPDIFF(DAY,time,'" +times+ "') < 2 order by love_times desc"
             #print(listSql)
 
             # 提交到数据库执行
@@ -883,7 +882,7 @@ class HotList(Confirm):
         try:
             # allLove = mSql.select_table(table = "hot", column = "news_id,tag,love_times,read_times,comment_times", condition = "1", value = "1 order by love_times desc")
             listSql = "select news_id,tag,image,love_times,read_times,comment_times,abstract," \
-                      "source,title from news_hot where TIMESTAMPDIFF(DAY,time,'" + time + "') < 10 order by read_times desc"
+                      "source,title from news_hot where TIMESTAMPDIFF(DAY,time,'" + time + "') < 2 order by read_times desc"
             # print(listSql)
             # 提交到数据库执行
             allLove = db.select_table_three(listSql)
@@ -916,7 +915,7 @@ class HotList(Confirm):
         try:
             # allLove = mSql.select_table(table = "hot", column = "news_id,tag,love_times,read_times,comment_times", condition = "1", value = "1 order by love_times desc")
             listSql = "select news_id,tag,image,love_times,read_times,comment_times,abstract," \
-                      "source,title from news_hot where TIMESTAMPDIFF(DAY,time,'" + time + "') < 10 order by comment_times desc"
+                      "source,title from news_hot where TIMESTAMPDIFF(DAY,time,'" + time + "') < 2 order by comment_times desc"
             # print(listSql)
             # 提交到数据库执行
             allLove = db.select_table_three(listSql)
