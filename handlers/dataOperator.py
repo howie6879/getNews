@@ -43,7 +43,9 @@ class DataOperator(BaseHandler):
             # 清除老数据
             db = newsDb()
             db.exeSql("delete from news_tag_deep")
+            db.exeSql("delete from news_nums")
             db.exeSql("delete from get_news where is_old=0")
+            db.exeSql("insert into news_nums select * from news_nums_view")
             # 将新闻插入数据库
             newsInsert.insertSql("wordAnaNews")
             # 删除分词文件夹里面的表

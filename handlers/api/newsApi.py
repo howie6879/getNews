@@ -392,14 +392,33 @@ class NewsContent(Confirm):
 
 
                 #************************用户标签因子历史分数****************************
+                all_tags = ('news_society','news_entertainment','news_tech','news_car','news_sports','news_finance','news_military','news_world','news_fashion','news_travel','news_discovery','news_baby','news_regimen','news_story','news_essay','news_game','news_history','news_food')
+
                 tag = db.select_table(table="get_news", column="tag", condition="news_id", value=news_id)
-                if_tag_deep = db.select_table_three("select * from user_tag_score where user_id='"+ user_id+"'")
-                if if_tag_deep:
-                    jiafen = db.exeSql("update user_tag_score set "+tag[0][0]+" = "+ tag[0][0]+" + 1 where user_id ='"+user_id+"'")
-                else:
-                    jiafen = db.exeSql("insert into user_tag_score(user_id,"+tag[0][0]+") values('"+user_id+"',1)")
-                if jiafen:
-                    print("加分成功!")
+
+                if_news_deep = db.select_table(table="news_tag_deep", column="*", condition="news_id", value=news_id)
+
+                upda_sql = " "
+                if if_news_deep:
+                    for i in range(0,len(all_tags)):
+
+                        if upda_sql==" ":
+                            upda_sql = upda_sql + all_tags[i] + " = " + all_tags[i] + " + " + str(if_news_deep[0][i+1])
+                        else:
+                            upda_sql = upda_sql + "," + all_tags [i] + " = " + all_tags [i] + " + " + str(if_news_deep [0] [i+1])
+
+                    if_tag_deep = db.select_table_three("select * from user_tag_score where user_id='"+ user_id+"'")
+                    if if_tag_deep:
+                        jiafen = db.exeSql("update user_tag_score set "+upda_sql+" where user_id ='"+user_id+"'")
+                    else:
+                        in_sql = "'" + user_id + "'"
+                        num = len (all_tags)+1
+                        for i in range (0, len (all_tags)):
+                            in_sql = in_sql + "," + str(if_news_deep[0][i+1])
+
+                        jiafen = db.exeSql("insert into user_tag_score values("+in_sql+")")
+                    if jiafen:
+                        print("阅读加分成功!")
 
 
 
@@ -539,16 +558,7 @@ class LoveNews(Confirm):
                         love_times = db.select_table(table = "news_mess", column = "love_times", condition = "news_id", value = news_id)
                         love_times = love_times[0][0] +1
                         tag_point = db.select_table(table = "user_tag_score", column = tag[0][0], condition = "user_id", value = user_id)
-                        #print("start")
-                        #is_userBehavior = mSql.select_table(table = "user_behavior", column = "*", condition = "news_id ", value = news_id + "' and user_id = '" +user_id)
 
-                        #st = ScoreTool()
-                        #news_score,tag_score_list = st.scoreUpdate(user_id,news_id,tag[0][0],0,2)
-
-                        #print(news_score)
-                        #print(tag_score_list)
-
-                        #print("end")
                         #*****************用户行为表的更新******************************
                         timescore = db.select_table (table="user_behavior", column="times,score", condition="news_id",
                                                        value=news_id + "' and user_id = '" + user_id)
@@ -562,7 +572,7 @@ class LoveNews(Confirm):
                         else:
                             # ******************************新闻分数******************************
                             db.insert_table (table="user_behavior", field="(user_id,news_id,news_tag,score,times)",
-                                               values="('" + user_id + "','" + news_id + "','" + tag [0] [0] + "',1,1)")
+                                               values="('" + user_id + "','" + news_id + "','" + tag [0] [0] + "',3,1)")
 
 
 
@@ -580,30 +590,82 @@ class LoveNews(Confirm):
 
                         #********************更新用户标签因子分数（历史分数）******************************
 
-                        if_exist = db.select_table (table="user_tag_score", column="user_id", condition="user_id",
-                                                      value=user_id)
-                        tag_points = db.select_table (table="user_tag_score", column=tag [0] [0], condition="user_id",
-                                                        value=user_id)
-                        if if_exist:
-                            if tag_points:
-                                if tag_points [0] [0]:
-                                    point = "update user_tag_score set " + tag [0] [0] + " = " + tag [0] [
-                                        0] + " + 1 where user_id = '" + user_id + "'"
-                                    db.exeSql(point)
+                        all_tags = (
+                        'news_society', 'news_entertainment', 'news_tech', 'news_car', 'news_sports', 'news_finance',
+                        'news_military', 'news_world', 'news_fashion', 'news_travel', 'news_discovery', 'news_baby',
+                        'news_regimen', 'news_story', 'news_essay', 'news_game', 'news_history', 'news_food')
+
+                        tag = db.select_table (table="get_news", column="tag", condition="news_id", value=news_id)
+
+                        if_news_deep = db.select_table (table="news_tag_deep", column="*", condition="news_id",
+                                                        value=news_id)
+
+                        upda_sql = " "
+                        if if_news_deep:
+                            for i in range (0, len (all_tags)):
+
+                                if upda_sql == " ":
+                                    upda_sql = upda_sql + all_tags [i] + " = " + all_tags [i] + " + " + str (
+                                        if_news_deep [0] [i + 1]*3)
                                 else:
-                                    point = "update user_tag_score set " + tag [0] [
-                                        0] + " = 1 where user_id = '" + user_id + "'"
-                                    db.exeSql (point)
+                                    upda_sql = upda_sql + "," + all_tags [i] + " = " + all_tags [i] + " + " + str (
+                                        if_news_deep [0] [i + 1]*3)
+
+                            if_tag_deep = db.select_table_three (
+                                "select * from user_tag_score where user_id='" + user_id + "'")
+                            if if_tag_deep:
+                                jiafen = db.exeSql (
+                                    "update user_tag_score set " + upda_sql + " where user_id ='" + user_id + "'")
                             else:
-                                self.errorRequest (num=1)
-                        else:
-                            db.insert_table (table="user_tag_score", field="(user_id," + tag [0] [0] + ")",
-                                               values="('" + user_id + "',1)")
+                                in_sql = "'" + user_id + "'"
+                                num = len (all_tags) + 1
+                                for i in range (0, len (all_tags)):
+                                    in_sql = in_sql + "," + str (if_news_deep [0] [i + 1]*3)
+                                jiafen = db.exeSql ("insert into user_tag_score values(" + in_sql + ")")
+                            if jiafen:
+                                print ("喜欢加分成功!")
 
                         success = 1
 
                     #****************************用户取消喜欢*************************************************************
                     elif is_love == '0':
+
+                        all_tags = (
+                            'news_society', 'news_entertainment', 'news_tech', 'news_car', 'news_sports',
+                            'news_finance',
+                            'news_military', 'news_world', 'news_fashion', 'news_travel', 'news_discovery', 'news_baby',
+                            'news_regimen', 'news_story', 'news_essay', 'news_game', 'news_history', 'news_food')
+
+                        tag = db.select_table (table="get_news", column="tag", condition="news_id", value=news_id)
+
+                        if_news_deep = db.select_table (table="news_tag_deep", column="*", condition="news_id",
+                                                        value=news_id)
+
+                        upda_sql = " "
+                        if if_news_deep:
+                            for i in range (0, len (all_tags)):
+
+                                if upda_sql == " ":
+                                    upda_sql = upda_sql + all_tags [i] + " = " + all_tags [i] + " - " + str (
+                                        if_news_deep [0] [i + 1] * 3)
+                                else:
+                                    upda_sql = upda_sql + "," + all_tags [i] + " = " + all_tags [i] + " - " + str (
+                                        if_news_deep [0] [i + 1] * 3)
+
+                            if_tag_deep = db.select_table_three (
+                                "select * from user_tag_score where user_id='" + user_id + "'")
+                            jiafen = db.exeSql (
+                                    "update user_tag_score set " + upda_sql + " where user_id ='" + user_id + "'")
+
+                            if jiafen:
+                                print ("取消喜欢减分成功!")
+
+
+
+
+
+
+
                         db.update_column(table="user_behavior", column="behavior_type",
                                            value_set='0', condition="news_id ",
                                            value_find=news_id + "' and user_id = '" + user_id)
@@ -614,9 +676,7 @@ class LoveNews(Confirm):
                         print(love_time)
                         tag_point = db.select_table (table="user_tag_score", column=tag [0] [0], condition="user_id",
                                                        value=user_id)
-                        # 用户行为表的更新
-                        update_love = db.update_column (table="user_behavior", column="behavior_type", value_set='0',
-                                                  condition="news_id ", value_find=news_id + "' and user_id = '" + user_id)
+
                         # 更新用户操作表
                         operate_islove = db.update_column (table="user_operate", column="is_love", value_set='0',
                                                      condition="news_id ",value_find=news_id + "' and user_id = '" + user_id)
@@ -995,7 +1055,7 @@ class Comment(Confirm):
         localtime = time.strftime ("%Y-%m-%d %H:%M:%S", time.localtime ())
         comment = user_id + "{++}" + content + "{++}" + localtime + "{++}" + '0' + "{##}"
         news_comment = news_id + "{++}" + content + "{++}" + localtime  + "{##}"
-        if getTooken == tooken and len (all) == 5:
+        if (getTooken == tooken and len (all) == 5) or (getTooken == tooken and len (all) == 6):
             db = newsDb()
             try:
                 tags = db.select_table(table = "get_news", column = "tag", condition = "news_id", value = news_id)
@@ -1039,32 +1099,39 @@ class Comment(Confirm):
                 print("评论成功，用户操作表更新")
 
                 #*******************用户标签因子分数表对应该标签历史分数***************************
-                if_exist = db.select_table (table="user_tag_score", column="user_id", condition="user_id",
-                                              value=user_id)
-                tag_points = db.select_table (table="user_tag_score", column=tag, condition="user_id",
-                                                value=user_id)
-                if if_exist:
-                    if tag_points:
-                        if tag_points [0] [0]:
-                            point = "update user_tag_score set " + tag+ " = " + tag + " + 1 where user_id = '" + user_id + "'"
-                            print (point)
-                            db.cur.execute (point)
-                            # 提交到数据库执行
-                            db.cur.fetchall ()
-                            db.conn.commit ()
+                all_tags = (
+                'news_society', 'news_entertainment', 'news_tech', 'news_car', 'news_sports', 'news_finance',
+                'news_military', 'news_world', 'news_fashion', 'news_travel', 'news_discovery', 'news_baby',
+                'news_regimen', 'news_story', 'news_essay', 'news_game', 'news_history', 'news_food')
+
+                tag = db.select_table (table="get_news", column="tag", condition="news_id", value=news_id)
+
+                if_news_deep = db.select_table (table="news_tag_deep", column="*", condition="news_id", value=news_id)
+
+                upda_sql = " "
+                if if_news_deep:
+                    for i in range (0, len (all_tags)):
+
+                        if upda_sql == " ":
+                            upda_sql = upda_sql + all_tags [i] + " = " + all_tags [i] + " + " + str (
+                                if_news_deep [0] [i + 1]*2)
                         else:
-                            point = "update user_tag_score set " + tag+ " = 1 where user_id = '" + user_id + "'"
-                            print (point)
-                            db.cur.execute (point)
-                            # 提交到数据库执行
-                            db.cur.fetchall ()
-                            db.conn.commit ()
+                            upda_sql = upda_sql + "," + all_tags [i] + " = " + all_tags [i] + " + " + str (
+                                if_news_deep [0] [i + 1]*2)
+
+                    if_tag_deep = db.select_table_three ("select * from user_tag_score where user_id='" + user_id + "'")
+                    if if_tag_deep:
+                        jiafen = db.exeSql (
+                            "update user_tag_score set " + upda_sql + " where user_id ='" + user_id + "'")
                     else:
-                        self.errorRequest (num=1)
-                else:
-                    db.insert_table (table="user_tag_score", field="(user_id," + tag  + ")",
-                                       values="('" + user_id + "',1)")
-                print("评论成功，用户对标签因子 分数 加2")
+                        in_sql = "'" + user_id + "'"
+                        num = len (all_tags) + 1
+                        for i in range (0, len (all_tags)):
+                            in_sql = in_sql + "," + str (if_news_deep [0] [i + 1]*2)
+
+                        jiafen = db.exeSql ("insert into user_tag_score values(" + in_sql + ")")
+                    if jiafen:
+                        print ("评论加分成功!")
 
 
                 #查询评论的用户的个人信息返回
