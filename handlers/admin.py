@@ -22,7 +22,7 @@ class AdminHandler(BaseHandler):
             numTag = {}
             for i in cateType.keys():
                 mSql = newsDb()
-                result = mSql.select_table(table="news_nums",column="nums",condition="tag",value=i)
+                result = mSql.select_table(table="get_news",column="count(*)",condition="tag",value=i)
                 numTag[cateType[i]]=result[0][0]
             #排序
             sortTag = list(sorted(numTag.items(), key=lambda d:d[1], reverse = True))
