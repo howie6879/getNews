@@ -194,16 +194,24 @@ class NewsTags(Confirm):
                                         if chi_tags[i] == ta:
                                             select_tag = eng_tags[i]
                                     each_news = db.select_table_three("select news_id from get_news where tag = '"+select_tag+"'")
-                                    for d in range(0,20):
-                                        re_news.append(each_news[d][0])
+                                    if len(each_news) >=20:
+                                        for d in range(0,20):
+                                            re_news.append(each_news[d][0])
+                                    else:
+                                        for d in range(0,len(each_news)):
+                                            re_news.append(each_news[d][0])
                             else:
                                 for i in range(0, len(eng_tags)):
                                     if chi_tags[i] == love_tags[0][0]:
                                         select_tag = eng_tags[i]
                                 each_news = db.select_table_three("select news_id from get_news where tag = '" + select_tag + "'")
 
-                                for d in range(0, 20):
-                                    re_news.append(each_news[d][0])
+                                if len(each_news) >= 20:
+                                    for d in range(0, 20):
+                                        re_news.append(each_news[d][0])
+                                else:
+                                    for d in range(0, len(each_news)):
+                                        re_news.append(each_news[d][0])
 
                         suiji = {random.randint(0,len(re_news)-1) for _ in range(int (count))}
 
@@ -268,8 +276,6 @@ class NewsTags(Confirm):
             eachHours = (str(localtime).split(' '))[1].split(':')[0]
             chineseTime = str(int(eachHours)-int(oldHours)) + "小时前"
         elif cdate == 1:
-            chineseTime = "今天"
-        elif cdate == 2:
             chineseTime = "昨天"
         elif cdate == 2:
             chineseTime = "前天"

@@ -67,13 +67,11 @@ def getNewsContent():
                         new_info["tag"] = tag
                     else:
                         new_info["tag"] = ''
-            except:
-                pass
-                # 采用结巴中文分词提取正文最重要的十个特征词
-                # 相关算法 --- tf-idf算法
-                # print(textContent)
-            try:
-                feature = jieba.analyse.extract_tags(textContent, 15)
+
+                try:
+                    feature = jieba.analyse.extract_tags(textContent, 15)
+                except:
+                    feature = new_info["keywords"]
                 new_info["textContent"] = textContent
                 new_info["htmlContent"] = htmlContent
                 new_info["feature"] = feature
@@ -81,6 +79,9 @@ def getNewsContent():
                 last_list.append(new_info)
             except:
                 pass
+                # 采用结巴中文分词提取正文最重要的十个特征词
+                # 相关算法 --- tf-idf算法
+                # print(textContent)
 
         # 信息过滤、爬取及关键词提取完毕，开始将它存到excel表中
         excelName = os.path.join(finalDir, file)
