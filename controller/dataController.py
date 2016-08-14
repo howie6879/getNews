@@ -2,7 +2,9 @@
 __author__ = 'howie'
 import pandas as pd
 import os
+from config.n_conf import dirPath
 import controller.newsController as newsController
+from config.n_conf import dirPath
 
 
 class DataController(newsController.NewsController):
@@ -18,14 +20,14 @@ class DataController(newsController.NewsController):
                 newsData = pd.read_excel(eachFile, sheetname="allNews")
                 newsData = newsData.drop_duplicates()  # 去重
                 # 获取主路径
-                path = os.path.join(os.path.abspath('.'), 'spider')
+                path = os.path.join(dirPath, 'spider')
                 # 获取处理后文件路径
                 for dir in dirs[0]:
                     path = os.path.join(path, dir)
                 filePath = os.path.join(path, os.path.split(eachFile)[1])
                 log = filePath + "文件去重成功"
                 print(log)
-                with open("./log.txt", 'a') as fp:
+                with open(dirPath+"/log.txt", 'a') as fp:
                     fp.write(log + "\n")
                 newsData.to_excel(excel_writer=filePath, sheet_name="allNews")
             return True

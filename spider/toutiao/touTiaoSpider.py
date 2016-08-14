@@ -6,6 +6,7 @@ import datetime
 import os
 from random import choice
 from spider.toutiao.touTiao import GetToutiao
+from config.n_conf import dirPath
 
 
 def getToutiaoNews(category, page, num):
@@ -54,7 +55,7 @@ def mkExcel(cate, data):
     :return:     返回生成的excel表
     """
     # 设置excel表名称
-    excelName = os.path.abspath('.') + "/spider/touTiaoSource/" + cate + "/" + str(
+    excelName = dirPath + "/spider/touTiaoSource/" + cate + "/" + str(
         time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime())) + "&" + cate + "&" + str(len(data)) + ".xlsx"
     # 设置excel表名称
     jr_work = Workbook(excelName)
@@ -84,7 +85,7 @@ def mkExcel(cate, data):
     jr_work.close()
     log = "%s新闻表抓取完成,抓取数据%d条" % (excelName, line)
 
-    with open("log.txt", 'a') as fp:
+    with open(dirPath+"/log.txt", 'a') as fp:
         fp.write(log + "\n")
     print(log)
 

@@ -5,7 +5,7 @@ from xlsxwriter import *
 import os
 import time
 from spider.sina.sina import GetSina
-
+from config.n_conf import dirPath
 
 def getSinaNews(num, page, type):
     '''
@@ -75,7 +75,7 @@ def mkExel(cate, data):
 		:return:     返回生成的excel表
 	"""
     # 设置excel表名称
-    excelName = os.path.abspath ('.') + "/spider/sinaSource/" + cate + "/" + str (
+    excelName = dirPath + "/spider/sinaSource/" + cate + "/" + str (
         time.strftime ('%Y-%m-%d-%H-%M-%S', time.localtime ())) + "&" + cate + "&" + str (len (data)) + ".xlsx"
     # 设置excel表名称
     jr_work = Workbook (excelName)
@@ -102,7 +102,7 @@ def mkExel(cate, data):
         jr_sheet.write (line, 7, eachData ["tag"])
     jr_work.close ()
     log = "%s新闻表抓取完成,抓取数据%d条" % (excelName, line)
-    with open ("log.txt", 'a') as fp:
+    with open (dirPath+"/log.txt", 'a') as fp:
         fp.write (log + "\n")
     print (log)
 

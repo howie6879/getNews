@@ -6,6 +6,7 @@ import spider.toutiao.touTiaoSpider as ts
 import spider.sina.sinaSpider as ss
 import spider.mergeExcel as me
 import spider.wordAna.contentSpider as cs
+from config.n_conf import dirPath
 
 
 ss.cate = ["news_world", "news_sports", "news_finance", "news_society", "news_entertainment", "news_military",
@@ -24,7 +25,7 @@ def sina(num=1000, page=1, type=ss.cate):
 
 def merge():
     #新闻合并操作
-    mainPath = os.path.join(os.path.abspath('.'),'spider')
+    mainPath = os.path.join(dirPath,'spider')
     secondPath = os.path.join(mainPath,'allSource')
     mergeExel = me.mergeExcel()
     mergeExel.merge(mainPath,secondPath)

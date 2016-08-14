@@ -5,6 +5,7 @@ from xlsxwriter import *
 import os
 import xlrd
 import time
+from config.n_conf import dirPath
 
 
 class mergeExcel:
@@ -36,7 +37,7 @@ class mergeExcel:
         self.allNews['news_history'] = []
         self.allNews['news_food'] = []
         # 定义新闻类型列表
-        self.category = ["news_society", "news_entertainment",
+        self.category = ["__all__","news_hot","news_society", "news_entertainment",
                          "news_tech", "news_car", "news_sports", "news_finance", "news_military", "news_world",
                          "news_fashion", "news_travel", "news_discovery", "news_baby", "news_regimen", "news_story",
                          "news_essay", "news_game", "news_history", "news_food", ]
@@ -123,7 +124,7 @@ class mergeExcel:
             jr_sheet.write(line, 7, eachData[7])
         jr_work.close()
         log = "%s新闻数据合并完成，共合并数据%d条" % (excelName, line)
-        with open("log.txt", 'a') as fp:
+        with open(dirPath+"/log.txt", 'a') as fp:
             fp.write(log + "\n")
         print(log)
         #self.mergeSuccess = True

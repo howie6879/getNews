@@ -1,15 +1,12 @@
 # -*-coding:utf-8-*-
 __author__ = 'howie'
 import os
-
+from config.n_conf import dirPath
 
 class NewsController():
     """
     系统控制类
     """
-
-    def __init__(self):
-        pass
 
     def newsFiles(self, operator, sourceName):
         """
@@ -18,26 +15,24 @@ class NewsController():
                 sourceName:新闻网站文件夹
         :return:获取文件操作返回文件名列表,删除文件,删除成功返回allFiles=False,表示目录下没有文件
         """
-        # 获取主路径
-        mainPath = os.path.abspath('.')
         # 获取新闻目录
-        path = os.path.join(os.path.join(mainPath, 'spider'), sourceName)
+        path = os.path.join(os.path.join(dirPath, 'spider'), sourceName)
         allFiles = []
         for dir in os.listdir(path):
-            dirPath = os.path.join(path, dir)
-            if os.path.isdir(dirPath):
-                files = [file for file in os.listdir(dirPath) if
-                        os.path.isfile(os.path.join(dirPath, file)) and os.path.splitext(file)[1] == ".xlsx"]
+            tarPath = os.path.join(path, dir)
+            if os.path.isdir(tarPath):
+                files = [file for file in os.listdir(tarPath) if
+                        os.path.isfile(os.path.join(tarPath, file)) and os.path.splitext(file)[1] == ".xlsx"]
                 if files and operator == "get":
                     for file in files:
-                        allFiles.append(os.path.join(dirPath, file))
+                        allFiles.append(os.path.join(tarPath, file))
                 # 删除原始数据
                 elif files and operator == "rm":
                     for file in files:
-                        os.remove(os.path.join(dirPath, file))
-                        log = os.path.join(dirPath, file) + "文件删除成功"
+                        os.remove(os.path.join(tarPath, file))
+                        log = os.path.join(tarPath, file) + "文件删除成功"
                         print(log)
-                        with open("./log.txt", 'a') as fp:
+                        with open(dirPath+"/log.txt", 'a') as fp:
                             fp.write(log + "\n")
         if not allFiles:
             return False
@@ -50,7 +45,7 @@ class NewsController():
         :param *dirs:文件夹list,dirs[0]里面含有文件夹名称,默认为2个
         :return:    删除成功返回True
         """
-        path = os.path.join(os.path.abspath('.'),'spider')
+        path = os.path.join(dirPath,'spider')
         #生成去重的数据目录
         for dir in dirs[0]:
             path = os.path.join(path,str(dir))
@@ -60,6 +55,6 @@ class NewsController():
             os.remove(os.path.join(path, file))
             log = os.path.join(path, file) + "文件删除成功"
             print(log)
-            with open("./log.txt", 'a') as fp:
+            with open(dirPath+"/log.txt", 'a') as fp:
                 fp.write(log + "\n")
         return True

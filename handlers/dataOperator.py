@@ -19,7 +19,7 @@ class DataOperator(BaseHandler):
         if action == "getNews":
             page = int(self.get_argument('page'))
             num = int(self.get_argument('num'))
-            cate = ["news_society", "news_entertainment",
+            cate = ["__all__","news_hot","news_society", "news_entertainment",
                     "news_tech", "news_car", "news_sports", "news_finance", "news_military", "news_world",
                     "news_fashion", "news_travel", "news_discovery", "news_baby", "news_regimen", "news_story",
                     "news_essay", "news_game", "news_history", "news_food"]
@@ -44,7 +44,7 @@ class DataOperator(BaseHandler):
             db = newsDb()
             db.exeSql("delete from news_tag_deep")
             db.exeSql("delete from news_nums")
-            db.exeSql("delete from get_news where is_old=0")
+            #db.exeSql("delete from get_news where is_old=0")
             db.exeSql("insert into news_nums select * from news_nums_view")
             # 将新闻插入数据库
             newsInsert.insertSql("wordAnaNews")

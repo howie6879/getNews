@@ -4,6 +4,7 @@ import jieba
 import jieba.analyse
 from spider.wordAna.contentTool import ContentOperator
 from spider.wordAna.excelTool import ExcelOperator
+from config.n_conf import dirPath
 
 class DataPerpare(object):
     def __init__(self,dataDir):
@@ -16,10 +17,10 @@ class DataPerpare(object):
         self.ct = ContentOperator()
 
         # 使用该txt文件存储各类别新闻数等相关信息
-        self.fn = open(os.path.abspath(".") + "/NavieBayesInfo/train_news_Info.txt", "a")
+        self.fn = open(dirPath + "/system/classPredict/NavieBayesInfo/train_news_Info.txt", "a")
 
         # 要将单词与id的字典放到txt文件中，以此进行贝叶斯分类时的使用准备
-        self.fd = open(os.path.abspath(".") + "/NavieBayesInfo/word_id_dict.txt", 'a')
+        self.fd = open(dirPath + "/system/classPredict/NavieBayesInfo/word_id_dict.txt", 'a')
 
         # 文件行数据格式 类别 单词1 单词2 单词3#类别
         # 对于每个单词，使用一个id表示，提高检索速度=====word_ids
@@ -97,7 +98,7 @@ class DataPerpare(object):
         return fileList
 
     def loadWord_id_dict(self):
-        fd = open(os.path.abspath(".") + "/NavieBayesInfo/word_id_dict.txt", 'r')
+        fd = open(dirPath + "/system/classPredict/NavieBayesInfo/word_id_dict.txt", 'r')
         allInfo = fd.read()
         arr = allInfo.strip().split()
         for i in range(0, len(arr)):
@@ -106,6 +107,6 @@ class DataPerpare(object):
                 if arr[i] not in self.unique_words:
                     self.unique_words.append(arr[i])
 
-dp = DataPerpare(os.path.abspath('.') + "/trainData")
+dp = DataPerpare(dirPath + "/system/classPredict/trainData")
 dp.loadWord_id_dict()
 dp.getNewContentAndAnalyse()

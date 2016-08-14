@@ -2,14 +2,14 @@
 import os
 import jieba
 import jieba.analyse
-
+from config.n_conf import dirPath
 
 
 class NewPredict(object):
     def __init__(self,data_list):
         self.data_list = data_list
 
-        self.ft = open("system/classPredict/NavieBayesInfo/predict_new_word.txt", 'w')
+        self.ft = open(dirPath + "/system/classPredict/NavieBayesInfo/predict_new_word.txt", 'w')
         #存放 单词：对应唯一id 的字典
         self.word_id_dict = {}
         #加载单词id字典，结果在word_id_dict里
@@ -51,7 +51,7 @@ class NewPredict(object):
 
 
     def loadWord_id_dict(self):
-        fd = open ("system/classPredict/NavieBayesInfo/word_id_dict.txt", 'r')
+        fd = open (dirPath + "/system/classPredict/NavieBayesInfo/word_id_dict.txt", 'r')
         allInfo = fd.read()
         arr = allInfo.strip().split()
         for i in range(0,len(arr)):

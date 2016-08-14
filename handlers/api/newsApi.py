@@ -162,18 +162,23 @@ class NewsTags(Confirm):
                             self.errorRequest (num=-1)
                         else:
                             if tag == '':
-                                for i in range(int(alrequest), int(alrequest) + int(count)):
+                                suiji = {random.randint (int(alrequest), int(alrequest) + int(count)) for _ in range (int (count))}
+                                for i in suiji:
                                     news_id = news[i].split('+')[0]
                                     data.append(self.dataNews(news_id))
                             else:
                                 id_list = db.select_table(table="get_news", column="news_id", condition="tag",
                                                           value=tag)
                                 if len(id_list) < int(alrequest) + int(count):
-                                    for j in range(int(alrequest), len(id_list)):
+                                    suiji = {random.randint (int(alrequest), len(id_list)) for _ in
+                                             range ((len(id_list)-int(alrequest)))}
+                                    for j in suiji:
                                         # print(self.dataNews (id_list[j][0]))
                                         data.append(self.dataNews(id_list[j][0]))
                                 else:
-                                    for j in range(int(alrequest), int(alrequest) + int(count)):
+                                    suiji = {random.randint (int(alrequest), int(alrequest) + int(count)) for _ in
+                                             range (int(count))}
+                                    for j in suiji:
                                         # print(self.dataNews (id_list[j][0]))
                                         data.append(self.dataNews(id_list[j][0]))
 
@@ -184,39 +189,52 @@ class NewsTags(Confirm):
                         re_news = []
                         eng_tags = ('news_society','news_entertainment','news_tech','news_car','news_sports','news_finance','news_military','news_world','news_fashion','news_travel','news_discovery','news_baby','news_regimen','news_story','news_essay','news_game','news_history','news_food')
                         chi_tags = ('社会','娱乐','科技','汽车','体育','财经','军事','国际','时尚','旅游','探索','育儿','养生','故事','美文','游戏','历史','美食')
-                        select_tag = '*'
-
-                        for re in love_tags[0]:
-                            if re.count(","):
-                                tag_list=re.split(',')
-                                for ta in tag_list:
-                                    for i in range(0,len(eng_tags)):
-                                        if chi_tags[i] == ta:
+                        select_tag = ''
+                        if tag=='':
+                            for retag in love_tags[0]:
+                                if retag.count(","):
+                                    tag_list=retag.split(',')
+                                    for ta in tag_list:
+                                        for i in range(0,len(eng_tags)):
+                                            if chi_tags[i] == ta:
+                                                select_tag = eng_tags[i]
+                                        each_news = db.select_table_three("select news_id from get_news where tag = '"+select_tag+"'")
+                                        if len(each_news) >=20:
+                                            for d in range(0,20):
+                                                re_news.append(each_news[d][0])
+                                        else:
+                                            for d in range(0,len(each_news)):
+                                                re_news.append(each_news[d][0])
+                                else:
+                                    for i in range(0, len(eng_tags)):
+                                        if chi_tags[i] == love_tags[0][0]:
                                             select_tag = eng_tags[i]
-                                    each_news = db.select_table_three("select news_id from get_news where tag = '"+select_tag+"'")
-                                    if len(each_news) >=20:
-                                        for d in range(0,20):
+                                    each_news = db.select_table_three("select news_id from get_news where tag = '" + select_tag + "'")
+
+                                    if len(each_news) >= 20:
+                                        for d in range(0, 20):
                                             re_news.append(each_news[d][0])
                                     else:
-                                        for d in range(0,len(each_news)):
+                                        for d in range(0, len(each_news)):
                                             re_news.append(each_news[d][0])
+                            if len(re_news) >=int (count):
+                                suiji = {random.randint(0,len(re_news)-1) for _ in range(int (count))}
                             else:
-                                for i in range(0, len(eng_tags)):
-                                    if chi_tags[i] == love_tags[0][0]:
-                                        select_tag = eng_tags[i]
-                                each_news = db.select_table_three("select news_id from get_news where tag = '" + select_tag + "'")
+                                suiji = {random.randint (0, len (re_news) - 1) for _ in range (len (re_news) - 1)}
 
-                                if len(each_news) >= 20:
-                                    for d in range(0, 20):
-                                        re_news.append(each_news[d][0])
-                                else:
-                                    for d in range(0, len(each_news)):
-                                        re_news.append(each_news[d][0])
-
-                        suiji = {random.randint(0,len(re_news)-1) for _ in range(int (count))}
-
-                        for n in suiji:
-                            data.append(self.dataNews(re_news[n]))
+                            for n in suiji:
+                                data.append(self.dataNews(re_news[n]))
+                        else:
+                            id_list = db.select_table (table="get_news", column="news_id", condition="tag",
+                                                       value=tag)
+                            if len (id_list) < int (alrequest) + int (count):
+                                for j in range (int (alrequest), len (id_list)):
+                                    # print(self.dataNews (id_list[j][0]))
+                                    data.append (self.dataNews (id_list [j] [0]))
+                            else:
+                                for j in range (int (alrequest), int (alrequest) + int (count)):
+                                    # print(self.dataNews (id_list[j][0]))
+                                    data.append (self.dataNews (id_list [j] [0]))
 
 
 
@@ -957,7 +975,6 @@ class HotList(Confirm):
         localtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         startTime = (str(localtime).split(' '))[0]
         each = startTime.split('-')
-        print(da[0][0])
         oldTimeList = str(da[0][0]).split(' ')
         oldTimeDate = oldTimeList[0].split('-')
         d1 = datetime.datetime(int(oldTimeDate[0]), int(oldTimeDate[1]), int(oldTimeDate[2]))
@@ -1027,12 +1044,16 @@ class KeyWord(Confirm):
                 keySql = "select news_id from get_news where title like '%" +keyWord+ "%'"
                 # 提交到数据库执行
                 news_id_list = db.select_table_three(keySql)
-                for news_id in news_id_list:
+                if len(news_id_list)>=20:
+                    counts = 20
+                else:
+                    counts = len(news_id_list)
+                for m in range(0,counts):
                     news_content = db.select_table (table="get_news",
                                                       column="news_id,title,time,source,image,abstract",
-                                                      condition="news_id ", value=news_id[0])
+                                                      condition="news_id ", value=news_id_list[m][0])
                     opData = db.select_table (table="news_mess", column="read_times,love_times,comment_times",
-                                                condition="news_id ", value=news_id[0])
+                                                condition="news_id ", value=news_id_list[m][0])
                     if opData:
                         read_times = opData [0] [0]
                         love_times = opData [0] [1]
@@ -1043,9 +1064,34 @@ class KeyWord(Confirm):
                     else:
                         image = news_content [0] [4]
 
-                    data.append({"news_id": news_content [0][0], "title": news_content [0][1], "time": str(news_content[0][2]),
+                    localtime = time.strftime ("%Y-%m-%d %H:%M:%S", time.localtime ())
+                    startTime = (str (localtime).split (' ')) [0]
+                    each = startTime.split ('-')
+                    oldTimeList = str (news_content[0][2]).split (' ')
+                    oldTimeDate = oldTimeList [0].split ('-')
+                    d1 = datetime.datetime (int (oldTimeDate [0]), int (oldTimeDate [1]), int (oldTimeDate [2]))
+                    d2 = datetime.datetime (int (each [0]), int (each [1]), int (each [2]))
+
+                    cdate = (d2 - d1).days
+                    if cdate == 0:
+                        oldHours = oldTimeList [1].split (':') [0]
+                        eachHours = (str (localtime).split (' ')) [1].split (':') [0]
+                        chineseTime = str (int (eachHours) - int (oldHours)) + "小时前"
+                    elif cdate == 1:
+                        chineseTime = "今天"
+                    elif cdate == 2:
+                        chineseTime = "昨天"
+                    elif cdate == 2:
+                        chineseTime = "前天"
+                    else:
+                        chineseTime = str ((d2 - d1).days) + "天前"
+
+
+
+                    data.append({"news_id": news_content [0][0], "title": news_content [0][1], "time": chineseTime,
                                  "source": news_content [0] [3],"image": image, "abstract": news_content [0] [5], "read_times": read_times,
                                  "love_times": love_times, "comment_times": comment_times})
+                print(data)
                 result = {"message": "success", "data": data}
                 result = json.dumps (result)
                 # print(data[0])

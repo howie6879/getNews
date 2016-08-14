@@ -4,6 +4,7 @@ import os
 import re
 from spider.wordAna.contentTool import ContentOperator
 from spider.wordAna.excelTool import ExcelOperator
+from config.n_conf import dirPath
 
 
 def getNewsContent():
@@ -11,9 +12,9 @@ def getNewsContent():
     :return:
     """
     # 获取总目录绝对路径
-    orgDir = os.getcwd() + "/spider/wordAna/allNews"
+    orgDir = dirPath + "/spider/wordAna/allNews"
     # 获取最终存放目录绝对路径
-    finalDir = os.getcwd() + "/spider/wordAna/wordAnaNews/"
+    finalDir = dirPath + "/spider/wordAna/wordAnaNews/"
     print(orgDir)
     print(finalDir)
 

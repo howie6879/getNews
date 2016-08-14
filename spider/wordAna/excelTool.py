@@ -3,6 +3,7 @@
 
 import xlrd             #读excel工具
 import xlsxwriter       #写excel工具
+from config.n_conf import dirPath
 
 class ExcelOperator():
     '''
@@ -91,7 +92,7 @@ class ExcelOperator():
             jr_sheet.write(line, 12, ','.join(eachData["img"]))
         jr_work.close()
         log = "%sExcel文件保存完成" % (excelName)
-        with open("log.txt", 'a') as fp:
+        with open(dirPath+"/log.txt", 'a') as fp:
             fp.write(log + "\n")
         print(log)
 
