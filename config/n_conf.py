@@ -18,4 +18,5 @@ localDatabase = dict(
 )
 
 # 路径配置
-dirPath = "/home/howie/programming/python/getNews"
+#dirPath = "/home/howie/programming/python/getNews"
+dirPath = "/root/programming/git/getNews"

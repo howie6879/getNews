@@ -163,22 +163,21 @@ class NewsTags(Confirm):
                         else:
                             if tag == '':
                                 suiji = {random.randint (int(alrequest), int(alrequest) + int(count)) for _ in range (int (count))}
-                                for i in suiji:
+                                for i in range(int(alrequest), int(alrequest) + int(count)):
                                     news_id = news[i].split('+')[0]
                                     data.append(self.dataNews(news_id))
                             else:
-                                id_list = db.select_table(table="get_news", column="news_id", condition="tag",
-                                                          value=tag)
+                                id_list = db.select_table_three("select news_id from get_news where tag = '"+tag+"' order by news_id")
                                 if len(id_list) < int(alrequest) + int(count):
                                     suiji = {random.randint (int(alrequest), len(id_list)) for _ in
                                              range ((len(id_list)-int(alrequest)))}
-                                    for j in suiji:
+                                    for j in range(int(alrequest), len(id_list)):
                                         # print(self.dataNews (id_list[j][0]))
                                         data.append(self.dataNews(id_list[j][0]))
                                 else:
                                     suiji = {random.randint (int(alrequest), int(alrequest) + int(count)) for _ in
                                              range (int(count))}
-                                    for j in suiji:
+                                    for j in range(int(alrequest), int(alrequest) + int(count)):
                                         # print(self.dataNews (id_list[j][0]))
                                         data.append(self.dataNews(id_list[j][0]))
 
@@ -1091,7 +1090,7 @@ class KeyWord(Confirm):
                     data.append({"news_id": news_content [0][0], "title": news_content [0][1], "time": chineseTime,
                                  "source": news_content [0] [3],"image": image, "abstract": news_content [0] [5], "read_times": read_times,
                                  "love_times": love_times, "comment_times": comment_times})
-                print(data)
+                #print(data)
                 result = {"message": "success", "data": data}
                 result = json.dumps (result)
                 # print(data[0])
