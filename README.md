@@ -2,6 +2,7 @@
 
 ### 简述：
 
+代码规范以及项目结构都有很大问题，不再维护，当做大学时期的回忆保存。
 `git clone https://github.com/howie6879/getNews`至本地即可
 
 ### 说明：
